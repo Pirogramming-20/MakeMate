@@ -14,5 +14,5 @@ assignees: ''
 (설명을 작성해주세요)
 
 ### Todo
-- [] TODO1
-- [] TODO2
+- [ ] TODO1
+- [ ] TODO2
