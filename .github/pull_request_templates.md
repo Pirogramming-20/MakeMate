@@ -1,7 +1,3 @@
-- 제목 : feat(issue 번호): 기능명
-  ex) feat(17): pull request template 작성
-  (확인 후 지워주세요)
-
 ## PR 올리기 전 확인하세요
 
 - [ ] 커밋메시지가 컨벤션을 따르나요?

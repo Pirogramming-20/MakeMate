@@ -1,0 +1,19 @@
+:root{
+    --color_main: #8a2be2;
+    --color_sub_dark: #4a1e9e;
+    --color_sub_bright: #ddcbff;
+    --color_red_highlight: #cc167d;
+    --color_green_highlight: #82ef0e;
+
+    --padding_8px: 8px;
+    --padding_20px: 20px;
+    --padding_24px: 24px;
+    --padding_32px: 32px;
+    --padding_48px: 48px;
+    --padding_80px: 80px;
+
+    --font_small: 8px;
+    --font_medium: 16px;
+    --font_large: 24px;
+    --font_xlarge: 32px;
+}
