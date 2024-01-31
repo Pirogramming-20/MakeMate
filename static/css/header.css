@@ -1,6 +1,5 @@
-#logo{
-    font-family: 'Nanum Gothic', sans-serif;
+.logo {
     font-weight: bold;
-    font-size: var(--font_large);
+    font-size: var(--font_small);
     color: var(--color_main);
 }

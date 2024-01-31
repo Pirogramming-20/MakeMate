@@ -1,0 +1,87 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+html {
+    font-size: 62.5%;
+    line-height: 1.5;
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    font-size: var(--font_medium);
+}
+
+.primary_button, .secondary_button, .cta_button {
+    display: inline-block;
+    width: 200px;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: var(--btn_border_radius);
+    font-weight: bold;
+}
+
+.primary_button {
+    background-color: var(--color_main);
+    color: white;
+}
+
+.secondary_button {
+    border: 1px solid var(--color_sub_bright);
+    color: var(--color_main);
+}
+
+.cta_button{
+    background-color: var(--color_red_highlight);
+    color: white;   
+}
+
+.primary_badge, .secondary_badge, .cta_red_badge, .cta_green_badge {
+    padding: 5px;
+    border-radius: var(--badge_border_radius);
+    color: white;
+    font-size: var(--font_small);
+}
+
+.primary_badge {
+    background-color: var(--color_main);
+}
+
+.secondary_badge {
+    background-color: var(--color_sub_bright);
+}
+
+.cta_red_badge {
+    background-color: var(--color_red_highlight);
+}
+
+.cta_green_badge {
+    background-color: var(--color_green_highlight);
+}
+
+.wrap_card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding3);
+    gap: var(--padding2);
+    border-radius: var(--card_border_radius);
+    background-color: white;
+}
+
+.card_title {
+    font-weight: bold;
+}
+
+.inner_card_badge {
+    display: flex;
+    gap: var(--padding2);
+}
+
+.inner_card_contents {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font_small);
+}
+
+.card_contents_red {
+    color: var(--color_red_highlight);
+}

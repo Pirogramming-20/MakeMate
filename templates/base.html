@@ -6,16 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/reset.css' %}?after">
     <link rel="stylesheet" href="{% static 'css/root.css' %}?after">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}?after">
     <link rel="stylesheet" href="{% static 'css/header.css' %}?after">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <title>MakeMate</title>
 </head>
 <body>
     {% include 'header.html'%}
     {% block content %}
     {% endblock %}
+    <div class='wrap_card'>
+        <span class='card_title'>피로그래밍 20기</span>
+        <div class='inner_card_badge'>
+            <span class='primary_badge'>운영진</span>
+            <span class='cta_red_badge'>운영진</span>
+        </div>
+        <div class='inner_card_contents'>
+            <span class='card_contents_red'>팀빌딩 종료까지 남은 시간</span>
+            <span>1일 12시간 22분</span>
+            <span>참여자수: 00명</span>
+        </div>
+    </div>
 </body>
 </html>
