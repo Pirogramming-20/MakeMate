@@ -12,10 +12,10 @@
     --padding_48px: 48px;
     --padding_80px: 80px;
 
-    --font_small: 8px;
-    --font_medium: 16px;
-    --font_large: 24px;
-    --font_xlarge: 32px;
+    --font_small: 0.8rem;
+    --font_medium: 1.6rem;
+    --font_large: 2.4rem;
+    --font_xlarge: 3.2rem;
 
     --btn_border_radius: 20px;
     --badge_border_radius: 5px;
