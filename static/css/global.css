@@ -1,7 +1,10 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
 html {
     font-size: 62.5%;
     line-height: 1.5;
     box-sizing: border-box;
+    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -53,4 +56,32 @@ body {
 
 .cta_green_badge {
     background-color: var(--color_green_highlight);
+}
+
+.wrap_card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding3);
+    gap: var(--padding2);
+    border-radius: var(--card_border_radius);
+    background-color: white;
+}
+
+.card_title {
+    font-weight: bold;
+}
+
+.inner_card_badge {
+    display: flex;
+    gap: var(--padding2);
+}
+
+.inner_card_contents {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font_small);
+}
+
+.card_contents_red {
+    color: var(--color_red_highlight);
 }

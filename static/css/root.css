@@ -5,16 +5,19 @@
     --color_red_highlight: #cc167d;
     --color_green_highlight: #82ef0e;
 
-    --padding_8px: 0.8rem;
-    --padding_20px: 2rem;
-    --padding_24px: 2.4rem;
-    --padding_32px: 3.2rem;
-    --padding_48px: 4.8rem;
-    --padding_80px: 8rem;
+    --padding1: 0.8rem;
+    --padding2: 1.8rem;
+    --padding3: 2rem;
+    --padding4: 2.4rem;
+    --padding5: 3.2rem;
+    --padding6: 4.8rem;
+    --padding7: 8rem;
 
     --font_small: 1.4rem;
     --font_medium: 1.8rem;
     --font_large: 2.4rem;
     --font_xlarge: 3.2rem;
     --font_xxlarge: 8rem;
+
+    --card_border_radius: 1rem;
 }
