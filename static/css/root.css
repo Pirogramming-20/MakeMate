@@ -5,15 +5,16 @@
     --color_red_highlight: #cc167d;
     --color_green_highlight: #82ef0e;
 
-    --padding_8px: 8px;
-    --padding_20px: 20px;
-    --padding_24px: 24px;
-    --padding_32px: 32px;
-    --padding_48px: 48px;
-    --padding_80px: 80px;
+    --padding_8px: 0.8rem;
+    --padding_20px: 2rem;
+    --padding_24px: 2.4rem;
+    --padding_32px: 3.2rem;
+    --padding_48px: 4.8rem;
+    --padding_80px: 8rem;
 
-    --font_small: 8px;
-    --font_medium: 16px;
-    --font_large: 24px;
-    --font_xlarge: 32px;
+    --font_small: 1.4rem;
+    --font_medium: 1.8rem;
+    --font_large: 2.4rem;
+    --font_xlarge: 3.2rem;
+    --font_xxlarge: 8rem;
 }
