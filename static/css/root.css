@@ -16,4 +16,8 @@
     --font_medium: 16px;
     --font_large: 24px;
     --font_xlarge: 32px;
+
+    --btn_border_radius: 20px;
+    --badge_border_radius: 5px;
+
 }
