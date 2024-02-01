@@ -2,13 +2,13 @@
 
 html {
     font-size: 62.5%;
-    line-height: 1.5;
-    box-sizing: border-box;
-    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     font-size: var(--font_medium);
+    line-height: 1.5;
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .primary_button, .secondary_button, .cta_button {

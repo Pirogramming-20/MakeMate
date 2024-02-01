@@ -2,11 +2,11 @@
 {% block content %}
 <section>
     {% if user.is_authenticated %}
-    <a class='cta_button'>모임개설</a>
-    <a>로그아웃</a>    
+    <a class='primary_button'>모임개설</a>
+    <a href="{% url 'common:logout' %}" class='secondary_button'>로그아웃</a>    
     {% else %}
-    <a>회원가입</a>
-    <a>로그인</a>
+    <a href="{% url 'common:signup' %}" class='primary_button'>회원가입</a>
+    <a href="{% url 'common:login' %}" class='secondary_button'>로그인</a>
     {% endif %}
 <section>
 {% endblock %}
