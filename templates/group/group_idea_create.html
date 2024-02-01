@@ -1,0 +1,19 @@
+{%block head%}
+
+<title>idea_create</title>
+
+{%endbloc%}
+
+{%block content%}
+
+<form 
+    action="{% url 'group:idea_create' %}" 
+    method="post"
+>
+    {% csrf_token %} {{form.as_p}}
+    <button class="btn">저장하기</button>
+    <button class="btn">홈으로</button>
+</form>
+
+
+{%endblock%}

@@ -1,0 +1,21 @@
+{% block head %}
+    <title>group_idea_modify</title>
+{% endblock %}
+
+{% block content %}
+<h1> 아이디어 수정하기 </h1>
+
+<form 
+    action="{% url 'group:idea_modify' idea_id %}"
+    method="post"
+    enctype="multipart/form-data"
+>
+    {%csrf_token%} {{form.as_p}}
+    <button>수정 완료</button>
+    
+
+
+</form>
+
+
+{% endblock %}
