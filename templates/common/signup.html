@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    <div>
+        <h3>회원가입</h3>
+    </div>
+    <form method='POST' novalidate>
+        {% csrf_token %}
+        <!-- 넌필드 오류 -->
+        {% for error in form.non_field_errors %}
+            <div>
+                <strong>{{ error }}</strong>
+            </div>
+        {% endfor %}
+        <div>
+            <label>아이디<i>*</i></label>
+            <div>{{form.username}}</div>
+            <!-- 필드 오류 -->
+            {% if form.username.errors %}
+            <div>
+                {{ form.username.errors }}
+            </div>
+            {% endif %}
+        <div>
+        <div>
+            <label>비밀번호<i>*</i></label>
+            <div>{{form.password1}}</div>
+            <!-- 필드 오류 -->
+            {% if form.password1.errors %}
+            <div>
+                {{ form.password1.errors }}
+            </div>
+            {% endif %}
+        <div>
+        <div>
+            <label>비밀번호 확인<i>*</i></label>
+            <div>{{form.password2}}</div>
+            <!-- 필드 오류 -->
+            {% if form.password2.errors %}
+            <div>
+                {{ form.password2.errors }}
+            </div>
+            {% endif %}
+        <div>
+        <div>
+            <label>이메일 주소<i>*</i></label>
+            <div>{{form.email}}</div>
+            <!-- 필드 오류 -->
+            {% if form.email.errors %}
+            <div>
+                {{ form.email.errors }}
+            </div>
+            {% endif %}
+        <div>
+        <div>
+            <button type='submit' class='primary_button'>회원가입</button>
+            <a href="{% url 'common:main_page' %}" class='secondary_button'>홈으로</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
