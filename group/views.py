@@ -81,28 +81,20 @@ def info_nonadmin(request, group_id):
     if state == 0: # 이전 인증 내역이 있을 경우
         return redirect(f'/group/{group_id}/') 
     
-    elif state == 2: # 운영진인 경우
+    if state == 2: # 운영진인 경우
         return redirect(f'/group/{group_id}/admin/')
     
     if request.method == 'POST':
-        form = NonAdminInfoForm(request.POST)
+        form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
-            password_form = form.save(commit=False)
-
-            if group.password == password_form.password: # 비밀번호가 일치했을 때
-                new_state = MemberState()
-                new_state.group = group
-                new_state.user = request.user
-                new_state.save()
-                return redirect(f'/group/{group_id}/non_admin_info/')
-            else:
-                wrong_flag = True  
-    form = GroupPasswordForm()
+            form.save()
+            return redirect(f'/group/{group_id}/')
+    form = NonAdminInfoForm()
     ctx = {
         'group': group,
         'form': form
     }
-    return render(request, 'group/group_certification.html', ctx)
+    return render(request, 'group/group_member_info.html', ctx)
 
 def redirect_by_auth(user, group_id):
     user_state = MemberState.objects.filter(
@@ -125,3 +117,4 @@ def redirect_by_auth(user, group_id):
     
     # 참여자인 경우
     return 1
+
