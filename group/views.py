@@ -75,3 +75,6 @@ def group_date(request):
         form = GroupDateForm()
         ctx = {'form': form}
         return render(request, 'setting/setting_date.html', context=ctx)
+    
+def share(request, pk):
+    pass
