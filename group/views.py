@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import Group, MemberState, AdminState
 from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm
@@ -183,15 +184,18 @@ def group_date(request):
                 tech_stack=group_tech_stack,
                 end_date=group_end_date
             )
-        return redirect('/')
+            url = reverse('group:share', args=[group.id])
+            print(url)
+        return redirect(url)
     else:
         form = GroupDateForm()
         ctx = {'form': form}
         return render(request, 'setting/setting_date.html', context=ctx)
     
-def share(request, pk):
+def share(request, group_id):
     if request.method == 'POST':
         return redirect('/')
     else:
-        group = Group.objects.get(id=pk)
-        return render(request, 'setting/setting_sharing.html', {'id': group.id ,'password': group.password})
+        group = Group.objects.get(id=group_id)
+        ctx = {'group': group}
+        return render(request, 'setting/setting_sharing.html', context=ctx)
