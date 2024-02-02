@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="group_date_set_container">
+    <div class="group_date_set_modal_container">
+        <form action="{% url 'group:date_set' %}" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn">모임 개설</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

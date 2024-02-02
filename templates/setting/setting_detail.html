@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="group_detail_set_container">
+    <div class="group_detail_set_modal_container">
+        <form action="{% url 'group:detail_set' %}" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn">다음</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
