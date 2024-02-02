@@ -37,7 +37,7 @@
                                 {% if time.remaining_days <= 0 or time.remaining_hours <= 0 or time.remaining_minutes <= 0 %}
                                     <div>팀 빌딩 완료</div>
                                 {%else%}
-                                    <div>팀 빌딩 종료까지 남은 ㄴ시간</div>
+                                    <div>팀 빌딩 종료까지 남은 시간</div>
                                     <div>{{ time.remaining_days }}일 {{ time.remaining_hours }}시간 {{ time.remaining_minutes }}분</div>
                                 {%endif%}
                             {% endif %}
