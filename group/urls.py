@@ -6,5 +6,5 @@ app_name = 'group'
 urlpatterns = [
     path('base_set/', group_base_info, name='base_set'),
     path('detail_set/', group_detail_info, name='detail_set'),
-    path('dete_set/', group_date, name='dete_set'),
+    path('dete_set/', group_date, name='date_set'),
 ]

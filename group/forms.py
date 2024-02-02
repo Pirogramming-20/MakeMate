@@ -18,3 +18,8 @@ class GroupDetailForm(forms.ModelForm):
             'choice',
             'tech_stack',
         ]
+
+class GroupDateForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['end_date',]
