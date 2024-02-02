@@ -90,9 +90,6 @@ def info_nonadmin(request, group_id):
         user = request.user,
         group_id = group_id
     ).first()
-
-    if state == 0: # 이전 인증 내역이 있을 경우
-        return redirect(f'/group/{group_id}/') 
     
     if state == 2: # 운영진인 경우
         return redirect(f'/group/{group_id}/admin/')

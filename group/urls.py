@@ -9,6 +9,6 @@ urlpatterns = [
     path('date_set/', group_date, name='date_set'),
     path('share/', share, name='share'),
     path('<int:group_id>/password_check/', check_nonadmin, name='check_nonadmin'),
-    path('<int:group_id>/admin/password_check', check_admin, name='check_admin'),
+    path('<int:group_id>/admin/password_check/', check_admin, name='check_admin'),
     path('<int:group_id>/non_admin_info/', info_nonadmin, name='info_nonadmin')
 ]
