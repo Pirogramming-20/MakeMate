@@ -1,12 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
-<section>
-    {% if user.is_authenticated %}
-    <a class='primary_button' href="{% url 'group:base_set' %}">모임개설</a>
-    <a href="{% url 'common:logout' %}" class='secondary_button'>로그아웃</a>    
-    {% else %}
-    <a href="{% url 'common:signup' %}" class='primary_button'>회원가입</a>
-    <a href="{% url 'common:login' %}" class='secondary_button'>로그인</a>
-    {% endif %}
-<section>
+    <section>
+        {% if user.is_authenticated %}
+        <a class='primary_button' href="{% url 'group:base_set' %}">모임개설</a>
+        <a href="{% url 'common:logout' %}" class='secondary_button'>로그아웃</a>   
+            <div>참여중인 모임</div>
+            {% for group in admin_groups %}
+                <div class="group_container">
+                    {% comment %} <a href="{% url 'group:detail'group.id %}"> 모임디테일 url이랑 view가 없어서 a로 연결은 못했습니다.. {% endcomment %}
+                        <div>{{group.title}}</div>
+                        <div class='primary_badge'>운영진</div>
+                        {% for time in admin_remaining_time %}
+                            {% if time.group_name == group.title %}
+                                {% if time.remaining_days <= 0 or time.remaining_hours <= 0 or time.remaining_minutes <= 0 %}
+                                    <div>팀 빌딩 완료</div>
+                                {%else%}
+                                    <div>팀 빌딩 종료까지 남은 시간</div>
+                                    <div>{{ time.remaining_days }}일 {{ time.remaining_hours }}시간 {{ time.remaining_minutes }}분</div>
+                                {%endif%}
+                            {% endif %}
+                        {% endfor %}
+                        {% for member in admin_group_count %}
+                            {% if member.group_name == group.title %}
+                                <div>참여자수:{{member.count}}명</div>
+                            {% endif %}
+                        {% endfor %}
+                    </a>
+                </div>
+            {% endfor %}
+            {% for group in member_groups %}
+                <div class="group_container">
+                    <a href="">
+                        {{group.title}}
+                        {% for time in admin_remaining_time %}
+                            {% if time.group_name == group.title %}
+                                {% if time.remaining_days <= 0 or time.remaining_hours <= 0 or time.remaining_minutes <= 0 %}
+                                    <div>팀 빌딩 완료</div>
+                                {%else%}
+                                    <div>팀 빌딩 종료까지 남은 시간</div>
+                                    <div>{{ time.remaining_days }}일 {{ time.remaining_hours }}시간 {{ time.remaining_minutes }}분</div>
+                                {%endif%}
+                            {% endif %}
+                        {% endfor %}
+                        {% for member in member_group_count %}
+                            {% if member.group_name == group.title %}
+                                <div>참여자수:{{member.count}}명</div>
+                            {% endif %}
+                        {% endfor %}
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+        <a href="{% url 'common:signup' %}" class='primary_button'>회원가입</a>
+        <a href="{% url 'common:login' %}" class='secondary_button'>로그인</a>
+        {% endif %}
+    <section>
 {% endblock %}

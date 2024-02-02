@@ -1,6 +1,16 @@
 from django import forms
-from .models import Group
+from .models import Group, MemberState
 from django.contrib.admin import widgets 
+
+class GroupPasswordForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['password']
+
+class NonAdminInfoForm(forms.ModelForm):
+    class Meta:
+        model = MemberState
+        fields = ['group_ability', 'group_tech_stack']
 
 class GroupBaseForm(forms.ModelForm):
     class Meta:
