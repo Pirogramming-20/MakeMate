@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .forms import GroupBaseForm, GroupDetailForm, GroupDateForm
 from .models import Group
 
@@ -70,11 +71,16 @@ def group_date(request):
                 tech_stack=group_tech_stack,
                 end_date=group_end_date
             )
-        return redirect('/')
+            url = reverse('group:share', args=[group.id])
+        return redirect(url)
     else:
         form = GroupDateForm()
         ctx = {'form': form}
         return render(request, 'setting/setting_date.html', context=ctx)
     
 def share(request, pk):
-    pass
+    if request.method == 'POST':
+        return redirect('/')
+    else:
+        group = Group.objects.get(id=pk)
+        return render(request, 'setting/setting_sharing.html', {'id': group.id ,'password': group.password})

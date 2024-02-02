@@ -7,5 +7,5 @@ urlpatterns = [
     path('base_set/', group_base_info, name='base_set'),
     path('detail_set/', group_detail_info, name='detail_set'),
     path('date_set/', group_date, name='date_set'),
-    path('share/', share, name='share'),
+    path('share/<int:group_id>', share, name='share'),
 ]
