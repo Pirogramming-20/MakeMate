@@ -20,10 +20,10 @@ def group_base_info(request):
     if request.method == 'POST':
         form = GroupBaseForm(request.POST)
         if form.is_valid():
-            group_title = request.POST.get('title')
-            group_team_number = request.POST.get('team_number')
-            group_password = request.POST.get('password')
-            group_type = request.POST.get('type')
+            group_title = form.cleaned_data['title']
+            group_team_number = form.cleaned_data['team_number']
+            group_password = form.cleaned_data['password']
+            group_type = form.cleaned_data['type']
         return redirect('group:detail_set')
     else:
         form = GroupBaseForm()
@@ -36,13 +36,13 @@ def group_detail_info(request):
     if request.method == 'POST':
         form = GroupDetailForm(request.POST)
         if form.is_valid():
-            group_ability_description1 = request.POST.get('ability_description1')
-            group_ability_description2 = request.POST.get('ability_description2')
-            group_ability_description3 = request.POST.get('ability_description3')
-            group_ability_description4 = request.POST.get('ability_description4')
-            group_ability_description5 = request.POST.get('ability_description5')
-            group_choice = request.POST.get('choice')
-            group_tech_stack = request.POST.get('tech_stack')
+            group_ability_description1 = form.cleaned_data['ability_description1']
+            group_ability_description2 = form.cleaned_data['ability_description2']
+            group_ability_description3 = form.cleaned_data['ability_description3']
+            group_ability_description4 = form.cleaned_data['ability_description4']
+            group_ability_description5 = form.cleaned_data['ability_description5']
+            group_choice = form.cleaned_data['choice']
+            group_tech_stack = form.cleaned_data['tech_stack']
         return redirect('group:date_set')
     else:
         form = GroupDetailForm()
@@ -54,7 +54,7 @@ def group_date(request):
     if request.method == 'POST':
         form = GroupDateForm(request.POST)
         if form.is_valid():
-            group_end_date = request.POST.get('end_date')
+            group_end_date = form.cleaned_data['end_date']
 
             group = Group.objects.create(
                 title=group_title,
@@ -70,7 +70,6 @@ def group_date(request):
                 tech_stack=group_tech_stack,
                 end_date=group_end_date
             )
-            print(group.end_date)
         return redirect('/')
     else:
         form = GroupDateForm()

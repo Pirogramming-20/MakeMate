@@ -35,8 +35,8 @@ class Group(models.Model):
     choice = models.IntegerField('그룹 최대 투표 개수', default=3, null=True)
     tech_stack = models.CharField('기술 스택', max_length=10, choices=stack_position)
     #array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
-    team_building = models.ManyToManyField(User, related_name='user_groups', null=True)
-    end_date = models.DateField(choices=end_date_choice)
+    # team_building = models.ManyToManyField(User, related_name='user_groups', null=True)
+    end_date = models.DateTimeField(default=timezone.now().date() + timezone.timedelta(days=3))
 
     # #3일 뒤로 end_date필드가 저장 되어야하므로 내장 함수를 통해 처리
     # def save(self, *args, **kwargs):

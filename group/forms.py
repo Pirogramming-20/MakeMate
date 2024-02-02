@@ -1,5 +1,6 @@
 from django import forms
 from .models import Group
+from django.contrib.admin import widgets 
 
 class GroupBaseForm(forms.ModelForm):
     class Meta:
@@ -19,7 +20,24 @@ class GroupDetailForm(forms.ModelForm):
             'tech_stack',
         ]
 
+# class GroupDateForm(forms.ModelForm):
+#     end_date = forms.DateField(widget = forms.SelectDateWidget)
+#     class Meta:
+#         model = Group
+#         fields = ['end_date',]
+
 class GroupDateForm(forms.ModelForm):
+    end_date=forms.SplitDateTimeField(
+        widget=forms.SplitDateTimeWidget(
+        date_attrs={
+            'type':'date'
+            },
+        time_attrs={
+            'type':'time'
+            },
+        )
+    )
+
     class Meta:
         model = Group
-        fields = ['end_date',]
+        fields = ['end_date']
