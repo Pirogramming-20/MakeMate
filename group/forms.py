@@ -1,5 +1,16 @@
 from django import forms
-from .models import Group
+from .models import Group, MemberState
+from django.contrib.admin import widgets 
+
+class GroupPasswordForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['password']
+
+class NonAdminInfoForm(forms.ModelForm):
+    class Meta:
+        model = MemberState
+        fields = ['group_ability', 'group_tech_stack']
 
 class GroupBaseForm(forms.ModelForm):
     class Meta:
@@ -18,3 +29,25 @@ class GroupDetailForm(forms.ModelForm):
             'choice',
             'tech_stack',
         ]
+
+# class GroupDateForm(forms.ModelForm):
+#     end_date = forms.DateField(widget = forms.SelectDateWidget)
+#     class Meta:
+#         model = Group
+#         fields = ['end_date',]
+
+class GroupDateForm(forms.ModelForm):
+    end_date=forms.SplitDateTimeField(
+        widget=forms.SplitDateTimeWidget(
+        date_attrs={
+            'type':'date'
+            },
+        time_attrs={
+            'type':'time'
+            },
+        )
+    )
+
+    class Meta:
+        model = Group
+        fields = ['end_date']
