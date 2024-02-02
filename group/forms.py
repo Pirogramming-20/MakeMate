@@ -18,3 +18,19 @@ class GroupDetailForm(forms.ModelForm):
             'choice',
             'tech_stack',
         ]
+
+class GroupDateForm(forms.ModelForm):
+    end_date=forms.SplitDateTimeField(
+        widget=forms.SplitDateTimeWidget(
+        date_attrs={
+            'type':'date'
+            },
+        time_attrs={
+            'type':'time'
+            },
+        )
+    )
+
+    class Meta:
+        model = Group
+        fields = ['end_date']

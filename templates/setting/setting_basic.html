@@ -3,11 +3,18 @@
 
 {% block content %}
 <div class="group_base_set_container">
-    <div class="group_base_set_modal_container">
+    <div>
+        <h3>모임 개설</h3>
+        <span id="state_desc">STEP 1. 기본 정보 작성</span>
+    </div>
+    <div>
         <form action="{% url 'group:base_set' %}" method="post">
             {% csrf_token %}
-            {{form.as_p}}
-            <button class="btn">다음</button>
+            <div id="form_container">
+                {{form.as_p}}
+            </div>
+            <a id="base_set_submit_btn" class="btn" onClick="changeStage(0)">다음</a>
+            <a href="{% url 'common:main_page' %}">홈으로</a>
         </form>
     </div>
 </div>
