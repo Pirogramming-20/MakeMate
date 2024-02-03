@@ -10,12 +10,10 @@
             <span>비밀번호 : {{group.password}}</span>
         </div>
         <div class="group_admin_url">
-
+            <span>관리자 링크 : {% url 'group:check_admin' group.id %}</span>
+            <span>비밀번호 : {{group.password}}</span>
         </div>
-        <form action="{% url 'group:share' group.id %}" method="post">
-            {% csrf_token %}
-            <button class="btn">홈으로</button>
-        </form>
+        <button class="btn"><a href="{% url 'common:main_page' %}">홈으로</a></button>
     </div>
 </div>
 {% endblock %}

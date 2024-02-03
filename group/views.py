@@ -185,7 +185,6 @@ def group_date(request):
                 end_date=group_end_date
             )
             url = reverse('group:share', args=[group.id])
-            print(url)
         return redirect(url)
     else:
         form = GroupDateForm()
@@ -193,9 +192,6 @@ def group_date(request):
         return render(request, 'setting/setting_date.html', context=ctx)
     
 def share(request, group_id):
-    if request.method == 'POST':
-        return redirect('/')
-    else:
-        group = Group.objects.get(id=group_id)
-        ctx = {'group': group}
-        return render(request, 'setting/setting_sharing.html', context=ctx)
+    group = Group.objects.get(id=group_id)
+    ctx = {'group': group}
+    return render(request, 'setting/setting_sharing.html', context=ctx)
