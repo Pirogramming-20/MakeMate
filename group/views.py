@@ -12,14 +12,12 @@ def group_base_info(request):
         data_query = request_dict['cur_data'][0]
         data_dict = parse_qs(data_query)
         req = {key: values[0] for key, values in data_dict.items()}
-        print(req)
 
         # 이전 form 작성 정보가 있을 경우 prev_req로 저장
         if 'prev_data' in request_dict:
             prev_data_query = parse_qs(request.body.decode('utf-8'))['prev_data'][0]
             prev_data_dict = parse_qs(prev_data_query)
             prev_req = {key: values[0] for key, values in prev_data_dict.items()}
-            print(prev_req)
         
         # 현재 state 정보 저장
         state = int(req['state'])      

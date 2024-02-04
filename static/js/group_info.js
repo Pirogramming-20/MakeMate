@@ -68,8 +68,6 @@ function showDateErrors(response){
 
     // 필드 에러 메세지 띄우기
         const target_input = document.getElementById(`id_end_date_1`);
-        console.log(target_input)
-        console.log(response.errors)
         const error_msg = response.errors[`end_date`];
         
         target_input.insertAdjacentHTML('afterend', `
