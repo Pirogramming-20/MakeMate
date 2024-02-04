@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import group_base_info, group_detail_info, group_date, share, check_nonadmin, check_admin, info_nonadmin, group_detail, idea_create, idea_modify, idea_delete
+from .views import group_base_info, group_detail_info, group_date, share, check_nonadmin, check_admin, info_nonadmin, group_detail, idea_create, idea_modify, idea_delete, idea_detail 
 
 app_name = 'group'
 
@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:group_id>/idea_create/', idea_create, name='idea_create'),
     path('<int:group_id>/idea_modify/<int:idea_id>/', idea_modify, name='idea_modify'),
     path('<int:group_id>/idea_delete/<int:idea_id>/', idea_delete, name='idea_delete'),
+    path('<int:group_id>/idea_detail/<int:idea_id>/', idea_detail, name='idea_detail'),
 ]

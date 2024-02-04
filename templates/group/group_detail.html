@@ -2,21 +2,32 @@
 <h1>모임 디테일 페이지</h1>
 <p>추가로 밑에 아이디어들 불러올 예정</p>
 
-<!-- 아이디어 수정하기 버튼 -->
+{% if not author_ideas %}
+<!-- 아이디어 추가하기 버튼 -->
 <a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
+<!-- 투표하기 -->
+{% endif %}
+<a href="{% url 'common:main_page' %}" class="btn">홈으로</a>
 
-{% if ideas %}
-  <!-- 아이디어가 존재하면 아이디어 목록을 출력 -->
-  {% for idea in ideas %}
+{% if author_ideas %}
+  <h2>나의 아이디어</h2>
+  {% for idea in author_ideas %}
     <div>
-      <h3>{{ idea.title }}</h3>  <!-- 아이디어 제목 -->
-      <p>{{ idea.content }}</p>  <!-- 아이디어 내용 -->
-      {% if idea.author == request.user %}
-        <!-- 내가 작성한 아이디어인 경우에만 수정 버튼 표시 -->
-        <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a>
-      {% endif %}
+      <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+      <p>{{ idea.content }}</p>
+      <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a>
     </div>
   {% endfor %}
 {% endif %}
-</div>
+
+{% if other_ideas %}
+  <h2>투표</h2>
+  {% for idea in other_ideas %}
+    <div>
+      <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+      <p>{{ idea.content }}</p>
+    </div>
+  {% endfor %}
+{% endif %}
+
 {% endblock content %}

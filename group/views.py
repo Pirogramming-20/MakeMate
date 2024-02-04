@@ -196,22 +196,18 @@ def share(request, pk):
     pass
 
  
-
 def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
-    author = request.user 
+    # 현재 사용자가 작성한 아이디어
+    author_ideas = Idea.objects.filter(group=group, author=request.user)
+    # 현재 사용자가 작성하지 않은 아이디어
+    other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
 
-    author_ideas = Idea.objects.filter(group=group, author=author)
-    other_ideas = Idea.objects.filter(group=group).exclude(author=author)
-
-    author_ideas = sorted(list(author_ideas), key=lambda idea: idea.author == author, reverse=True)
-    other_ideas = list(other_ideas)
-
-    ideas = author_ideas + other_ideas
-
+    # 컨텍스트에 각각의 아이디어 목록을 전달
     ctx = {
         'group': group,
-        'ideas': ideas,
+        'author_ideas': author_ideas,
+        'other_ideas': other_ideas,
     }
     return render(request, 'group/group_detail.html', ctx)
 
@@ -235,23 +231,42 @@ def idea_create(request, group_id):
     return render(request, 'group/group_idea_create.html', ctx)
     
 
-@api_view(['PATCH'])
 def idea_modify(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
-    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.author)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)
 
-    if request.method == 'PATCH':
-        form = IdeaForm(request.data, instance=idea)
+    if request.method == 'POST':
+        form = IdeaForm(request.POST, request.FILES, instance=idea)
         if form.is_valid():
             form.save()
-            return Response({'message': 'Idea updated successfully'}, status=status.HTTP_200_OK)
-        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('group:idea_detail', group_id=group.id, idea_id=idea.id) 
+    else:
+        form = IdeaForm(instance=idea)
 
-@api_view(['DELETE'])
+    
+    ctx = {
+        'form' : form,
+        'group' : group,
+        'idea' : idea,
+        }
+    return render(request, 'group/group_idea_modify.html', ctx)
+
 def idea_delete(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
-    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.author)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)
 
-    if request.method == 'DELETE':
+    if request.method == 'POST' and request.POST.get('action') == 'delete':
         idea.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return redirect('group:group_detail', group_id=group.id)
+    
+def idea_detail(request, group_id, idea_id):
+    group = get_object_or_404(Group, id=group_id)
+    idea = get_object_or_404(Idea, id=idea_id, group=group)
+    
+    context = {
+        
+        'group': group,
+        'idea': idea,
+    }
+    
+    return render(request, 'group/group_idea_detail.html', context)
