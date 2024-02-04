@@ -52,14 +52,13 @@ class GroupDateForm(forms.ModelForm):
         model = Group
         fields = ['end_date']
 
-###여기서부터###
-class GroupForm(forms.ModelForm):
-    class Meta():
-        model = Group
-        fields = ('__all__')
-        labels = {
+# class GroupForm(forms.ModelForm):
+#     class Meta():
+#         model = Group
+#         fields = ('__all__')
+#         labels = {
             
-        }
+#         }
 
 class IdeaForm(forms.ModelForm):
     class Meta():

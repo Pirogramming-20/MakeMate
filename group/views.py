@@ -242,7 +242,7 @@ def idea_modify(request, group_id, idea_id):
         form = IdeaForm(request.POST, request.FILES, instance=idea)
         if form.is_valid():
             form.save()
-            return redirect('group:group_detail', group_id=group.id) #아니면 아이디어의 상세페이지가 나은가?
+            return redirect('group/group_idea_detail.html', group_id=group.id) 
     else:
         form = IdeaForm(instance=idea)
 
