@@ -2,23 +2,21 @@
 <h1>모임 디테일 페이지</h1>
 <p>추가로 밑에 아이디어들 불러올 예정</p>
 
+<!-- 아이디어 수정하기 버튼 -->
+<a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
+
 {% if ideas %}
   <!-- 아이디어가 존재하면 아이디어 목록을 출력 -->
   {% for idea in ideas %}
     <div>
       <h3>{{ idea.title }}</h3>  <!-- 아이디어 제목 -->
       <p>{{ idea.content }}</p>  <!-- 아이디어 내용 -->
-      {% if idea.user == request.user %}
+      {% if idea.author == request.user %}
         <!-- 내가 작성한 아이디어인 경우에만 수정 버튼 표시 -->
         <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a>
       {% endif %}
     </div>
   {% endfor %}
 {% endif %}
-
-<!-- 아이디어가 없는 경우에만 아이디어 추가하기 버튼 표시 -->
-{% if not ideas %}
-  <a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
-{% endif %}
-
+</div>
 {% endblock content %}

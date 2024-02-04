@@ -57,7 +57,7 @@ class Group(models.Model):
 
 class Idea(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="ideas")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField("아이디어 이름", max_length=100)
     intro = models.CharField("한 줄 소개", max_length=255, null=True, blank=True)
     file = models.FileField("첨부파일", upload_to='ideas/files/%Y/%m/%d/', null=True, blank=True)

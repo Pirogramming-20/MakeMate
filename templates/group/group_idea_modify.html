@@ -1,23 +1,48 @@
 {% block head %}
 <title>group_idea_modify</title>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <h1>아이디어 수정하기</h1>
 
-<form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
-method="post" enctype="multipart/form-data">
-  {%csrf_token%} 
-  {{form.as_p}}
-  <button type="'submit">수정 완료</button>
-</form>
-    <!-- 아이디어 삭제 버튼 -->
-<form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="delete">
-    <button type="submit" class="btn btn-danger">아이디어 삭제</button>
+<form id="patch-idea-form" action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="hidden" name="_method" value="patch"> <!-- 숨겨진 필드로 PATCH 메소드 지정 -->
+  <button type="submit">수정 완료</button>
 </form>
 
-  <!-- 홈으로 버튼에 URL 추가 필요 -->
-  <!-- <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">홈으로</a> -->
-    <a href="/" class=""btn>홈으로</a>
 
+
+
+<!-- 아이디어 삭제 버튼 -->
+<form id="delete-idea-form" action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post">
+  {% csrf_token %}
+  {% method 'DELETE' %}
+  <button type="submit" class="btn btn-danger">아이디어 삭제</button>
+</form>
+
+<!-- 홈으로 버튼에 URL 추가 필요 -->
+<!-- <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">홈으로</a> -->
+<a href="/" class="btn">홈으로</a>
+
+<script>
+document.getElementById('patch-idea-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const url = this.getAttribute('action');
+  fetch(url, {
+    method: 'PATCH', // 실제 PATCH 메소드 사용
+    headers: {
+      'X-CSRFToken': this.querySelector('[name=csrfmiddlewaretoken]').value,
+    },
+  })
+  .then(response => {
+    if (response.ok) {
+      // 수정 성공 시 리다이렉션 또는 다른 작업 수행
+    } else {
+      // 수정 실패 시 처리
+    }
+  });
+});
+</script>
 {% endblock %}

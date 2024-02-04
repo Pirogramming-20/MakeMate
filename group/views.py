@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Group, MemberState, AdminState, Idea 
 from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm, IdeaForm
-# from django.db.models import Value, CharField
-# from django.db.models.functions import Case, When
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 group_title = None
 group_team_number = None
@@ -198,15 +199,15 @@ def share(request, pk):
 
 def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
-    user = request.user
+    author = request.user 
 
-    user_ideas = Idea.objects.filter(group=group, user=user)
-    other_ideas = Idea.objects.filter(group=group).exclude(user=user)
+    author_ideas = Idea.objects.filter(group=group, author=author)
+    other_ideas = Idea.objects.filter(group=group).exclude(author=author)
 
-    user_ideas = sorted(list(user_ideas), key=lambda idea: idea.user == user, reverse=True)
+    author_ideas = sorted(list(author_ideas), key=lambda idea: idea.author == author, reverse=True)
     other_ideas = list(other_ideas)
 
-    ideas = user_ideas + other_ideas
+    ideas = author_ideas + other_ideas
 
     ctx = {
         'group': group,
@@ -222,7 +223,7 @@ def idea_create(request, group_id):
         if form.is_valid():
             idea = form.save(commit=False)
             idea.group = group
-            idea.user = request.user 
+            idea.author = request.user 
             idea.save()
             return redirect('group:group_detail', group_id=group.id)
     else:
@@ -234,31 +235,23 @@ def idea_create(request, group_id):
     return render(request, 'group/group_idea_create.html', ctx)
     
 
+@api_view(['PATCH'])
 def idea_modify(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
-    idea = get_object_or_404(Idea, id=idea_id, group=group, user=request.user)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.author)
 
-    if request.method == 'POST':
-        form = IdeaForm(request.POST, request.FILES, instance=idea)
+    if request.method == 'PATCH':
+        form = IdeaForm(request.data, instance=idea)
         if form.is_valid():
             form.save()
-            return redirect('group/group_idea_detail.html', group_id=group.id) 
-    else:
-        form = IdeaForm(instance=idea)
+            return Response({'message': 'Idea updated successfully'}, status=status.HTTP_200_OK)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
-    ctx = {
-        'form' : form,
-        'group' : group,
-        'idea' : idea,
-        }
-    return render(request, 'group/group_idea_modify.html', ctx)
-
+@api_view(['DELETE'])
 def idea_delete(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
-    idea = get_object_or_404(Idea, id=idea_id, group=group, user=request.user)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.author)
 
-    if request.method == 'POST' and request.POST.get('action') == 'delete':
+    if request.method == 'DELETE':
         idea.delete()
-        return redirect('group:group_detail', group_id=group.id)
-        
+        return Response(status=status.HTTP_204_NO_CONTENT)
