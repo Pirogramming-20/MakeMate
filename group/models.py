@@ -36,7 +36,15 @@ class Group(models.Model):
         return self.title
     
 class Idea(models.Model):
-    title = models.CharField("아이디어 이름", max_length=31)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="idea_member_states")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    title = models.CharField("아이디어 이름", max_length=31, null=True)
+    intro = models.CharField("아이디어 한 줄 소개", max_length=50, null=True)
+    file = models.FileField("아이디어 파일", blank=True, upload_to='idea/%Y%m%d')
+    content = models.TextField("아이디어 설명", max_length=1000, default="기본 설명")
+    score = models.IntegerField("아이디어 점수", default=0)
+    member = models.ManyToManyField(User, related_name='idea_member', blank=True)
+
     def __str__(self):
         return self.title
     
