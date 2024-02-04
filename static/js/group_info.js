@@ -7,7 +7,7 @@ function getCookie(name) {
 let state = 0;
 let prev_data;
 
-document.getElementById('base_set_submit_btn').addEventListener('click', async ()=>{
+document.getElementById('base_set_submit_btn').addEventListener('click', async (group_id)=>{
     if (state == 0){
         prev_data = await changeInitialStage(prev_data);
     }
@@ -150,7 +150,8 @@ async function changeStage(local_state, prev_data) {
             state += 1;
         }
         else if (local_state == 2) {
-            const redirect_url = '/group/share/';
+            const group_id = response.group_id;
+            const redirect_url = `/group/share/${group_id}`;
             window.location.href = redirect_url;
         }
         const prevFormData = new URLSearchParams(response.prev_data).toString();
