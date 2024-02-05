@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Group, MemberState, AdminState, Idea 
-from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm, IdeaForm
+from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm, IdeaForm, VoteForm
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -198,18 +199,24 @@ def share(request, pk):
  
 def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
-    # 현재 사용자가 작성한 아이디어
     author_ideas = Idea.objects.filter(group=group, author=request.user)
-    # 현재 사용자가 작성하지 않은 아이디어
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
+    
+    ideas_votes = {}
+    if user_state:
+        ideas_votes['idea_vote1_id'] = user_state.idea_vote1.id if user_state.idea_vote1 else None
+        ideas_votes['idea_vote2_id'] = user_state.idea_vote2.id if user_state.idea_vote2 else None
+        ideas_votes['idea_vote3_id'] = user_state.idea_vote3.id if user_state.idea_vote3 else None
 
-    # 컨텍스트에 각각의 아이디어 목록을 전달
     ctx = {
         'group': group,
         'author_ideas': author_ideas,
         'other_ideas': other_ideas,
+        'ideas_votes': ideas_votes,
     }
     return render(request, 'group/group_detail.html', ctx)
+
 
 
 def idea_create(request, group_id):
@@ -270,3 +277,58 @@ def idea_detail(request, group_id, idea_id):
     }
     
     return render(request, 'group/group_idea_detail.html', context)
+
+
+
+def vote_create(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    user = request.user
+
+    try:
+        # MemberState를 검색하거나 생성하기
+        user_state, created = MemberState.objects.get_or_create(user=user, group=group)
+
+        if request.method == 'POST':
+            form = VoteForm(request.POST)
+            if form.is_valid():
+                # Vote 객체 생성
+                vote = form.save(commit=False)
+                vote.user = user
+                vote.group = group
+                # 폼에서 선택한 1지망, 2지망, 3지망 아이디어의 ID를 가져옵니다.
+                idea_vote1_id = form.cleaned_data['idea_vote1'].id if form.cleaned_data['idea_vote1'] else None
+                idea_vote2_id = form.cleaned_data['idea_vote2'].id if form.cleaned_data['idea_vote2'] else None
+                idea_vote3_id = form.cleaned_data['idea_vote3'].id if form.cleaned_data['idea_vote3'] else None
+
+                # 각 아이디어에 투표를 추가하고, 사용자의 투표 기록을 저장합니다.
+                idea_vote1 = Idea.objects.get(id=idea_vote1_id)
+                idea_vote2 = Idea.objects.get(id=idea_vote2_id)
+                idea_vote3 = Idea.objects.get(id=idea_vote3_id)
+
+                idea_vote1.votes += 1
+                idea_vote2.votes += 1
+                idea_vote3.votes += 1
+
+                idea_vote1.save()
+                idea_vote2.save()
+                idea_vote3.save()
+
+                user_state.idea_vote1 = idea_vote1
+                user_state.idea_vote2 = idea_vote2
+                user_state.idea_vote3 = idea_vote3
+                user_state.save()
+
+                vote.save()
+                messages.success(request, '투표가 성공적으로 저장되었습니다.')
+                return redirect('group:group_detail', group_id=group_id)
+        else:
+            form = VoteForm()
+    except MemberState.DoesNotExist:
+        # MemberState가 없는 경우 처리
+        messages.error(request, 'MemberState가 존재하지 않습니다.')
+        return redirect('group_detail', group_id=group_id)            
+    # GET 요청인 경우, 투표하기 폼을 렌더링합니다.
+    voted_ideas = [user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3]
+    ideas_for_voting = Idea.objects.filter(group=group).exclude(id__in=[idea.id for idea in voted_ideas if idea is not None])
+    
+    return render(request, 'group/group_vote_create.html', {'group': group, 'ideas_for_voting': ideas_for_voting, 'form': form})

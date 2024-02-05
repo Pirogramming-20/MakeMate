@@ -62,6 +62,7 @@ class Idea(models.Model):
     intro = models.CharField("한 줄 소개", max_length=255, null=True, blank=True)
     file = models.FileField("첨부파일", upload_to='ideas/files/%Y/%m/%d/', null=True, blank=True)
     content = models.TextField("내용", default='')
+    votes = models.IntegerField(default=0)
     
     def __str__(self):
         return self.title
@@ -110,3 +111,13 @@ class AdminState(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
+
+class Vote(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='votes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    idea_vote1 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name='vote1_set')
+    idea_vote2 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name='vote2_set')
+    idea_vote3 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name='vote3_set')
+
+    def __str__(self):
+        return f"Vote by {self.user.username} for {self.group.title}"

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Group, MemberState, Idea
+from .models import Group, MemberState, Idea, Vote 
 from django.contrib.admin import widgets 
 
 class GroupPasswordForm(forms.ModelForm):
@@ -30,11 +30,6 @@ class GroupDetailForm(forms.ModelForm):
             'tech_stack',
         ]
 
-# class GroupDateForm(forms.ModelForm):
-#     end_date = forms.DateField(widget = forms.SelectDateWidget)
-#     class Meta:
-#         model = Group
-#         fields = ['end_date',]
 
 class GroupDateForm(forms.ModelForm):
     end_date=forms.SplitDateTimeField(
@@ -52,13 +47,6 @@ class GroupDateForm(forms.ModelForm):
         model = Group
         fields = ['end_date']
 
-# class GroupForm(forms.ModelForm):
-#     class Meta():
-#         model = Group
-#         fields = ('__all__')
-#         labels = {
-            
-#         }
 
 class IdeaForm(forms.ModelForm):
     class Meta():
@@ -70,3 +58,22 @@ class IdeaForm(forms.ModelForm):
             'file': '첨부파일', 
             'content': '내용',
         }
+
+
+class VoteForm(forms.ModelForm):
+    idea_vote1 = forms.ModelChoiceField(
+        queryset=Idea.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    idea_vote2 = forms.ModelChoiceField(
+        queryset=Idea.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    idea_vote3 = forms.ModelChoiceField(
+        queryset=Idea.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
+    class Meta:
+        model = Vote
+        fields = ['idea_vote1', 'idea_vote2', 'idea_vote3']
