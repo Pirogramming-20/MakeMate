@@ -14,6 +14,8 @@ def main_page(request):
         admin_groups = Group.objects.filter(admin_states__user=user)
         ##비운영진인 모임 가져오기
         member_groups = Group.objects.filter(member_states__user=user)
+        # Tony: admin_groups에 이미 remaining_times에 대한 정보가 있어서,
+        # Tony: 서버에서 이 시간 차이를 계산해주는 이득이 없어보입니다.
         ctx = {"admin_groups": admin_groups, "member_groups": member_groups}
         ##운영진 시간 계산
         admin_remaining_time = remain_time(admin_groups)
@@ -22,6 +24,7 @@ def main_page(request):
         member_remaining_time = remain_time(member_groups)
         ctx["member_remaining_time"] = member_remaining_time
         # 운영진인 그룹내 멤버수
+        # Tony: 멤버 수 또한 마찬가지로 보입니다.
         admin_group_count = member_count(admin_groups)
         ctx["admin_group_count"] = admin_group_count
         # 비운영진 그룹내 멤버수

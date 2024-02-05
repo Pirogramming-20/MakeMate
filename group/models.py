@@ -21,7 +21,9 @@ class Group(models.Model):
         default=1,
         validators=[MaxValueValidator(10), MinValueValidator(1)])
     password = models.CharField("그룹 비밀번호", max_length=15)
+    # Tony: type은 파이썬 기본 내장 함수라 안쓰는 걸 추천드립니다.
     type = models.CharField("모임 종류", max_length=20, choices=TYPE_CHOICE)
+    # Tony: ability_description이 5개인 이유가 있나요?
     ability_description1 = models.CharField("실력1 설명", max_length=100, null=True, blank=True)
     ability_description2 = models.CharField("실력2 설명", max_length=100, null=True, blank=True)
     ability_description3 = models.CharField("실력3 설명", max_length=100, null=True, blank=True)
@@ -61,6 +63,7 @@ class MemberState(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     group_ability = models.PositiveIntegerField("실력", validators=[MaxValueValidator(5), MinValueValidator(1)], null=True)
     group_tech_stack = models.CharField("기술 스택", max_length=10, choices=STACK_POSITION, null=True)
+    # Tony: idea vote가 3개인 이유가 있나요?
     idea_vote1 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote1_set", null=True)
     idea_vote2 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote2_set", null=True)
     idea_vote3 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote3_set", null=True)

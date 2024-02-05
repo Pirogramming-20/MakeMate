@@ -12,6 +12,8 @@ def check_nonadmin(request, group_id):
     state = redirect_by_auth(request.user, group_id) # 권한에 따른 리다이렉트
     wrong_flag = False # 비밀번호가 틀리면 화면에 에러 렌더링
 
+    # Tony: state 비교를 하드 코딩으로 하면 이해가 어렵습니다.
+    # Tony: state == ADMIN, state == User.states.ADMIN 이런 식으로 코딩해야 합니다.
     if state == 3: # 이전 인증 내역이 있는 참여자
         return redirect(f'/group/{group_id}/')
 
@@ -106,6 +108,7 @@ def redirect_by_auth(user, group_id):
         group_id = group_id
     ).first()
     
+    # Tony: return ADMIN, return User.states.ADMIN 이런 식으로 코딩해야 합니다.
     if user_state:
         if user_state.group is None:
             return 1 # 이전에 작성한 내역이 없는 참여자인 경우
