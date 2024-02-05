@@ -6,7 +6,7 @@
         피로그래밍 20기
         <span>결과가 임시 발표 되었습니다. 내용을 수정한 뒤 전체 구성원에게 공지할 수 있습니다.</span>
         <div class="btns">
-            <button class="primary_button"><a href="/">팀 정보 수정하기</a></button>
+            <button class="primary_button"><a href="{% url 'group:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
             <button class="secondary_button"><a href="/">홈으로</a></button>
             <button class="cta_button"><a href="/">발표하기</a></button>
         </div>
@@ -19,10 +19,12 @@
                 <p class="choice_intro_title">{{idea.intro}}</p>
                 <p>팀장 : {{idea.user.username}}</p>
                 {% for member in members %}
-                    {% if member.group_tech_stack == 'FE' %}
-                        <p>프론트엔드 : {{member.user.username}}</p>
-                    {% else %}
-                        <p>백엔드 : {{member.user.username}}</p>
+                    {% if member.user in idea.member.all %}
+                        {% if member.group_tech_stack == 'FE' %}
+                            <p>프론트엔드 : {{member.user.username}}</p>
+                        {% else %}
+                            <p>백엔드 : {{member.user.username}}</p>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </div>

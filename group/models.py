@@ -63,6 +63,7 @@ class MemberState(models.Model):
     idea_vote1 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote1_set", null=True)
     idea_vote2 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote2_set", null=True)
     idea_vote3 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote3_set", null=True)
+    my_team_idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="my_team_idea_set", null=True)
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="admin_states")

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import group_base_info, group_detail_info, group_date, share, check_nonadmin, check_admin, info_nonadmin, preresult
+from .views import group_base_info, group_detail_info, group_date, share, check_nonadmin, check_admin, info_nonadmin, preresult, preresult_modify
 
 app_name = 'group'
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:group_id>/admin/password_check/', check_admin, name='check_admin'),
     path('<int:group_id>/non_admin_info/', info_nonadmin, name='info_nonadmin'),
     path('<int:group_id>/preresult/', preresult, name='preresult'),
+    path('<int:group_id>/preresult/modify', preresult_modify, name='preresult_modify'),
 ]

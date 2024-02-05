@@ -201,22 +201,42 @@ def preresult(request, group_id):
     #그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
-    members = MemberState.objects.filter(group = group)
+    members = MemberState.objects.filter(group = group) 
 
-    #임시로 manyToMany필드에 유저값을 넣어 봤어용(확인용)
-    # for idea in idea_list:
-    #     for member in members:
-    #         idea.member.add(member)
-    #         idea.save()
-    
     ctx = {
         'idea_list': idea_list,
-        'members': members
+        'members': members,
+        'group': group
     }
 
     return render(request, 'preresult/preresult_admin.html', context=ctx)
 
 
+def preresult_modify(request, group_id):
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
+    members = MemberState.objects.filter(group = group)
+
+    if request.method == 'POST':
+        selected_values = request.POST.get('team_modify').split(',')
+        member_id = int(selected_values[0])
+        idea_id = int(selected_values[1])
+        mod_mem = MemberState.objects.get(id=member_id)
+        mod_idea = Idea.objects.get(id=idea_id)
+
+        mod_mem.my_team_idea = mod_idea
+        mod_mem.save()
+        
+
+        url = reverse('group:preresult', args=[group.id])
+        return redirect(url)
+    else:
+        ctx = {
+            'members': members,
+            'idea_list': idea_list,
+            'group': group,
+        }
+        return render(request, 'preresult/preresult_modify.html', context=ctx)
 
     
 
