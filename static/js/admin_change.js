@@ -1,37 +1,35 @@
+//groupId 정의 부분
+var currentUrl=window.location.href;
+var parts = currentUrl.split('/group/');
+groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
 
-document.addEventListener('DOMContentLoaded', ()=> {
-  const members = document.querySelectorAll('.secondary_badge');
+document.addEventListener('click', (event)=> {
+  const clickedBadge=event.target;
+  console.log(clickedBadge);
+  //비운영진 뱃지일때
+  if (clickedBadge.classList.contains('secondary_badge')){
+      const userId = clickedBadge.dataset.userId;
+      const jsonData = { user_id: userId, group_id: groupId  };
 
-  members.forEach((badge)=> {
-    badge.addEventListener('click', ()=> {
-      const userId = badge.dataset.userId;
-      const jsonData = { user_id: userId, group_id: group_instance.id };
-
-      axios.post(`/group/${group_instance.id}/admin/admin_add`, jsonData)
+      axios.post(`/group/${groupId}/admin/admin_add`, jsonData)
         .then(()=> {
-          badge.classList.remove('secondary_badge');
-          badge.classList.add('primary_badge');
-          badge.innerText = '운영진'; 
+          clickedBadge.classList.remove('secondary_badge');
+          clickedBadge.classList.add('primary_badge');
+          clickedBadge.innerText = '운영진'; 
         })
+    //운영진 뱃지일때
+  }else if (clickedBadge.classList.contains('primary_badge')){
+      const userId =clickedBadge.dataset.userId
+      const jsonData={user_id:userId,group_id:groupId};
+
+      axios.post(`/group/${groupId}/admin/admin_delete`,jsonData)
+      .then(()=>{
+        clickedBadge.classList.remove('primary_badge');
+        clickedBadge.classList.add('secondary_badge');
+        clickedBadge.innerText='비운영진';
     });
-  });
+  };
 });
-
-  const admins= document.querySelectorAll('.primary_badge');
-
-  admins.forEach((badge)=>{
-    badge.addEventListener('click',()=>{
-      const userId =badge.dataset.userId
-      const jsonData={user_id:userId,group_id:group_instance.id};
-
-      axios.post(`/group/${group_instance.id}/admin/admin_delete`,jsonData)
-        .then(()=>{
-          badge.classList.remove('primary_badge');
-          badge.classList.add('secondary_badge');
-          badge.innerText='비운영진';
-        });
-    });
-  });
 
 
 

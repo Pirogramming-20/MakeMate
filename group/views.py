@@ -297,7 +297,7 @@ def admin_add(request, group_id):
     group = Group.objects.get(id=user_data["group_id"])
     # Admin_state생성
     new_admin = AdminState.objects.create(user=user, group=group)
-    return JsonResponse({"good"})
+    return JsonResponse({"group_id": group_id})
 
 
 ##Admin state제거
