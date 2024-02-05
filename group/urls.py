@@ -1,6 +1,5 @@
 from django.urls import path
-
-from .views import group_base_info, group_share, check_nonadmin, check_admin, info_nonadmin, preresult, admin_page, group_user_delete, group_user_update, admin_add, admin_delete
+from .views import *
 
 app_name = "group"
 
@@ -26,4 +25,11 @@ urlpatterns = [
     path("<int:group_id>/admin/user_update/<int:user_id>",group_user_update, name="user_update"),
     path("<int:group_id>/admin/admin_add", admin_add, name="admin_add"),
     path("<int:group_id>/admin/admin_delete", admin_delete, name="admin_delete"),
+    path('<int:group_id>/', group_detail, name='group_detail'),
+    path('<int:group_id>/idea_create/', idea_create, name='idea_create'),
+    path('<int:group_id>/idea_modify/<int:idea_id>/', idea_modify, name='idea_modify'),
+    path('<int:group_id>/idea_delete/<int:idea_id>/', idea_delete, name='idea_delete'),
+    path('<int:group_id>/idea_detail/<int:idea_id>/', idea_detail, name='idea_detail'),
+    path('<int:group_id>/idea_vote/', vote_create, name='group_vote_create'),
+
 ]

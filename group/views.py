@@ -1,17 +1,15 @@
+import json
 from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import Group,Idea, MemberState, AdminState
 from common.models import User
-from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm
-import json
-
-
-
+from .models import Group, MemberState, AdminState, Idea 
+from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm, IdeaForm, VoteForm
 
 # Create your views here.
 @login_required(login_url='common:login')
@@ -132,6 +130,7 @@ def group_base_info(request):
         data_query = request_dict['cur_data'][0]
         data_dict = parse_qs(data_query)
         req = {key: values[0] for key, values in data_dict.items()}
+
 
         # 이전 form 작성 정보가 있을 경우 prev_req로 저장
         if 'prev_data' in request_dict:
@@ -378,3 +377,140 @@ def admin_delete(request, group_id):
     bye_admin.delete()
     return JsonResponse({"message": "AdminState deleted successfully"})
 
+
+
+def group_detail(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    author_ideas = Idea.objects.filter(group=group, author=request.user)
+    other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
+    
+    ideas_votes = {}
+    if user_state:
+        ideas_votes['idea_vote1_id'] = user_state.idea_vote1.id if user_state.idea_vote1 else None
+        ideas_votes['idea_vote2_id'] = user_state.idea_vote2.id if user_state.idea_vote2 else None
+        ideas_votes['idea_vote3_id'] = user_state.idea_vote3.id if user_state.idea_vote3 else None
+
+    ctx = {
+        'group': group,
+        'author_ideas': author_ideas,
+        'other_ideas': other_ideas,
+        'ideas_votes': ideas_votes,
+    }
+    return render(request, 'group/group_detail.html', ctx)
+
+
+
+def idea_create(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    if request.method == 'POST':
+        form = IdeaForm(request.POST, request.FILES)
+        if form.is_valid():
+            idea = form.save(commit=False)
+            idea.group = group
+            idea.author = request.user 
+            idea.save()
+            return redirect('group:group_detail', group_id=group.id)
+    else:
+        form = IdeaForm()
+    ctx = {
+        'form' : form,
+        'group' : group,
+    }
+    return render(request, 'group/group_idea_create.html', ctx)
+    
+
+def idea_modify(request, group_id, idea_id):
+    group = get_object_or_404(Group, id=group_id)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)
+
+    if request.method == 'POST':
+        form = IdeaForm(request.POST, request.FILES, instance=idea)
+        if form.is_valid():
+            form.save()
+            return redirect('group:idea_detail', group_id=group.id, idea_id=idea.id) 
+    else:
+        form = IdeaForm(instance=idea)
+
+    
+    ctx = {
+        'form' : form,
+        'group' : group,
+        'idea' : idea,
+        }
+    return render(request, 'group/group_idea_modify.html', ctx)
+
+def idea_delete(request, group_id, idea_id):
+    group = get_object_or_404(Group, id=group_id)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)
+
+    if request.method == 'POST' and request.POST.get('action') == 'delete':
+        idea.delete()
+        return redirect('group:group_detail', group_id=group.id)
+    
+def idea_detail(request, group_id, idea_id):
+    group = get_object_or_404(Group, id=group_id)
+    idea = get_object_or_404(Idea, id=idea_id, group=group)
+    
+    context = {
+        
+        'group': group,
+        'idea': idea,
+    }
+    
+    return render(request, 'group/group_idea_detail.html', context)
+
+
+
+def vote_create(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    user = request.user
+
+    try:
+        # MemberState를 검색하거나 생성하기
+        user_state, created = MemberState.objects.get_or_create(user=user, group=group)
+
+        if request.method == 'POST':
+            form = VoteForm(request.POST)
+            if form.is_valid():
+                # Vote 객체 생성
+                vote = form.save(commit=False)
+                vote.user = user
+                vote.group = group
+                # 폼에서 선택한 1지망, 2지망, 3지망 아이디어의 ID를 가져옵니다.
+                idea_vote1_id = form.cleaned_data['idea_vote1'].id if form.cleaned_data['idea_vote1'] else None
+                idea_vote2_id = form.cleaned_data['idea_vote2'].id if form.cleaned_data['idea_vote2'] else None
+                idea_vote3_id = form.cleaned_data['idea_vote3'].id if form.cleaned_data['idea_vote3'] else None
+
+                # 각 아이디어에 투표를 추가하고, 사용자의 투표 기록을 저장합니다.
+                idea_vote1 = Idea.objects.get(id=idea_vote1_id)
+                idea_vote2 = Idea.objects.get(id=idea_vote2_id)
+                idea_vote3 = Idea.objects.get(id=idea_vote3_id)
+
+                idea_vote1.votes += 1
+                idea_vote2.votes += 1
+                idea_vote3.votes += 1
+
+                idea_vote1.save()
+                idea_vote2.save()
+                idea_vote3.save()
+
+                user_state.idea_vote1 = idea_vote1
+                user_state.idea_vote2 = idea_vote2
+                user_state.idea_vote3 = idea_vote3
+                user_state.save()
+
+                vote.save()
+                messages.success(request, '투표가 성공적으로 저장되었습니다.')
+                return redirect('group:group_detail', group_id=group_id)
+        else:
+            form = VoteForm()
+    except MemberState.DoesNotExist:
+        # MemberState가 없는 경우 처리
+        messages.error(request, 'MemberState가 존재하지 않습니다.')
+        return redirect('group_detail', group_id=group_id)            
+    # GET 요청인 경우, 투표하기 폼을 렌더링합니다.
+    voted_ideas = [user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3]
+    ideas_for_voting = Idea.objects.filter(group=group).exclude(id__in=[idea.id for idea in voted_ideas if idea is not None])
+    
+    return render(request, 'group/group_vote_create.html', {'group': group, 'ideas_for_voting': ideas_for_voting, 'form': form})
