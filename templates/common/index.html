@@ -32,7 +32,7 @@
                 <div class="group_container">
                     <a href="">
                         {{group.title}}
-                        {% for time in admin_remaining_time %}
+                        {% for time in member_remaining_time %}
                             {% if time.group_name == group.title %}
                                 {% if time.remaining_days <= 0 or time.remaining_hours <= 0 or time.remaining_minutes <= 0 %}
                                     <div>팀 빌딩 완료</div>
