@@ -227,7 +227,6 @@ def preresult_modify(request, group_id):
         mod_mem.my_team_idea = mod_idea
         mod_mem.save()
         
-
         url = reverse('group:preresult', args=[group.id])
         return redirect(url)
     else:
