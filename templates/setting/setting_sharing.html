@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="group_share_container">
+    <div class="group_share_modal_container">
+        모임 개설이 완료되었습니다.
+        공유 링크
+        <div class="group_member_url">
+            <span>참여자 링크 : {% url 'group:check_nonadmin' group.id %}</span>
+            <span>비밀번호 : {{group.password}}</span>
+        </div>
+        <div class="group_admin_url">
+            <span>관리자 링크 : {% url 'group:check_admin' group.id %}</span>
+            <span>비밀번호 : {{group.password}}</span>
+        </div>
+        <button class="btn"><a href="{% url 'common:main_page' %}">홈으로</a></button>
+    </div>
+</div>
+{% endblock %}

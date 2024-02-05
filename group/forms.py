@@ -30,12 +30,6 @@ class GroupDetailForm(forms.ModelForm):
             'tech_stack',
         ]
 
-# class GroupDateForm(forms.ModelForm):
-#     end_date = forms.DateField(widget = forms.SelectDateWidget)
-#     class Meta:
-#         model = Group
-#         fields = ['end_date',]
-
 class GroupDateForm(forms.ModelForm):
     end_date=forms.SplitDateTimeField(
         widget=forms.SplitDateTimeWidget(
