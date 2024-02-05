@@ -50,7 +50,7 @@ class MemberState(models.Model):
         ('SERVER', '배포/서버'),
     )
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="member_states")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     group_ability = models.PositiveIntegerField('실력', validators=[MaxValueValidator(5), MinValueValidator(1)], null=True)
     group_tech_stack = models.CharField('기술 스택', max_length=10, choices=STACK_POSITION, null=True)
@@ -59,5 +59,5 @@ class MemberState(models.Model):
     idea_vote3 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name='idea_vote3_set', null=True)
 
 class AdminState(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="admin_states")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
