@@ -1,0 +1,14 @@
+{% block head %}
+<title>idea_create</title>
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'group:idea_create' group_id=group.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">저장하기</button>
+    <!-- 홈으로 버튼에 URL 추가 필요 -->
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">홈으로</a>
+    
+</form>
+{% endblock %}
