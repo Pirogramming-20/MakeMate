@@ -86,28 +86,12 @@ class MemberState(models.Model):
                               on_delete=models.CASCADE,
                               related_name="member_states")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    group_ability = models.PositiveIntegerField(
-        "실력",
-        validators=[MaxValueValidator(5),
-                    MinValueValidator(1)],
-        null=True)
-    group_tech_stack = models.CharField("기술 스택",
-                                        max_length=10,
-                                        choices=STACK_POSITION,
-                                        null=True)
-    idea_vote1 = models.ForeignKey(Idea,
-                                   on_delete=models.CASCADE,
-                                   related_name="idea_vote1_set",
-                                   null=True)
-    idea_vote2 = models.ForeignKey(Idea,
-                                   on_delete=models.CASCADE,
-                                   related_name="idea_vote2_set",
-                                   null=True)
-    idea_vote3 = models.ForeignKey(Idea,
-                                   on_delete=models.CASCADE,
-                                   related_name="idea_vote3_set",
-                                   null=True)
-
+    group_ability = models.PositiveIntegerField("실력", validators=[MaxValueValidator(5), MinValueValidator(1)], null=True)
+    group_tech_stack = models.CharField("기술 스택", max_length=10, choices=STACK_POSITION, null=True)
+    idea_vote1 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote1_set", null=True)
+    idea_vote2 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote2_set", null=True)
+    idea_vote3 = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="idea_vote3_set", null=True)
+    my_team_idea = models.ForeignKey(Idea, on_delete=models.CASCADE, related_name="my_team_idea_set", null=True)
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group,
