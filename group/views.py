@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import Group, MemberState, AdminState
+from .models import Group, Idea, MemberState, AdminState
 from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm
 
 group_title = None
@@ -129,7 +129,7 @@ def redirect_by_auth(user, group_id):
     
     return 0
 
-def group_base_info(request):
+def group_base_info(request): #step1, 그룹 기본 설정 단계
     global group_title, group_team_number, group_password, group_type
     if request.method == 'POST':
         form = GroupBaseForm(request.POST)
@@ -195,3 +195,28 @@ def share(request, group_id):
     group = Group.objects.get(id=group_id)
     ctx = {'group': group}
     return render(request, 'setting/setting_sharing.html', context=ctx)
+
+def preresult(request, group_id):
+    #그룹에 있는 아이디어를 모두 가져오고, 이를 투표점수 순서로 정렬
+    #그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
+    members = MemberState.objects.filter(group = group)
+
+    #임시로 manyToMany필드에 유저값을 넣어 봤어용(확인용)
+    # for idea in idea_list:
+    #     for member in members:
+    #         idea.member.add(member)
+    #         idea.save()
+    
+    ctx = {
+        'idea_list': idea_list,
+        'members': members
+    }
+
+    return render(request, 'preresult/preresult_admin.html', context=ctx)
+
+
+
+    
+
