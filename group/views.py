@@ -325,13 +325,9 @@ def group_user_delete(request, group_id, user_id):
 # patch말고 일단 POST
 def group_user_update(request, group_id, user_id):
     group = get_object_or_404(Group, id=group_id)
-    print(group)
-    print(user_id)
     if request.method == "GET":
         user = User.objects.get(id=user_id)
-        print(user)
         user_state = MemberState.objects.get(user=user, group=group)
-        print(user_state)
         form = NonAdminInfoForm(instance=user_state)
         ctx = {
             "form": form,
