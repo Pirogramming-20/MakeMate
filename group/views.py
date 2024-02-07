@@ -311,12 +311,16 @@ def onegroup_remain_time(group):
 def group_user_delete(request, group_id, user_id):
     if request.method == "POST":
         if AdminState.objects.filter(user__id=user_id).exists():
-            admin_user_state = get_object_or_404(AdminState, user__id=user_id)
+            admin_user_state = get_object_or_404(AdminState,
+                                                 user__id=user_id,
+                                                 group__id=group_id)
             admin_user_state.delete()
         elif MemberState.objects.filter(user__id=user_id).exists():
             member_user_state = get_object_or_404(MemberState,
-                                                  user__id=user_id)
-            member_idea = Idea.objects.filter(author__id=user_id)
+                                                  user__id=user_id,
+                                                  group__id=group_id)
+            member_idea = Idea.objects.filter(author__id=user_id,
+                                              group__id=group_id)
             member_idea.delete()
             member_user_state.delete()
         return redirect("group:admin_page", group_id=group_id)
