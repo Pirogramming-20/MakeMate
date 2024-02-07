@@ -7,9 +7,9 @@
             <div>참여중인 모임</div>
             {% for group in admin_groups %}
                 <div class="group_container">
-                    {% comment %} <a href="{% url 'group:detail'group.id %}"> 모임디테일 url이랑 view가 없어서 a로 연결은 못했습니다.. {% endcomment %}
+                    <a href="{% url 'group:admin_page' group.id %}"> 
                         <div>{{group.title}}</div>
-                        <div class='primary_badge'>운영진</div>
+                        <button class='primary_badge'>운영진</button>
                         {% for time in admin_remaining_time %}
                             {% if time.group_name == group.title %}
                                 {% if time.remaining_days <= 0 or time.remaining_hours <= 0 or time.remaining_minutes <= 0 %}
@@ -19,7 +19,7 @@
                                     <div>{{ time.remaining_days }}일 {{ time.remaining_hours }}시간 {{ time.remaining_minutes }}분</div>
                                 {%endif%}
                             {% endif %}
-                        {% endfor %}
+                        {% endfor %}    
                         {% for member in admin_group_count %}
                             {% if member.group_name == group.title %}
                                 <div>참여자수:{{member.count}}명</div>
@@ -30,7 +30,7 @@
             {% endfor %}
             {% for group in member_groups %}
                 <div class="group_container">
-                    <a href="">
+                    <a href="{%url 'group:group_detail' group.id%}">
                         {{group.title}}
                         {% for time in member_remaining_time %}
                             {% if time.group_name == group.title %}

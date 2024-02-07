@@ -13,7 +13,10 @@ def main_page(request):
         ##운영진인 모임 가져오기
         admin_groups = Group.objects.filter(admin_states__user=user)
         ##비운영진인 모임 가져오기
-        member_groups = Group.objects.filter(member_states__user=user)
+        # member_state&admin_state 둘다 존재시 admin_state를 우선으로
+        member_set = set(Group.objects.filter(member_states__user=user))
+        admin_set = set(admin_groups)
+        member_groups = member_set - admin_set
         ctx = {"admin_groups": admin_groups, "member_groups": member_groups}
         ##운영진 시간 계산
         admin_remaining_time = remain_time(admin_groups)
