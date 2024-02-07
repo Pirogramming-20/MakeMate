@@ -95,10 +95,10 @@ class VoteForm(forms.ModelForm):
 
         # 중복 검사
         if idea_vote1 and idea_vote2 and idea_vote1 == idea_vote2:
-            raise ValidationError("2지망은 1지망과 다른 아이디어를 선택해야 합니다.")
+            raise ValidationError("중복 선택 불가능")
         if idea_vote2 and idea_vote3 and idea_vote2 == idea_vote3:
-            raise ValidationError("3지망은 2지망과 다른 아이디어를 선택해야 합니다.")
+            raise ValidationError("중복 선택 불가능")
         if idea_vote1 and idea_vote3 and idea_vote1 == idea_vote3:
-            raise ValidationError("3지망은 1지망과 다른 아이디어를 선택해야 합니다.")
+            raise ValidationError("중복 선택 불가능")
         
         return cleaned_data
