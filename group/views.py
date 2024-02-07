@@ -258,7 +258,7 @@ def preresult(request, group_id):
         'members': members,
         'group': group
     }
-
+    
     return render(request, 'preresult/preresult_admin.html', context=ctx)
   
   
@@ -372,7 +372,7 @@ def admin_delete(request, group_id):
     return JsonResponse({"message": "AdminState deleted successfully"})
 
 
-def preresult_modify(request, group_id):
+def preresult_modify(request, group_id): #상당한 오류가 있음. 꽤나 수정 해야할 듯.
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
     members = MemberState.objects.filter(group = group)
@@ -382,10 +382,25 @@ def preresult_modify(request, group_id):
         member_id = int(selected_values[0])
         idea_id = int(selected_values[1])
         mod_mem = MemberState.objects.get(id=member_id)
+        prev_idea = mod_mem.my_team_idea
         mod_idea = Idea.objects.get(id=idea_id)
 
+        #(전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
+        for idea in idea_list:
+            if idea.author == mod_mem.user:
+                url = reverse('group:preresult', args=[group.id])
+                return redirect(url)
+
+        #(수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
+        if prev_idea != mod_idea:
+            prev_idea.member.remove(mod_mem.user)
+            prev_idea.save()
+        #(수정과정2)해당 멤버스테이트의 최종 팀을 수정한 아이디어의 팀으로 설정
         mod_mem.my_team_idea = mod_idea
         mod_mem.save()
+        #(수정과정3)수정한 아이디어의 멤버에 해당 멤버스테이트의 유저를 추가.
+        mod_idea.member.add(mod_mem.user)
+        mod_idea.save()
         
         url = reverse('group:preresult', args=[group.id])
         return redirect(url)
@@ -541,3 +556,17 @@ def vote_create(request, group_id):
     ideas_for_voting = Idea.objects.filter(group=group).exclude(id__in=[idea.id for idea in voted_ideas if idea is not None])
     
     return render(request, 'group/group_vote_create.html', {'group': group, 'ideas_for_voting': ideas_for_voting, 'form': form})
+
+def result(request, group_id):
+
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
+    members = MemberState.objects.filter(group = group) 
+
+    ctx = {
+        'idea_list': idea_list,
+        'members': members,
+        'group': group
+    }
+    
+    return render(request, 'group/result.html', context=ctx)
