@@ -1,12 +1,13 @@
-import json
+import json, os, mimetypes
 from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
 from common.models import User
 from .models import Group, MemberState, AdminState, Idea 
 from .forms import GroupPasswordForm, NonAdminInfoForm, GroupBaseForm, GroupDetailForm, GroupDateForm, IdeaForm, VoteForm
@@ -327,8 +328,6 @@ def group_user_delete(request, group_id, user_id):
 # patch말고 일단 POST
 def group_user_update(request, group_id, user_id):
     group = get_object_or_404(Group, id=group_id)
-    print(group)
-    print(user_id)
     if request.method == "GET":
         user = User.objects.get(id=user_id)
         print(user)
@@ -472,14 +471,23 @@ def idea_detail(request, group_id, idea_id):
     idea = get_object_or_404(Idea, id=idea_id, group=group)
     
     context = {
-        
         'group': group,
         'idea': idea,
     }
-    
     return render(request, 'group/group_idea_detail.html', context)
 
+def idea_download(request, group_id, idea_id):
+    group = get_object_or_404(Group, id=group_id)
+    idea = get_object_or_404(Idea, id=idea_id, group=group)
 
+    file_path = idea.file.path
+
+    fs = FileSystemStorage(file_path)
+    content_type, _ = mimetypes.guess_type(file_path)
+
+    response = FileResponse(fs.open(file_path, 'rb'), content_type=f'{content_type}')
+    response['Content-Disposition'] = f'attachment; filename="{file_path.split("/")[-1]}"'
+    return response
 
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
