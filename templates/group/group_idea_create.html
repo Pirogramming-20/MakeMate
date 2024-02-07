@@ -2,6 +2,12 @@
 <title>idea_create</title>
 {% endblock %}
 
+<!-- {% if messages %}
+  {% for message in messages %}
+    <p><strong>{{ message }}</strong></p>
+  {% endfor %}
+{% endif %} -->
+
 {% block content %}
 <form action="{% url 'group:idea_create' group_id=group.id %}" method="post">
     {% csrf_token %}

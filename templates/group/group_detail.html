@@ -2,12 +2,6 @@
 <h1>모임 디테일 페이지</h1>
 <p>추가로 밑에 아이디어들 불러올 예정</p>
 
-<!-- {% if user_state %}
-  <h2>내 투표 결과</h2>
-  <p>1지망: {{ user_state.idea_vote1.title }} ({{ user_state.idea_vote1.id }})</p>
-  <p>2지망: {{ user_state.idea_vote2.title }} ({{ user_state.idea_vote2.id }})</p>
-  <p>3지망: {{ user_state.idea_vote3.title }} ({{ user_state.idea_vote3.id }})</p>
-{% endif %} -->
 {% if not author_ideas %}
 <!-- 아이디어 추가하기 버튼 -->
 <a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
