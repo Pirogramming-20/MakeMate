@@ -178,7 +178,6 @@ def group_base_info(request):
                         f"ability_description{idx}", "")
 
                 prev_req["choice"] = int(req["choice"])
-                prev_req["tech_stack"] = req["tech_stack"]
 
                 ctx = {
                     "form_html": GroupDateForm().as_p(),
@@ -213,7 +212,6 @@ def group_base_info(request):
                     ability_description4=prev_req.get("group_ability4", ""),
                     ability_description5=prev_req.get("group_ability5", ""),
                     choice=prev_req["choice"],
-                    tech_stack=prev_req["tech_stack"],
                     end_date=prev_req["end_date"],
                 )
 
