@@ -4,7 +4,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.files.storage import FileSystemStorage
 from common.models import User
 
-
 class Group(models.Model):
     TYPE_CHOICE = (
         ("모각코", "모각코"),
@@ -42,8 +41,7 @@ class Group(models.Model):
     choice = models.IntegerField("그룹 최대 투표 개수", default=3, null=True)
     # array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
     team_building = models.ManyToManyField(User,
-                                           related_name="user_groups",
-                                           null=True)
+                                           related_name="user_groups")
     end_date = models.DateTimeField(default=timezone.now().date() +
                                     timezone.timedelta(days=3))
 
@@ -72,8 +70,7 @@ class Idea(models.Model):
 
     def __str__(self):
         return self.title
-
-
+    
 class MemberState(models.Model):
     group = models.ForeignKey(Group,
                               on_delete=models.CASCADE,
@@ -84,10 +81,7 @@ class MemberState(models.Model):
         validators=[MaxValueValidator(5),
                     MinValueValidator(1)],
         null=True)
-    group_tech_stack = models.CharField("기술 스택",
-                                        max_length=10,
-                                        choices=STACK_POSITION,
-                                        null=True)
+    
     idea_vote1 = models.ForeignKey(Idea,
                                    on_delete=models.CASCADE,
                                    related_name="idea_vote1_set",
@@ -104,7 +98,6 @@ class MemberState(models.Model):
                                      on_delete=models.CASCADE,
                                      related_name="my_team_idea_set",
                                      null=True)
-
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group,
