@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,16 +10,13 @@ from django.urls import reverse
 from django.contrib import messages
 from common.models import User
 from .models import Group, MemberState, AdminState, Idea
-from .forms import (
-    GroupPasswordForm,
-    NonAdminInfoForm,
-    GroupBaseForm,
-    GroupDetailForm,
-    GroupDateForm,
-    IdeaForm,
-    VoteForm,
-)
+from .forms import *
 
+# 유저 상태를 저장하는 ENUM
+class State(Enum):
+    NO_HISTORY = 0
+    WITH_HISTORY = 1
+    ADMIN = 2
 
 # Create your views here.
 @login_required(login_url="common:login")
@@ -27,10 +25,10 @@ def check_nonadmin(request, group_id):
     state = redirect_by_auth(request.user, group_id)  # 권한에 따른 리다이렉트
     wrong_flag = False  # 비밀번호가 틀리면 화면에 에러 렌더링
 
-    if state == 3:  # 이전 인증 내역이 있는 참여자
+    if state == State.WITH_HISTORY:  # 이전 인증 내역이 있는 참여자
         return redirect(f"/group/{group_id}/")
 
-    elif state == 2:  # 운영진인 경우
+    elif state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
 
     if request.method == "POST":
@@ -58,10 +56,10 @@ def check_admin(request, group_id):
     state = redirect_by_auth(request.user, group_id)  # 권한에 따른 리다이렉트
     wrong_flag = False  # 비밀번호가 틀리면 화면에 에러 렌더링
 
-    if state == 1 or state == 3:  # 참여자인 경우
+    if state == State.NO_HISTORY or state == State.WITH_HISTORY:
         return redirect(f"/group/{group_id}/")
 
-    elif state == 2:  # 이미 인증 내역이 있는 운영진인 경우
+    elif state == State.ADMIN:
         return redirect(f"/group/{group_id}/admin")
 
     if request.method == "POST":
@@ -87,7 +85,7 @@ def info_nonadmin(request, group_id):
     user_state = MemberState.objects.filter(user=request.user,
                                             group_id=group_id).first()
 
-    if state == 2:  # 운영진인 경우
+    if state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
 
     if request.method == "POST":
@@ -95,10 +93,10 @@ def info_nonadmin(request, group_id):
         if form.is_valid():
             form.save()
             return redirect(f"/group/{group_id}/")
+        
     form = NonAdminInfoForm()
     ctx = {"group": group, "form": form}
     return render(request, "group/group_member_info.html", ctx)
-
 
 def redirect_by_auth(user, group_id):
     user_state = MemberState.objects.filter(user=user,
@@ -109,16 +107,16 @@ def redirect_by_auth(user, group_id):
 
     if user_state:
         if user_state.group is None:
-            return 1  # 이전에 작성한 내역이 없는 참여자인 경우
+            return State.NO_HISTORY
         else:
-            return 3  # 이전에 작성한 내역이 있는 참여자인 경우
+            return State.WITH_HISTORY
 
     if admin_state:
-        return 2  # 운영진인 경우
+        return State.ADMIN
 
-    return 0
+    return State.NO_HISTORY
 
-
+# 모임 개설 메인 함수
 def group_base_info(request):
     if request.method == "POST":
         # request를 딕셔너리 형태로 변환 및 state 확인
@@ -137,107 +135,113 @@ def group_base_info(request):
                 for key, values in prev_data_dict.items()
             }
 
-        # 현재 state 정보 저장
-        state = int(req["state"])
+        state = int(req["state"]) # 현재 step 정보 저장
 
-        # state 0 == 첫번째 작성 내용 저장 및 두번째 작성내용 렌더링
         if state == 0:
             form = GroupBaseForm(data=req)
-            if form.is_valid():
-                title = req["title"]
-                team_number = int(req["team_number"])
-                password = req["password"]
-                type = req["type"]
-                ctx = {
-                    "form_html": GroupDetailForm().as_p(),
-                    "is_valid": True,
-                    "state": 1,
-                    "prev_data": {
-                        "title": title,
-                        "team_number": team_number,
-                        "password": password,
-                        "type": type,
-                    },
-                }
-                return JsonResponse(ctx)
-            else:  # non field 또는 field 에러 전송
-                ctx = {
-                    "state": 0,
-                    "is_valid": False,
-                    "errors": form.errors,
-                    "non_field_errors": form.non_field_errors(),
-                }
-                return JsonResponse(ctx)
+            return handle_form_valid(form, state, req)
 
-        # state 1 == 두번째 작성 내용 저장 및 세번째 작성내용 렌더링
         elif state == 1:
             form = GroupDetailForm(data=req)
-            if form.is_valid():
-                for idx in range(1, 6):
-                    prev_req[f"group_ability{idx}"] = req.get(
-                        f"ability_description{idx}", "")
+            return handle_form_valid(form, state, req, prev_req)
 
-                prev_req["choice"] = int(req["choice"])
-                prev_req["tech_stack"] = req["tech_stack"]
-
-                ctx = {
-                    "form_html": GroupDateForm().as_p(),
-                    "is_valid": True,
-                    "state": 2,
-                    "prev_data": prev_req,
-                }
-                return JsonResponse(ctx)
-            else:  # non field 또는 field 에러 전송
-                ctx = {
-                    "state": 1,
-                    "is_valid": False,
-                    "errors": form.errors,
-                    "non_field_errors": form.non_field_errors(),
-                }
-                return JsonResponse(ctx)
-
-        # state 2 == 세번째 작성 내용 저장 및 DB에 내용 저장
         elif state == 2:
             form = GroupDateForm(data=req)
-            if form.is_valid():
-                prev_req["end_date"] = form.cleaned_data["end_date"]
-
-                group = Group.objects.create(
-                    title=prev_req["title"],
-                    team_number=prev_req["team_number"],
-                    password=prev_req["password"],
-                    type=prev_req["type"],
-                    ability_description1=prev_req.get("group_ability1", ""),
-                    ability_description2=prev_req.get("group_ability2", ""),
-                    ability_description3=prev_req.get("group_ability3", ""),
-                    ability_description4=prev_req.get("group_ability4", ""),
-                    ability_description5=prev_req.get("group_ability5", ""),
-                    choice=prev_req["choice"],
-                    tech_stack=prev_req["tech_stack"],
-                    end_date=prev_req["end_date"],
-                )
-
-                AdminState.objects.create(group=group, user=request.user)
-
-                ctx = {
-                    "state": 3,
-                    "is_valid": True,
-                    "group_id": group.id,
-                }
-                return JsonResponse(ctx)
-            else:  # non field 또는 field 에러 전송
-                ctx = {
-                    "state": 2,
-                    "is_valid": False,
-                    "errors": form.errors,
-                    "non_field_errors": form.non_field_errors(),
-                }
-                return JsonResponse(ctx)
-
+            return handle_form_valid(form, state, req, prev_req, request.user)
+    
     form = GroupBaseForm()
     ctx = {"form": form, "state": 0}
     return render(request, "setting/setting_basic.html", context=ctx)
 
+# 모임 개설 헬퍼 함수
+# form이 유효할 때 알맞은 JSON 데이터를 return
+def handle_form_valid(form, state, req, prev_req=None, user=None):
+    if form.is_valid():
+        if state == 0 or state == 1:
+            ctx = get_context_data(form, req, prev_req, state)
+            return JsonResponse(ctx)
+        
+        if state == 2: # 마지막 단계
+            prev_req = get_prev_data(form, prev_req, req, state)
+            group = save_group_data(prev_req, user)
+            ctx = {
+                "state": state,
+                "is_valid": True,
+                "group_id": group.id
+            }
+            return JsonResponse(ctx)
+    
+    else:  # non field 또는 field 에러 전송
+        ctx = {
+            "state": state,
+            "is_valid": False,
+            "errors": form.errors,
+            "non_field_errors": form.non_field_errors(),
+        }
+        return JsonResponse(ctx)
+
+# 모임 개설 헬퍼 함수
+def get_context_data(form, req, prev_req, state):
+        form_html = get_form_html(state)
+        prev_data = get_prev_data(form, prev_req, req, state)
+        ctx = {
+            "form_html": form_html,
+            "is_valid": True,
+            "state": state,
+            "prev_data": prev_data
+        }
+        return ctx
+
+# 모임 개설 헬퍼 함수
+def get_form_html(state):
+    if state == 0:
+        return GroupDetailForm().as_p()
+    else:
+        return GroupDateForm().as_p()
+
+# 모임 개설 헬퍼 함수
+# req 데이터에서 prev_data를 추출하여 리턴
+def get_prev_data(form, prev_req, req, state):
+    if state == 0:
+        prev_req = {
+            "title": req["title"],
+            "team_number": req["team_number"],
+            "password": req["password"],
+            "type": req["type"],
+        }
+
+    if state == 1:
+        for idx in range(1, 6):
+            prev_req[f"group_ability{idx}"] = req.get(
+                f"ability_description{idx}", "")
+
+        prev_req["choice"] = int(req["choice"])
+    
+    if state == 2:
+        prev_req["end_date"] = form.cleaned_data["end_date"]
+    
+    return prev_req
+
+# 모임 개설 헬퍼 함수
+# 마지막 단계에 group 데이터 저장
+def save_group_data(prev_req, user):
+    group = Group.objects.create(
+        title=prev_req["title"],
+        team_number=int(prev_req["team_number"]),
+        password=prev_req["password"],
+        type=prev_req["type"],
+        ability_description1=prev_req.get("group_ability1", ""),
+        ability_description2=prev_req.get("group_ability2", ""),
+        ability_description3=prev_req.get("group_ability3", ""),
+        ability_description4=prev_req.get("group_ability4", ""),
+        ability_description5=prev_req.get("group_ability5", ""),
+        choice=int(prev_req["choice"]),
+        end_date=prev_req["end_date"],
+    )
+
+    AdminState.objects.create(group = group, user = user)
+
+    return group
 
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)

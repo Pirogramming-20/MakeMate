@@ -10,7 +10,7 @@ class GroupPasswordForm(forms.ModelForm):
 class NonAdminInfoForm(forms.ModelForm):
     class Meta:
         model = MemberState
-        fields = ['group_ability', 'group_tech_stack']
+        fields = ['group_ability']
 
 class GroupBaseForm(forms.ModelForm):
     class Meta:
@@ -27,7 +27,6 @@ class GroupDetailForm(forms.ModelForm):
             'ability_description4',
             'ability_description5',
             'choice',
-            'tech_stack',
         ]
 
 
