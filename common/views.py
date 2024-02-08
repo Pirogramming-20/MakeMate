@@ -12,8 +12,6 @@ def main_page(request):
         user = request.user
         ##운영진인 모임 가져오기
         admin_groups = Group.objects.filter(admin_states__user=user)
-        for i in admin_groups:
-            print(i.end_date)
         ##비운영진인 모임 가져오기
         # member_state&admin_state 둘다 존재시 admin_state를 우선으로
         member_set = set(Group.objects.filter(member_states__user=user))
