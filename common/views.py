@@ -16,7 +16,7 @@ def main_page(request):
         # member_state&admin_state 둘다 존재시 admin_state를 우선으로
         member_set = set(Group.objects.filter(member_states__user=user))
         admin_set = set(admin_groups)
-        member_groups = member_set - admin_set
+        member_groups = list(member_set - admin_set)
         ctx = {"admin_groups": admin_groups, "member_groups": member_groups}
         ##운영진 시간 계산
         admin_remaining_time = remain_time(admin_groups)
@@ -59,11 +59,16 @@ def remain_time(groups):
 def member_count(groups):
     member = []
     for group in groups:
-        admin_state_count = AdminState.objects.filter(group=group).count()
-        member_state_count = MemberState.objects.filter(group=group).count()
+        admin_states = set(
+            AdminState.objects.filter(group=group).values_list("user",
+                                                               flat=True))
+        member_states = set(
+            MemberState.objects.filter(group=group).values_list("user",
+                                                                flat=True))
+        states = admin_states.union(member_states)
         member.append({
             "group_name": group.title,
-            "count": admin_state_count + member_state_count,
+            "count": len(states),
         })
     return member
 
