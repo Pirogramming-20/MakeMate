@@ -6,7 +6,12 @@
     <p><strong>그룹:</strong> {{ group.title }}</p>
     <p><strong>한 줄 소개:</strong> {{ idea.intro }}</p>
     {% if idea.file %}
-        <p><strong>첨부파일:</strong> <a href="{{ idea.file.url }}" download>다운로드</a></p>
+        <p><strong>첨부파일:</strong></p>
+        <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
+            {% csrf_token %}
+            <button>다운로드</button>
+        </form>
+        <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
     {% endif %}
     <p><strong>내용:</strong> {{ idea.content|linebreaks }}</p>
     <p><strong>작성자:</strong> {{ idea.author.username }}</p>
