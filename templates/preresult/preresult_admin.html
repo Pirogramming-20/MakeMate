@@ -19,13 +19,7 @@
                 <p class="choice_intro_title">{{idea.intro}}</p>
                 <p>팀장 : {{idea.author.username}}</p>
                 {% for member in members %}
-                    {% if member.user in idea.member.all %}
-                        {% if member.group_tech_stack == 'FE' %}
-                            <p>프론트엔드 : {{member.user.username}}</p>
-                        {% else %}
-                            <p>백엔드 : {{member.user.username}}</p>
-                        {% endif %}
-                    {% endif %}
+                    <p>{{member.user.username}}</p>
                 {% endfor %}
             </div>
         {% endfor %}

@@ -24,16 +24,6 @@
             </div>
             {% endif %}
         <div>
-        <div>
-            <label>기술 스택<i>*</i></label>
-            <div>{{form.group_tech_stack}}</div>
-            <!-- 필드 오류 -->
-            {% if form.group_tech_stack.errors %}
-            <div>
-                {{ form.group_tech_stack.errors }}
-            </div>
-            {% endif %}
-        <div>
         <button type='submit' class='primary_button'>그룹 가입</button>
         <a href="{% url 'common:main_page'%}" class='secondary_button'>홈으로</a>
     </form>
