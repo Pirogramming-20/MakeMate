@@ -42,8 +42,7 @@ class Group(models.Model):
     choice = models.IntegerField("그룹 최대 투표 개수", default=3, null=True)
     # array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
     team_building = models.ManyToManyField(User,
-                                           related_name="user_groups",
-                                           null=True)
+                                           related_name="user_groups")
     end_date = models.DateTimeField(default=timezone.now().date() +
                                     timezone.timedelta(days=3))
 
@@ -84,10 +83,7 @@ class MemberState(models.Model):
         validators=[MaxValueValidator(5),
                     MinValueValidator(1)],
         null=True)
-    group_tech_stack = models.CharField("기술 스택",
-                                        max_length=10,
-                                        choices=STACK_POSITION,
-                                        null=True)
+    
     idea_vote1 = models.ForeignKey(Idea,
                                    on_delete=models.CASCADE,
                                    related_name="idea_vote1_set",
