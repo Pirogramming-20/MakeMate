@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from common.models import User
-from .models import Group, MemberState, AdminState, Idea
+from .models import Group, MemberState, AdminState, Idea, Vote 
 from .forms import (
     GroupPasswordForm,
     NonAdminInfoForm,
@@ -400,23 +400,23 @@ def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     author_ideas = Idea.objects.filter(group=group, author=request.user)
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
-    user_state = MemberState.objects.filter(user=request.user,
-                                            group=group).first()
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
 
     ideas_votes = {}
     if user_state:
-        ideas_votes["idea_vote1_id"] = (user_state.idea_vote1.id
-                                        if user_state.idea_vote1 else None)
-        ideas_votes["idea_vote2_id"] = (user_state.idea_vote2.id
-                                        if user_state.idea_vote2 else None)
-        ideas_votes["idea_vote3_id"] = (user_state.idea_vote3.id
-                                        if user_state.idea_vote3 else None)
+        
+        ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
+        ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
+        ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
+
+    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2 or user_state.idea_vote3)
 
     ctx = {
         "group": group,
         "author_ideas": author_ideas,
         "other_ideas": other_ideas,
         "ideas_votes": ideas_votes,
+        "has_voted": has_voted,
     }
     return render(request, "group/group_detail.html", ctx)
 
@@ -572,3 +572,38 @@ def result(request, group_id):
     }
     
     return render(request, 'group/result.html', context=ctx)
+
+
+
+@login_required
+def vote_modify(request, group_id):
+    group = get_object_or_404(Group, pk=group_id)
+    user = request.user
+
+    vote, _ = Vote.objects.get_or_create(user=user, group=group)
+    own_ideas = Idea.objects.filter(group=group, author=user)  
+    ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user)  
+
+    if request.method == 'POST':
+        form = VoteForm(request.POST, instance=vote, group_id=group.id)
+        if form.is_valid():
+            vote_instance = form.save(commit=False)
+            
+            user_state = MemberState.objects.get(user=user, group=group)
+            user_state.idea_vote1 = vote_instance.idea_vote1
+            user_state.idea_vote2 = vote_instance.idea_vote2
+            user_state.idea_vote3 = vote_instance.idea_vote3
+            user_state.save()
+            
+            messages.success(request, '투표가 수정되었습니다.')
+            return redirect('group:group_detail', group_id=group.id)
+
+    else:
+        form = VoteForm(instance=vote, group_id=group.id)
+
+    return render(request, 'group/group_vote_modify.html', {
+        'form': form,
+        'group': group,
+        'vote': vote,
+        'ideas_for_voting': ideas_for_voting
+    })
