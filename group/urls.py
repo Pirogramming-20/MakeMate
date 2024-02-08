@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from .views import *
 
@@ -31,6 +33,10 @@ urlpatterns = [
     path('<int:group_id>/idea_delete/<int:idea_id>/', idea_delete, name='idea_delete'),
     path('<int:group_id>/idea_detail/<int:idea_id>/', idea_detail, name='idea_detail'),
     path('<int:group_id>/idea_vote/', vote_create, name='group_vote_create'),
-
+    path('<int:group_id>/idea_download/<int:idea_id>/', idea_download, name='idea_download'),
     path('<int:group_id>/preresult/modify', preresult_modify, name='preresult_modify'),
+    path('<int:group_id>/result/', result, name='result'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

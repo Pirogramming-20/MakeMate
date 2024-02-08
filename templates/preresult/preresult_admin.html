@@ -8,7 +8,7 @@
         <div class="btns">
             <button class="primary_button"><a href="{% url 'group:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
             <button class="secondary_button"><a href="/">홈으로</a></button>
-            <button class="cta_button"><a href="/">발표하기</a></button>
+            <button class="cta_button"><a href="{% url 'group:result' group.pk %}">발표하기</a></button>
         </div>
     </div>
     <div class="preresult_admin_body_container">

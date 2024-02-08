@@ -2,8 +2,14 @@
 <title>idea_create</title>
 {% endblock %}
 
+<!-- {% if messages %}
+  {% for message in messages %}
+    <p><strong>{{ message }}</strong></p>
+  {% endfor %}
+{% endif %} -->
+
 {% block content %}
-<form action="{% url 'group:idea_create' group_id=group.id %}" method="post">
+<form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn">저장하기</button>

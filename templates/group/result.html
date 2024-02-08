@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="preresult_admin_container">
+    <div class="preresult_admin_header_container">
+        피로그래밍 20기
+        <span>결과가 최종 발표 되었습니다. </span>
+        <button class="secondary_button"><a href="/">홈으로</a></button>
+    </div>
+    <div class="preresult_admin_body_container">
+        <h1>팀빌딩 최종 결과</h1>
+        {% for idea in idea_list %}
+            <div class="choice_idea_modal">
+                <h2 class="choice_idea_title">{{idea.title}}</h2>
+                <p class="choice_intro_title">{{idea.intro}}</p>
+                <p>팀장 : {{idea.author.username}}</p>
+                {% for member in members %}
+                    {% if member.user in idea.member.all %}
+                        {% if member.group_tech_stack == 'FE' %}
+                            <p>프론트엔드 : {{member.user.username}}</p>
+                        {% else %}
+                            <p>백엔드 : {{member.user.username}}</p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
