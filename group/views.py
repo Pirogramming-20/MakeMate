@@ -272,9 +272,6 @@ def admin_page(request, group_id):
         "admin_states_users": admin_states_users,
         "member_states_users": member_states_users,
     }
-    # 남은 시간 계산
-    group_remain_time = onegroup_remain_time(group_instance)
-    ctx["group_remain_time"] = group_remain_time
     return render(request, "admin/group_admin.html", ctx)
 
 
@@ -287,25 +284,6 @@ def group_people(group_instance, state):
 
     users = User.objects.filter(id__in=users_ids)
     return users
-
-
-# 시간 계산 함수... 반복객체가 아니어서..
-def onegroup_remain_time(group):
-    current_datetime = timezone.now()
-    remaining_time = []
-    target_datetime = group.end_date
-    time_difference = target_datetime - current_datetime
-    remaining_days = time_difference.days
-    remaining_hours, remainder = divmod(time_difference.seconds, 3600)
-    remaining_minutes, _ = divmod(remainder, 60)
-
-    remaining_time.append({
-        "group_name": group.title,
-        "remaining_days": remaining_days,
-        "remaining_hours": remaining_hours,
-        "remaining_minutes": remaining_minutes,
-    })
-    return remaining_time
 
 
 def group_user_delete(request, group_id, user_id):
