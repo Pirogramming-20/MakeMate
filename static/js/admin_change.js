@@ -1,11 +1,10 @@
 //groupId 정의 부분
-var currentUrl=window.location.href;
-var parts = currentUrl.split('/group/');
+const currentUrl=window.location.href;
+const parts = currentUrl.split('/group/');
 groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
 
 document.addEventListener('click', (event)=> {
   const clickedBadge=event.target;
-  console.log(clickedBadge);
   //비운영진 뱃지일때
   if (clickedBadge.classList.contains('secondary_badge')){
       const userId = clickedBadge.dataset.userId;

@@ -4,7 +4,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.files.storage import FileSystemStorage
 from common.models import User
 
-
 class Group(models.Model):
     TYPE_CHOICE = (
         ("모각코", "모각코"),
@@ -71,8 +70,7 @@ class Idea(models.Model):
 
     def __str__(self):
         return self.title
-
-
+    
 class MemberState(models.Model):
     group = models.ForeignKey(Group,
                               on_delete=models.CASCADE,
@@ -100,7 +98,6 @@ class MemberState(models.Model):
                                      on_delete=models.CASCADE,
                                      related_name="my_team_idea_set",
                                      null=True)
-
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group,
