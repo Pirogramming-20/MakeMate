@@ -18,12 +18,6 @@ def main_page(request):
         admin_set = set(admin_groups)
         member_groups = list(member_set - admin_set)
         ctx = {"admin_groups": admin_groups, "member_groups": member_groups}
-        ##운영진 시간 계산
-        admin_remaining_time = remain_time(admin_groups)
-        ctx["admin_remaining_time"] = admin_remaining_time
-        # 비운영진 그룹 시간계산
-        member_remaining_time = remain_time(member_groups)
-        ctx["member_remaining_time"] = member_remaining_time
         # 운영진인 그룹내 멤버수
         admin_group_count = member_count(admin_groups)
         ctx["admin_group_count"] = admin_group_count
@@ -33,26 +27,6 @@ def main_page(request):
         return render(request, "common/index.html", ctx)
     else:
         return render(request, "common/index.html")
-
-
-# 남은 시간 계산 함수
-def remain_time(groups):
-    current_datetime = timezone.now()
-    remaining_time = []
-    for group in groups:
-        target_datetime = group.end_date
-        time_difference = target_datetime - current_datetime
-        remaining_days = time_difference.days
-        remaining_hours, remainder = divmod(time_difference.seconds, 3600)
-        remaining_minutes, _ = divmod(remainder, 60)
-
-        remaining_time.append({
-            "group_name": group.title,
-            "remaining_days": remaining_days,
-            "remaining_hours": remaining_hours,
-            "remaining_minutes": remaining_minutes,
-        })
-    return remaining_time
 
 
 # 그룹별 인원수 count함수
