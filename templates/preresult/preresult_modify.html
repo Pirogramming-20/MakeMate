@@ -14,7 +14,6 @@
         {% for member in members %}
             <div class="group_preresult_modify_container">
                 <h2>{{member.user.username}}</h2>
-                <p>{{member.tech_stack}}</p>
                 <!-- 생각해보니 여기도 동적으로 만들어야 하는데 3지망 고정값으로 만들면 안되네요;; -->
                 <!-- 근데 db모델부터 3개 하드코딩으로 박혀있네....? 일단 패스-->
                 <p>1지망 : {{member.idea_vote1}}</p>

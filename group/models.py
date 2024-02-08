@@ -6,13 +6,6 @@ from common.models import User
 
 
 class Group(models.Model):
-    STACK_POSITION = (
-        ("PM", "기획"),
-        ("DESIGN", "디자인"),
-        ("FE", "프론트엔드"),
-        ("BE", "백엔드"),
-        ("SERVER", "배포/서버"),
-    )
     TYPE_CHOICE = (
         ("모각코", "모각코"),
         ("프로젝트", "프로젝트"),
@@ -47,9 +40,6 @@ class Group(models.Model):
                                             null=True,
                                             blank=True)
     choice = models.IntegerField("그룹 최대 투표 개수", default=3, null=True)
-    tech_stack = models.CharField("기술 스택",
-                                  max_length=10,
-                                  choices=STACK_POSITION)
     # array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
     team_building = models.ManyToManyField(User,
                                            related_name="user_groups",
@@ -85,14 +75,6 @@ class Idea(models.Model):
 
 
 class MemberState(models.Model):
-    STACK_POSITION = (
-        ("PM", "기획"),
-        ("DESIGN", "디자인"),
-        ("FE", "프론트엔드"),
-        ("BE", "백엔드"),
-        ("SERVER", "배포/서버"),
-    )
-
     group = models.ForeignKey(Group,
                               on_delete=models.CASCADE,
                               related_name="member_states")
