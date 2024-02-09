@@ -11,7 +11,7 @@
             {% for group in admin_groups %}
                 {% if group.end_date.isoformat < current_time %} 
                     {% if group.team_building.all  %}
-                        <a href="">
+                        <a href="{%url 'group:result' group.id %}">
                             <div class="commom_group_wrap">
                                 <div>{{group.title}}</div>
                                 <button class='primary_badge'>운영진</button>
@@ -61,7 +61,7 @@
             {% for group in member_groups %}
                 {% if group.end_date.isoformat < current_time %} 
                     {% if group.team_building.all  %}
-                            <a href="">
+                            <a href="{%url 'group:result' group.id %}">
                                 <div class="commom_group_wrap">
                                     <div>{{group.title}}</div>
                                     <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
