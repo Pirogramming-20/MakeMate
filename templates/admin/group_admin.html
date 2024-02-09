@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <section>
+    <div>{{group_instance.title}}</div>
+    <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
+    <div>회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
+    <div>공유링크</div>
+    <div>링크를 사용하여 구성원과 모임을 공유할 수 있습니다.</div>
+    <div class="url_container">
+      <div class="group_member_url">
+        <span>참여자 링크 : {% url 'group:check_nonadmin' group_instance.id %}</span>
+        <div>비밀번호 : {{group_instance.password}}</div>
+      </div>
+      <div class="group_admin_url">
+        <span>운영진 링크 : {% url 'group:check_admin' group_instance.id %}</span>
+        <div>비밀번호 : {{group_instance.password}}</div>
+      </div>
+    </div>
+    <a href="{%url 'common:main_page'%}"><button class='secondary_button'>홈으로</button></a>
+  </section>
+  <section>
+    <div>회원</div>
+    {% for admin_user in admin_states_users %}
+      <div class="user_container">
+        <div class='card_title'>{{admin_user.username}}</div>
+        <button class='primary_badge' data-user-id="{{ admin_user.id }}">운영진</button>
+        <form action="{% url 'group:user_delete' group_instance.id user.id %}" method="POST">
+          {% csrf_token %}
+          <button class='cta_red_badge' type="submit">삭제하기</button>
+        </form>
+      </div>
+    {% endfor %}
+    {% for member_user in member_states_users %}
+      <div class="user_container">
+        <div class='card_title' ><a href="{%url 'group:user_update' group_instance.id member_user.id %}">{{member_user.username}}</a></div>
+        <button class='secondary_badge' data-user-id="{{ member_user.id }}">비운영진</button>
+        <form action=" {%url 'group:user_delete' group_instance.id member_user.id %}" method="POST">
+          {% csrf_token %}
+          <button class='cta_red_badge' type="submit">삭제하기</button>
+        </form>
+      </div>
+    {% endfor %}
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static "js/admin_change.js" %}"></script>
+  <script src={% static "js/admin_page_time.js" %}  ></script>
+
+{% endblock content %}

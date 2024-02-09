@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+a{
+    text-decoration-line: none;
+}
+
+ul, li{
+    list-style: none;
+}
+
+button {
+    background: inherit;
+    font: inherit;
+    color: inherit;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
+    cursor: pointer;
+}
