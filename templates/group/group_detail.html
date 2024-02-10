@@ -7,7 +7,11 @@
 <a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
 {% endif %}
 <!-- 투표하기 -->
+{% if has_voted %}
+<a href="{% url 'group:vote_modify' group_id=group.id %}" class="btn">투표 수정하기</a>
+{% else %}
 <a href="{% url 'group:group_vote_create' group_id=group.id %}" class="btn">투표하기</a>
+{% endif %}
 
 <a href="{% url 'common:main_page' %}" class="btn">홈으로</a>
 
