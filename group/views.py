@@ -14,11 +14,13 @@ from common.models import User
 from .models import Group, MemberState, AdminState, Idea, Vote 
 from .forms import *
 
+
 # 유저 상태를 저장하는 ENUM
 class State(Enum):
     NO_HISTORY = 0
     WITH_HISTORY = 1
     ADMIN = 2
+
 
 # Create your views here.
 @login_required(login_url="common:login")
@@ -51,7 +53,7 @@ def check_nonadmin(request, group_id):
     return render(request, "group/group_nonadmin_certification.html", ctx)
 
 
-@login_required(login_url='common:login')
+@login_required(login_url="common:login")
 def check_admin(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     state = redirect_by_auth(request.user, group_id)  # 권한에 따른 리다이렉트
@@ -94,10 +96,11 @@ def info_nonadmin(request, group_id):
         if form.is_valid():
             form.save()
             return redirect(f"/group/{group_id}/")
-        
+
     form = NonAdminInfoForm()
     ctx = {"group": group, "form": form}
     return render(request, "group/group_member_info.html", ctx)
+
 
 def redirect_by_auth(user, group_id):
     user_state = MemberState.objects.filter(user=user,
@@ -116,6 +119,7 @@ def redirect_by_auth(user, group_id):
         return State.ADMIN
 
     return State.NO_HISTORY
+
 
 # 모임 개설 메인 함수
 def group_base_info(request):
@@ -136,7 +140,7 @@ def group_base_info(request):
                 for key, values in prev_data_dict.items()
             }
 
-        state = int(req["state"]) # 현재 step 정보 저장
+        state = int(req["state"])  # 현재 step 정보 저장
 
         if state == 0:
             form = GroupBaseForm(data=req)
@@ -149,10 +153,11 @@ def group_base_info(request):
         elif state == 2:
             form = GroupDateForm(data=req)
             return handle_form_valid(form, state, req, prev_req, request.user)
-    
+
     form = GroupBaseForm()
     ctx = {"form": form, "state": 0}
     return render(request, "setting/setting_basic.html", context=ctx)
+
 
 # 모임 개설 헬퍼 함수
 # form이 유효할 때 알맞은 JSON 데이터를 return
@@ -161,17 +166,13 @@ def handle_form_valid(form, state, req, prev_req=None, user=None):
         if state == 0 or state == 1:
             ctx = get_context_data(form, req, prev_req, state)
             return JsonResponse(ctx)
-        
-        if state == 2: # 마지막 단계
+
+        if state == 2:  # 마지막 단계
             prev_req = get_prev_data(form, prev_req, req, state)
             group = save_group_data(prev_req, user)
-            ctx = {
-                "state": state,
-                "is_valid": True,
-                "group_id": group.id
-            }
+            ctx = {"state": state, "is_valid": True, "group_id": group.id}
             return JsonResponse(ctx)
-    
+
     else:  # non field 또는 field 에러 전송
         ctx = {
             "state": state,
@@ -181,17 +182,19 @@ def handle_form_valid(form, state, req, prev_req=None, user=None):
         }
         return JsonResponse(ctx)
 
+
 # 모임 개설 헬퍼 함수
 def get_context_data(form, req, prev_req, state):
-        form_html = get_form_html(state)
-        prev_data = get_prev_data(form, prev_req, req, state)
-        ctx = {
-            "form_html": form_html,
-            "is_valid": True,
-            "state": state,
-            "prev_data": prev_data
-        }
-        return ctx
+    form_html = get_form_html(state)
+    prev_data = get_prev_data(form, prev_req, req, state)
+    ctx = {
+        "form_html": form_html,
+        "is_valid": True,
+        "state": state,
+        "prev_data": prev_data,
+    }
+    return ctx
+
 
 # 모임 개설 헬퍼 함수
 def get_form_html(state):
@@ -199,6 +202,7 @@ def get_form_html(state):
         return GroupDetailForm().as_p()
     else:
         return GroupDateForm().as_p()
+
 
 # 모임 개설 헬퍼 함수
 # req 데이터에서 prev_data를 추출하여 리턴
@@ -217,11 +221,12 @@ def get_prev_data(form, prev_req, req, state):
                 f"ability_description{idx}", "")
 
         prev_req["choice"] = int(req["choice"])
-    
+
     if state == 2:
         prev_req["end_date"] = form.cleaned_data["end_date"]
-    
+
     return prev_req
+
 
 # 모임 개설 헬퍼 함수
 # 마지막 단계에 group 데이터 저장
@@ -240,9 +245,10 @@ def save_group_data(prev_req, user):
         end_date=prev_req["end_date"],
     )
 
-    AdminState.objects.create(group = group, user = user)
+    AdminState.objects.create(group=group, user=user)
 
     return group
+
 
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
@@ -260,6 +266,7 @@ def preresult(request, group_id):
     ctx = {"idea_list": idea_list, "members": members, "group": group}
 
     return render(request, "preresult/preresult_admin.html", context=ctx)
+
 
 def admin_page(request, group_id):
     group_instance = get_object_or_404(Group, id=group_id)
@@ -362,7 +369,7 @@ def admin_delete(request, group_id):
     return JsonResponse({"message": "AdminState deleted successfully"})
 
 
-def preresult_modify(request, group_id): #상당한 오류가 있음. 꽤나 수정 해야할 듯.
+def preresult_modify(request, group_id):  # 상당한 오류가 있음. 꽤나 수정 해야할 듯.
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
@@ -375,24 +382,24 @@ def preresult_modify(request, group_id): #상당한 오류가 있음. 꽤나 수
         prev_idea = mod_mem.my_team_idea
         mod_idea = Idea.objects.get(id=idea_id)
 
-        #(전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
+        # (전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
         for idea in idea_list:
             if idea.author == mod_mem.user:
-                url = reverse('group:preresult', args=[group.id])
+                url = reverse("group:preresult", args=[group.id])
                 return redirect(url)
 
-        #(수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
+        # (수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
         if prev_idea != mod_idea:
             prev_idea.member.remove(mod_mem.user)
             prev_idea.save()
-        #(수정과정2)해당 멤버스테이트의 최종 팀을 수정한 아이디어의 팀으로 설정
+        # (수정과정2)해당 멤버스테이트의 최종 팀을 수정한 아이디어의 팀으로 설정
         mod_mem.my_team_idea = mod_idea
         mod_mem.save()
-        #(수정과정3)수정한 아이디어의 멤버에 해당 멤버스테이트의 유저를 추가.
+        # (수정과정3)수정한 아이디어의 멤버에 해당 멤버스테이트의 유저를 추가.
         mod_idea.member.add(mod_mem.user)
         mod_idea.save()
-        
-        url = reverse('group:preresult', args=[group.id])
+
+        url = reverse("group:preresult", args=[group.id])
         return redirect(url)
     else:
         ctx = {
@@ -432,10 +439,10 @@ def idea_create(request, group_id):
     group = get_object_or_404(Group, id=group_id)
 
     if Idea.objects.filter(group=group, author=request.user).exists():
-        messages.error(request, '이미 이 그룹에 대한 아이디어를 제출했습니다.')
-        return redirect('group:group_detail', group_id=group.id)
+        messages.error(request, "이미 이 그룹에 대한 아이디어를 제출했습니다.")
+        return redirect("group:group_detail", group_id=group.id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = IdeaForm(request.POST, request.FILES)
         if form.is_valid():
             idea = form.save(commit=False)
@@ -492,12 +499,13 @@ def idea_delete(request, group_id, idea_id):
 def idea_detail(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
-    
+
     context = {
-        'group': group,
-        'idea': idea,
+        "group": group,
+        "idea": idea,
     }
-    return render(request, 'group/group_idea_detail.html', context)
+    return render(request, "group/group_idea_detail.html", context)
+
 
 def idea_download(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
@@ -508,29 +516,34 @@ def idea_download(request, group_id, idea_id):
     fs = FileSystemStorage(file_path)
     content_type, _ = mimetypes.guess_type(file_path)
 
-    response = FileResponse(fs.open(file_path, 'rb'), content_type=f'{content_type}')
-    response['Content-Disposition'] = f'attachment; filename="{file_path.split("/")[-1]}"'
+    response = FileResponse(fs.open(file_path, "rb"),
+                            content_type=f"{content_type}")
+    response[
+        "Content-Disposition"] = f'attachment; filename="{file_path.split("/")[-1]}"'
     return response
+
 
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
 
     try:
-        
-        user_state, created = MemberState.objects.get_or_create(user=user, group=group)
+        user_state, created = MemberState.objects.get_or_create(user=user,
+                                                                group=group)
 
-        if request.method == 'POST':
+        if request.method == "POST":
             form = VoteForm(request.POST, group_id=group.id)
             if form.is_valid():
-               
                 vote = form.save(commit=False)
                 vote.user = user
                 vote.group = group
-                
-                idea_vote1_id = form.cleaned_data['idea_vote1'].id if form.cleaned_data['idea_vote1'] else None
-                idea_vote2_id = form.cleaned_data['idea_vote2'].id if form.cleaned_data['idea_vote2'] else None
-                idea_vote3_id = form.cleaned_data['idea_vote3'].id if form.cleaned_data['idea_vote3'] else None
+
+                idea_vote1_id = (form.cleaned_data["idea_vote1"].id
+                                 if form.cleaned_data["idea_vote1"] else None)
+                idea_vote2_id = (form.cleaned_data["idea_vote2"].id
+                                 if form.cleaned_data["idea_vote2"] else None)
+                idea_vote3_id = (form.cleaned_data["idea_vote3"].id
+                                 if form.cleaned_data["idea_vote3"] else None)
 
                 idea_vote1 = Idea.objects.get(id=idea_vote1_id)
                 idea_vote2 = Idea.objects.get(id=idea_vote2_id)
@@ -557,29 +570,58 @@ def vote_create(request, group_id):
             form = VoteForm(group_id=group_id)
 
     except MemberState.DoesNotExist:
-        
-        messages.error(request, 'MemberState가 존재하지 않습니다.')
-        return redirect('group_detail', group_id=group_id)            
+        messages.error(request, "MemberState가 존재하지 않습니다.")
+        return redirect("group_detail", group_id=group_id)
 
-    voted_ideas = [user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3]
-    ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user).exclude(id__in=[idea.id for idea in voted_ideas if idea is not None])
+    voted_ideas = [
+        user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3
+    ]
+    ideas_for_voting = (Idea.objects.filter(group=group).exclude(
+        author=user).exclude(
+            id__in=[idea.id for idea in voted_ideas if idea is not None]))
 
-    return render(request, 'group/group_vote_create.html', {'group': group, 'ideas_for_voting': ideas_for_voting, 'form': form})
+    return render(
+        request,
+        "group/group_vote_create.html",
+        {
+            "group": group,
+            "ideas_for_voting": ideas_for_voting,
+            "form": form
+        },
+    )
+
 
 def result(request, group_id):
-
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
-    members = MemberState.objects.filter(group = group) 
+    idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
+    members = MemberState.objects.filter(group=group)
 
+    ctx = {"idea_list": idea_list, "members": members, "group": group}
+
+    return render(request, "group/result.html", context=ctx)
+
+
+def member_preresult(request, group_id):
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.filter(
+        group=group).order_by("-score")[:group.team_number]
+    user_state = MemberState.objects.filter(user=request.user,
+                                            group=group).first()
+    ideas_votes = {}
+    if user_state:
+        ideas_votes["idea_vote1_id"] = (user_state.idea_vote1.id
+                                        if user_state.idea_vote1 else None)
+        ideas_votes["idea_vote2_id"] = (user_state.idea_vote2.id
+                                        if user_state.idea_vote2 else None)
+        ideas_votes["idea_vote3_id"] = (user_state.idea_vote3.id
+                                        if user_state.idea_vote3 else None)
     ctx = {
-        'idea_list': idea_list,
-        'members': members,
-        'group': group
+        "group": group,
+        "idea_list": idea_list,
+        "ideas_votes": ideas_votes,
     }
-    
-    return render(request, 'group/result.html', context=ctx)
 
+    return render(request, "preresult/preresult_member.html", ctx)
 
 
 @login_required
@@ -614,3 +656,4 @@ def vote_modify(request, group_id):
         'vote': vote,
         'ideas_for_voting': ideas_for_voting
     })
+
