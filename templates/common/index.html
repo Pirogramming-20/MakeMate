@@ -75,7 +75,7 @@
                                 </div>
                             </a>
                         {% else %}
-                            <a href="">
+                            <a href="{%url 'group:preresult' group.id%}">
                                 <div class="commom_group_wrap">
                                     <div>{{group.title}}</div>
                                     <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
