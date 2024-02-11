@@ -93,6 +93,7 @@ body {
     font-size: var(--font_small);
 }
 
+
 .card_contents_green {
     color: var(--color_main);
 }
@@ -110,3 +111,5 @@ body {
     height: 18px;
     display: block;
 }
+
+
