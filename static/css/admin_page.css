@@ -1,0 +1,46 @@
+section,.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members{
+  display: flex;
+  flex-direction: column;
+}
+
+section{
+  gap: var(--padding6) ;
+  margin: 8rem auto 0 auto;
+  padding: var(--padding4);
+}
+.admin_wrap_head>a{
+  padding:var(--padding5) ;
+}
+.admin_group_title,.admin_endtime,.admin_inner_url_info> div:nth-child(2){
+  color: var(--color_main);
+}
+
+.admin_group_title{
+  font-size: var(--font_xlarge) ;
+  font-weight: bold;
+}
+
+.admin_inner_page_info{
+  gap: var(--padding4);
+}
+.admin_wrap_url{
+  gap: var(--padding5);
+}
+.admin_inner_url_info{
+  gap: var(--padding1);
+}
+/* 회원 부분 */
+.admin_title_members{
+  font-weight: bold;
+  font-size: var(--font_large);
+}
+.admin_wrap_members{
+  gap: var(--padding4);
+}
+.admin_user_wrap{
+  display: flex;
+  padding: 1.8rem 2.4rem;
+  border: 1px solid var(--color_main);
+  border-radius: var(--card_border_radius);
+  justify-content: space-between;
+}
