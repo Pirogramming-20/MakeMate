@@ -69,6 +69,10 @@ body {
     color: black;
 }
 
+.cta_green_badge {
+    background-color: var(--color_main);
+}
+
 .wrap_card {
     display: flex;
     flex-direction: column;

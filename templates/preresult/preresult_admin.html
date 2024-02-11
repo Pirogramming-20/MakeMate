@@ -3,26 +3,36 @@
 {% block content %}
 <div class="preresult_admin_container">
     <div class="preresult_admin_header_container">
-        피로그래밍 20기
-        <span>결과가 임시 발표 되었습니다. 내용을 수정한 뒤 전체 구성원에게 공지할 수 있습니다.</span>
-        <div class="btns">
+        <div class="preresult_admin_description">
+            <span>< back</span>
+            <p class="preresult_title">피로그래밍 20기</p>
+            <span>결과가 임시발표되었습니다. 내용을 수정한 뒤 전체 구성원에게 공지할 수 있습니다.</span>
+        </div>
+        <div class="preresult_btns">
             <button class="primary_button"><a href="{% url 'group:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
-            <button class="secondary_button"><a href="/">홈으로</a></button>
-            <button class="cta_button"><a href="{% url 'group:result' group.pk %}">발표하기</a></button>
+            <button class="secondary_button"><a href="{% url 'group:result' group.pk %}">발표하기</a></button>
         </div>
     </div>
     <div class="preresult_admin_body_container">
         <h1>임시 팀빌딩 결과</h1>
+        <div class="preresult_admin_idea_container">
         {% for idea in idea_list %}
             <div class="choice_idea_modal">
                 <h2 class="choice_idea_title">{{idea.title}}</h2>
                 <p class="choice_intro_title">{{idea.intro}}</p>
-                <p>팀장 : {{idea.author.username}}</p>
-                {% for member in members %}
-                    <p>{{member.user.username}}</p>
-                {% endfor %}
+                <div class="preresult_admin_idea_desc">
+                    <p>팀장</p>
+                    <div class="cta_button">{{idea.author.username}}</div>
+                    <p>전체 팀원</p>
+                    <div class="preresult_admin_member_list">
+                        {% for member in idea.member.all %}
+                            <div class="secondary_button">{{member.username}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
