@@ -11,10 +11,10 @@ body {
     font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.primary_button, .secondary_button, .cta_button {
+.primary_button, .secondary_button, .cta_button,.cta_del_button{
     display: inline-block;
     width: 200px;
-    padding: 10px 0;
+    padding: 5px  0;
     text-align: center;
     border-radius: var(--btn_border_radius);
     font-weight: bold;
@@ -22,11 +22,11 @@ body {
 
 .primary_button {
     background-color: var(--color_main);
-    color: white;
+    color: black;
 }
 
 .secondary_button {
-    border: 1px solid var(--color_sub_bright);
+    border: 1px solid var(--color_main);
     color: var(--color_main);
 }
 
@@ -35,27 +35,36 @@ body {
     color: white;   
 }
 
-.primary_badge, .secondary_badge, .cta_red_badge, .cta_green_badge {
+.cta_del_button{
+    border: 1px solid var(--color_red_highlight);
+    background-color: var(--color_black_highlight);
+    color: var(--color_red_highlight);
+}
+
+.primary_badge, .cta_blue_badge, .cta_red_badge, .secondary_badge {
     padding: 5px;
     border-radius: var(--badge_border_radius);
-    color: white;
     font-size: var(--font_small);
 }
 
 .primary_badge {
     background-color: var(--color_main);
+    color: black;
 }
 
-.secondary_badge {
-    background-color: var(--color_sub_bright);
+.cta_blue_badge {
+    background-color: var(--color_blue_highlight);
+    color: white;
 }
 
 .cta_red_badge {
     background-color: var(--color_red_highlight);
+    color: white;
 }
 
-.cta_green_badge {
-    background-color: var(--color_green_highlight);
+.secondary_badge {
+    background-color: var(--color_sub_bright);
+    color: black;
 }
 
 .wrap_card {
@@ -84,4 +93,18 @@ body {
 
 .card_contents_red {
     color: var(--color_red_highlight);
+}
+
+.home_btn,.back_btn{
+    display: flex;
+    align-items: center;
+}
+
+.home_btn::before,.back_btn::before{
+    content: '';
+    background-image: url('../images/화살표.png');
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    display: block;
 }
