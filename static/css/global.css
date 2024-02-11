@@ -55,7 +55,7 @@ body {
 }
 
 .cta_green_badge {
-    background-color: var(--color_green_highlight);
+    background-color: var(--color_main);
 }
 
 .wrap_card {

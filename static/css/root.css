@@ -1,9 +1,10 @@
 :root{
-    --color_main: #8a2be2;
-    --color_sub_dark: #4a1e9e;
-    --color_sub_bright: #ddcbff;
-    --color_red_highlight: #cc167d;
-    --color_green_highlight: #82ef0e;
+    --color_main: #0bec12;
+    --color_sub_dark: #292929;
+    --color_sub_bright: #35a67b;
+    --color_red_highlight: #c54422;
+    --color_blue_highlight: #007AFF;
+    --color_bg_gray: #333333;
 
     --padding1: 0.8rem;
     --padding2: 1.8rem;

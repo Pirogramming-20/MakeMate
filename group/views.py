@@ -256,10 +256,14 @@ def preresult(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
+    state = redirect_by_auth(request.user, group_id)
 
     ctx = {"idea_list": idea_list, "members": members, "group": group}
 
-    return render(request, "preresult/preresult_admin.html", context=ctx)
+    if state == State.ADMIN:
+        return render(request, "preresult/preresult_admin.html", context=ctx)
+    else:
+        return render(request, "preresult/preresult_member.html", context=ctx)
 
 def admin_page(request, group_id):
     group_instance = get_object_or_404(Group, id=group_id)
@@ -362,7 +366,7 @@ def admin_delete(request, group_id):
     return JsonResponse({"message": "AdminState deleted successfully"})
 
 
-def preresult_modify(request, group_id): #상당한 오류가 있음. 꽤나 수정 해야할 듯.
+def preresult_modify(request, group_id): 
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)

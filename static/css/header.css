@@ -1,5 +1,15 @@
+header{
+    display: flex;
+    align-items: center;
+    width: 393px;
+    height: var(--padding7);
+    background-color: black;
+}
+
 .logo {
     font-weight: bold;
     font-size: var(--font_small);
     color: var(--color_main);
+    padding-left: var(--padding4);
 }
+

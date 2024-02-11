@@ -1,51 +1,69 @@
+{% extends 'base.html' %}
 {% block content %}
-<h1>모임 디테일 페이지</h1>
-<p>추가로 밑에 아이디어들 불러올 예정</p>
-
-{% if not author_ideas %}
-<!-- 아이디어 추가하기 버튼 -->
-<a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a>
-{% endif %}
-<!-- 투표하기 -->
-<a href="{% url 'group:group_vote_create' group_id=group.id %}" class="btn">투표하기</a>
-
-<a href="{% url 'common:main_page' %}" class="btn">홈으로</a>
-
-{% if author_ideas %}
-  <h2>나의 아이디어</h2>
-  {% for idea in author_ideas %}
-    <div>
-      <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
-      <p>{{ idea.content }}</p>
-      <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a>
-    </div>
-  {% endfor %}
-{% endif %}
-
-{% if other_ideas %}
-  <h2>투표</h2>
-  {% for idea in other_ideas %}
-    <div>
-      <h3>
-        <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
-          {{ idea.title }}
-        </a>
-        <!-- 투표 순위 표시 로직 -->
-        {% if ideas_votes %}
-          {% if idea.id == ideas_votes.idea_vote1_id %} 
-            <span>1지망</span>
-          {% elif idea.id == ideas_votes.idea_vote2_id %} 
-            <span>2지망</span>
-          {% elif idea.id == ideas_votes.idea_vote3_id %} 
-            <span>3지망</span>
-          {% endif %}
+<div class="preresult_admin_container">
+  <div class="group_detail_header_container">
+    <div class="group_detail_description">
+        <span>< Home</span>
+        <p class="group_detail_title">피로그래밍 20기</p>
+        {% if group.end_date.isoformat < current_time %} 
+          <span class="group_detail_end_date">마감까지 남은 시간 : {{group.end_date.isoformat}}</span>
+        {% else %}
+          <span class="group_detail_end_date">마감까지 남은 시간 : 종료</span>
         {% endif %}
-      </h3>
-      <p>{{ idea.content }}</p>
+        <span>원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
     </div>
-  {% endfor %}
-{% endif %}
+    <div class="group_detail_btns">
+      <button class="secondary_button"><a href="{% url 'group:group_vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
+      {% if not author_ideas %}
+        <button class="primary_button"><a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a></button>
+      {% else %}
+        {% for idea in author_ideas %}
+          <button class="primary_button"><a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a></button>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
 
+  {% if author_ideas %}
+    <div class="group_detail_idea">
+      <h2>나의 아이디어</h2>
+    {% for idea in author_ideas %}
+      <div class="group_detail_idea_desc">
+        <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+        <p>{{ idea.content }}</p>
+        <span>{{idea.author}}</span>
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if other_ideas %}
+  <div class="group_detail_idea">
+    <h2>투표</h2>
+    {% for idea in other_ideas %}
+      <div class="group_detail_idea_desc">
+        <h3>
+          <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
+            {{ idea.title }}
+          </a>
+        </h3>
+          <!-- 투표 순위 표시 로직 -->
+          {% if ideas_votes %}
+            {% if idea.id == ideas_votes.idea_vote1_id %} 
+              <p class="group_detail_vote_badge">1지망</p>
+            {% elif idea.id == ideas_votes.idea_vote2_id %} 
+              <p class="group_detail_vote_badge">2지망</p>
+            {% elif idea.id == ideas_votes.idea_vote3_id %} 
+              <p class="group_detail_vote_badge">3지망</p>
+            {% endif %}
+          {% endif %}
+        <p class="idea_desc_content">{{ idea.content }}</p>
+        <span>{{idea.author}}</span>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
 
 
 {% endblock content %}
