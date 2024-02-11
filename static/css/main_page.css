@@ -1,0 +1,77 @@
+/* 비 로그인 css */
+.common_wrap_info{
+  padding: 0 1rem;
+  width: 300px;
+  margin: 0 auto;
+}
+.common_wrap_info>div{
+  padding-bottom: var(--padding4) ;
+}
+.common_info_title{
+  font-size: var(--font_large);
+  font-weight: bold;
+}
+.common_inner_btn{
+  display: flex;
+  gap: 1rem;
+}
+.common_inner_btn >.secondary_button{
+  flex: 110;
+}
+.common_inner_btn>.primary_button{
+  flex: 190;
+}
+/* 로그인시 css */
+.common_wrap_login_info{
+  padding: 0 1rem;
+  width: 300px;
+  margin: 80px auto;
+}
+.common_name{
+  padding-top: var(--padding3);
+  color: var(--color_main);
+  font-size: var(--font_xlarge);
+  font-weight: bold;
+}
+.common_inner_title{
+  padding-bottom: var(--padding5);
+}
+.common_inner_title div:first-child{
+  font-weight: bold;
+}
+.common_title_txt{
+  padding-bottom: var(--padding5);
+}
+/* 그룹 리스트 css */
+.common_section_group_list{
+  margin:0 auto;
+  width: 300px;
+  padding: var(--padding7) var(--padding4) 0 var(--padding4);
+  border-top: 5px solid var(--color_black_highlight);
+  /* 화면 가득 채우는것 보다 group 부분이랑 맞춰서 하는게 좋을 거 같습니다 */
+}
+
+.common_groups{
+  font-size: var(--font_large);
+  font-weight: bold;
+  padding-bottom: var(--padding4);
+  margin-bottom: var(--padding4);
+
+}
+/* 카드 틀 */
+.wrap_card{
+  margin-bottom: var(--padding4) ;
+}
+
+.re_card_title{
+  font-weight: bold ;
+}
+
+.group_endtime{
+  color: var(--color_main);
+}
+.common_group_info{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
+}

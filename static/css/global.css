@@ -6,6 +6,7 @@ html {
 
 body {
     background-color: black;
+    color: white;
     font-size: var(--font_medium);
     line-height: 1.5;
     box-sizing: border-box;
@@ -74,7 +75,7 @@ body {
     padding: var(--padding3);
     gap: var(--padding2);
     border-radius: var(--card_border_radius);
-    background-color: white;
+    background-color: var(--color_black_highlight);
 }
 
 .card_title {
@@ -92,8 +93,9 @@ body {
     font-size: var(--font_small);
 }
 
-.card_contents_red {
-    color: var(--color_red_highlight);
+
+.card_contents_green {
+    color: var(--color_main);
 }
 
 .home_btn,.back_btn{
@@ -109,3 +111,5 @@ body {
     height: 18px;
     display: block;
 }
+
+
