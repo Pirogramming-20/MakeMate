@@ -2,4 +2,5 @@
     font-weight: bold;
     font-size: var(--font_small);
     color: var(--color_main);
+    padding: var(--padding2) 0 var(--padding2) var(--padding2) ;
 }
