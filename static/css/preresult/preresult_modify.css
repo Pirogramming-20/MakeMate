@@ -3,18 +3,22 @@
     border: 1px solid var(--color_sub_bright);
     border-radius: 9px;
     padding: var(--padding4);
-    background-color: var(--color_bg_gray);
+    background-color: black;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
 }
 
 .group_preresult_modify_container > h2{
     line-height: var(--font_large);
+    margin-bottom: var(--padding2);
 }
 
-.group_preresult_modify_container > p{
+.group_preresult_modify_container > .preresult_modify_choice_team{
     line-height: var(--font_medium);
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding1);
+    margin: var(--padding2) 0;
 }
 
 .preresult_modify_container{
@@ -25,6 +29,14 @@
 
 .group_preresult_modify_container > form > button{
     margin: var(--padding4) var(--padding4) 0 var(--padding4);
+}
+
+.group_preresult_modify_container > form > select{
+    width: 100%;
+    height: 3.2rem;
+    background-color: black;
+    color: white;
+    border: 1px solid var(--color_sub_bright)
 }
 
 .group_preresult_modify_badge{
