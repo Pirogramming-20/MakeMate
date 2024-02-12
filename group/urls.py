@@ -36,6 +36,7 @@ urlpatterns = [
     path('<int:group_id>/idea_download/<int:idea_id>/', idea_download, name='idea_download'),
     path('<int:group_id>/preresult/modify', preresult_modify, name='preresult_modify'),
     path('<int:group_id>/result/', result, name='result'),
+    path('<int:group_id>/team_building/', team_building, name='team_building'),
 ]
 
 if settings.DEBUG:

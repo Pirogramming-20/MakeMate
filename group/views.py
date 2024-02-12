@@ -1,6 +1,7 @@
 import json
 import mimetypes
 from enum import Enum
+import numpy as np
 from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -254,7 +255,7 @@ def preresult(request, group_id):
     # 그룹에 있는 아이디어를 모두 가져오고, 이를 투표점수 순서로 정렬
     # 그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
+    idea_list = Idea.objects.filter(group=group).order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -368,7 +369,7 @@ def admin_delete(request, group_id):
 
 def preresult_modify(request, group_id): 
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
+    idea_list = Idea.objects.filter(group=group).order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
 
     if request.method == "POST":
@@ -573,7 +574,7 @@ def vote_create(request, group_id):
 def result(request, group_id):
 
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.all().order_by('-score')[:group.team_number]
+    idea_list = Idea.objects.filter(group=group).order_by('-score')[:group.team_number]
     members = MemberState.objects.filter(group = group) 
 
     ctx = {
@@ -583,3 +584,17 @@ def result(request, group_id):
     }
     
     return render(request, 'group/result.html', context=ctx)
+
+def team_building(request, group_id):
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.filter(group=group).order_by('-score')[:group.team_number]
+    members = MemberState.objects.filter(group = group) 
+    members_ability = []
+
+    for member_idx, member in enumerate(members):
+        members_ability.append(member.group_ability)
+
+    print(members_ability)
+
+    return render(request, 'group/result.html')
+
