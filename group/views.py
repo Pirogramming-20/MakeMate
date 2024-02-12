@@ -266,11 +266,7 @@ def preresult(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     ctx = {"idea_list": idea_list, "members": members, "group": group}
-
-    if state == State.ADMIN:
-        return render(request, "preresult/preresult_admin.html", context=ctx)
-    else:
-        return render(request, "preresult/preresult_member.html", context=ctx)
+    return render(request, "preresult/preresult_admin.html", context=ctx)
 
 
 def admin_page(request, group_id):
@@ -596,7 +592,7 @@ def vote_create(request, group_id):
     )
 
 
-def result(request, group_id):
+def result(request, group_id): #최종 결과 페이지
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(group=group).order_by('-score')[:group.team_number]
     members = MemberState.objects.filter(group = group) 
@@ -662,4 +658,67 @@ def vote_modify(request, group_id):
         'ideas_for_voting': ideas_for_voting
     })
 
+def calculate_members_ability(members):
+    members_ability = []
 
+    for member in members:
+        members_ability.append(member.group_ability)
+    return members_ability
+
+def calculate_project_average_ability(idea_list):
+    project_average_ability = []
+
+    for idea in idea_list:
+        leader = MemberState.objects.get(user=idea.author)
+        followers = MemberState.objects.filter(user__in=idea.member.all())
+        score = 0
+
+        for follower in followers:
+            score += follower.group_ability
+
+        score += leader.group_ability
+        score = score / (len(followers) + 1)
+
+        project_average_ability.append(score)
+
+    project_average_ability.sort()
+    return project_average_ability
+
+def calculate_project_pick(members, idea_list):
+    project_pick = np.zeros((len(idea_list), len(members))) # 각 인원 별로 지망도를 2차원 배열로 만들거임.
+
+    for member_idx, member in enumerate(members):
+        for project_idx, project in enumerate(idea_list):
+            if project == member.idea_vote1:
+                project_pick[project_idx][member_idx] = 4
+            elif project == member.idea_vote2:
+                project_pick[project_idx][member_idx] = 3
+            elif project == member.idea_vote3:
+                project_pick[project_idx][member_idx] = 2
+            else:
+                project_pick[project_idx][member_idx] = 1
+    return project_pick
+
+def team_building(request, group_id):
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.filter(group=group).order_by('-score')[:group.team_number]
+    project_average_ability = [] # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
+    members = MemberState.objects.filter(group = group) # 나중에 "project_pick"을 만들 때 필요함.
+    members_ability = [] # 후에 project_average_ability와 meshigrid하여 서로 뺄 거임. 사이클 한번당 수정이 필요함.
+
+
+    members_ability = calculate_members_ability(members) # member_ability 리스트에 그룹 내 모든 멤버의 실력을 저장하는 코드.
+
+    project_average_ability = calculate_project_average_ability(idea_list) # 각 아이디어 별로 평균 실력을 리스트로 저장하는 코드.
+
+    members_ability, project_average_ability = np.meshgrid(members_ability, project_average_ability) # 위의 두 리스트를 2차원 배열로 만들어 빼줄거임.
+
+    project_pick = calculate_project_pick(members, idea_list)
+
+    print(members_ability)
+    print(project_average_ability)
+    print(abs(members_ability-project_average_ability))
+    print(project_pick)
+    print(abs(members_ability-project_average_ability) + project_pick)
+
+    return redirect("/") # 임시로 홈으로 리디렉션 되도록 설정함.
