@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{group.title}}</h1>
+<div>투표가 종료되었습니다. 운영진이 결과를 발표할때까지 기다려주세요.</div>
+
+
+
+<a href="{% url 'common:main_page' %}" class="btn">홈으로</a>
+
+
+<h2>투표</h2>
+{% for idea in idea_list%}
+  <div>
+      <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
+        {{ idea.title }}
+      </a>
+      {% if ideas_votes %}
+        {% if idea.id == ideas_votes.idea_vote1_id %}
+          <div>1지망</div>
+          <div>{{idea.intro}}</div>
+          <div>{{idea.author.username}}</div>
+        {% elif idea.id == ideas_votes.idea_vote2_id %}
+          <div>2지망</div>
+          <div>{{idea.intro}}</div>
+          <div>{{idea.author.username}}</div>
+        {% elif idea.id == ideas_votes.idea_vote3_id %}
+          <div>3지망</div>
+          <div>{{idea.intro}}</div>
+          <div>{{idea.author.username}}</div>
+        {% else %}
+          <div>{{idea.intro}}</div>
+          <div>{{idea.author.username}}</div>
+        {% endif %}
+      {% endif %}
+  </div>
+{% endfor %}
+
+
+{% endblock content %} 

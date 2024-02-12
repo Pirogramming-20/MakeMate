@@ -2,111 +2,141 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
-    <section>
+    <section class='common_section_main_page'>
         {% if user.is_authenticated %}
-        <a class='primary_button' href="{% url 'group:base_set' %}">모임개설</a>
-        <a href="{% url 'common:logout' %}" class='secondary_button'>로그아웃</a>   
-            <div>참여중인 모임</div>
-            {% comment %} admin_groups {% endcomment %}
-            {% for group in admin_groups %}
-                {% if group.end_date.isoformat < current_time %} 
-                    {% if group.team_building.all  %}
-                        <a href="">
-                            <div class="commom_group_wrap">
-                                <div>{{group.title}}</div>
-                                <button class='primary_badge'>운영진</button>
-                                <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                                <button class='cta_green_badge'>종료</button>
-                                <div>팀 빌딩 완료</div>
-                                {% for member in admin_group_count %}
-                                    {% if member.group_name == group.title %}
-                                        <div>참여자수:{{member.count}}명</div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </a>
-                    {% else %}
-                        <a href="{%url 'group:preresult' group.id%}">
-                            <div class="commom_group_wrap">
-                                <div>{{group.title}}</div>
-                                <button class='primary_badge'>운영진</button>
-                                <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                                <button class='cta_red_badge'>임시종료</button>
-                                <div>팀 빌딩 완료</div>
-                                {% for member in admin_group_count %}
-                                    {% if member.group_name == group.title %}
-                                        <div>참여자수:{{member.count}}명</div>
-                                    {% endif %}
-                                {% endfor %}
+        <div class="common_wrap_login_info">
+            <div class='common_inner_title'>
+                <div>효율적인 팀빌딩의 시작,</div>
+                <div class='common_name'>MakeMate</div>
+            </div>
+            <div class='common_title_txt'>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀활동을 지원합니다.</div>
+            <div class="common_inner_btn">
+                <button class='secondary_button' ><a href="{% url 'common:logout' %}">로그아웃</a> </button>
+                <button class='primary_button' ><a href="{% url 'group:base_set' %}">모임개설</a></button>
+            </div>
+        </div>
+            <div class='common_section_group_list'>
+                <div class='common_groups'>참여중인 모임</div>
+                {% comment %} admin_groups {% endcomment %}
+                {% for group in admin_groups %}
+                    {% if group.end_date.isoformat < current_time %}
+                        {% if group.team_building.all  %}
+                            <a href="{%url 'group:result' group.id %}">
+                                <div class="wrap_card">
+                                    <div class='card_title'>{{group.title}}</div>
+                                    <div class='inner_card_badge'>
+                                        <button class='primary_badge'>운영진</button>
+                                        <button class='cta_blue_badge'>종료</button>
+                                    </div>
+                                    <div class="common_group_info">
+                                        <div>팀 빌딩 완료</div>
+                                        {% for member in admin_group_count %}
+                                            {% if member.group_name == group.title %}
+                                                <div>참여자수:{{member.count}}명</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                                                        </div>
+                                    </div>
+                            </a>
+                        {% else %}
+                            <a href="{%url 'group:preresult' group.id%}">
+                                <div class="wrap_card">
+                                    <div class='card_title'>{{group.title}}</div>
+                                    <div class='inner_card_badge'>
+                                        <button class='primary_badge'>운영진</button>
+                                        <button class='cta_red_badge'>임시종료</button>
+                                    </div>
+                                    <div class="common_group_info">
+                                        <div>팀 빌딩 완료</div>
+                                        {% for member in admin_group_count %}
+                                            {% if member.group_name == group.title %}
+                                                <div>참여자수:{{member.count}}명</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                                                        </div>
+                                    </div>
+                            </a>
+                        {% endif %}
+                    {%else%}
+                        <a href="{%url 'group:admin_page' group.id%}">
+                            <div class="wrap_card">
+                                <div class='card_title'>{{group.title}}</div>
+                                <div><button class='primary_badge'>운영진</button></div>
+                                <div class="common_group_info">
+                                    <div>팀빌딩 종료까지 남은 시간</div>
+                                    <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
+                                    {% for member in admin_group_count %}
+                                        {% if member.group_name == group.title %}
+                                            <div>참여자수:{{member.count}}명</div>
+                                        {%endif%}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </a>
                     {% endif %}
-                {%else%}
-                    <a href="{%url 'group:admin_page' group.id%}">
-                        <div class="common_group_wrap">
-                            <div>{{group.title}}</div>
-                            <button class='primary_badge'>운영진</button>
-                            <div>팀빌딩 종료까지 남은 시간</div>
-                            <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                            {% for member in admin_group_count %}
-                                {% if member.group_name == group.title %}
-                                    <div>참여자수:{{member.count}}명</div>
-                                {%endif%}
-                            {% endfor %}
-                        </div>
-                    </a>
-                {% endif %}
-            {% endfor %}
-            {% comment %} member_groups {% endcomment %}
-            {% for group in member_groups %}
-                {% if group.end_date.isoformat < current_time %} 
-                    {% if group.team_building.all  %}
-                            <a href="">
-                                <div class="commom_group_wrap">
-                                    <div>{{group.title}}</div>
-                                    <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                                    <button class='cta_green_badge' >종료</button>
-                                    <div>팀 빌딩 완료</div>
-                                    {% for member in member_group_count %}
-                                        {% if member.group_name == group.title %}
-                                            <div>참여자수:{{member.count}}명</div>
-                                        {% endif %}
-                                    {% endfor %}
+                {% endfor %}
+                {% comment %} member_groups {% endcomment %}
+                {% for group in member_groups %}
+                    {% if group.end_date.isoformat < current_time %}
+                        {% if group.team_building.all  %}
+                                <a href="{%url 'group:result' group.id %}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div><button class='cta_blue_badge' >종료</button></div>
+                                        <div class="common_group_info">
+                                            <div>팀 빌딩 완료</div>
+                                            {% for member in member_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% else %}
+                                <a href="{%url 'group:member_preresult' group.id%}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div><button class='cta_red_badge'>임시종료</button></div>
+                                        <div class='common_group_info'>
+                                            <div>팀 빌딩 완료</div>
+                                        {% for member in member_group_count %}
+                                            {% if member.group_name == group.title %}
+                                                <div>참여자수:{{member.count}}명</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                    {%else%}
+                            <a href="{%url 'group:group_detail' group.id%}">
+                                <div class="wrap_card">
+                                    <div class='card_title'>{{group.title}}</div>
+                                    <div class="common_group_info">
+                                        <div>팀 빌딩 종료까지 남은 시간</div>
+                                        <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
+                                        {% for member in member_group_count %}
+                                            {% if member.group_name == group.title %}
+                                                <div>참여자수:{{member.count}}명</div>
+                                            {%endif%}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </a>
-                        {% else %}
-                            <a href="">
-                                <div class="commom_group_wrap">
-                                    <div>{{group.title}}</div>
-                                    <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                                    <button class='cta_red_badge'>임시종료</button>
-                                    <div>팀 빌딩 완료</div>
-                                {% for member in member_group_count %}
-                                    {% if member.group_name == group.title %}
-                                        <div>참여자수:{{member.count}}명</div>
-                                    {% endif %}
-                                {% endfor %}
-                                </div>
-                            </a>
-                        {% endif %}
-                {%else%}
-                        <a href="{%url 'group:group_detail' group.id%}">
-                            <div class="common_group_wrap">
-                                <div>{{group.title}}</div>
-                                <div>팀 빌딩 종료까지 남은 시간</div>
-                                <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>
-                                {% for member in member_group_count %}
-                                    {% if member.group_name == group.title %}
-                                        <div>참여자수:{{member.count}}명</div>
-                                    {%endif%}
-                                {% endfor %}
-                            </div>
-                        </a>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% else %}
-            <a href="{% url 'common:signup' %}" class='primary_button'>회원가입</a>
-            <a href="{% url 'common:login' %}" class='secondary_button'>로그인</a>
+            <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div>
+            <div class='common_wrap_info'>
+                <div class='common_info_title'>효율적인 팀빌딩의 시작,</div>
+                <div>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀 활동을 지원합니다 .</div>
+                <div class="common_inner_btn">
+                    <button class='secondary_button'><a href="{% url 'common:login' %}" >로그인</a></button>
+                    <button class='primary_button'><a href="{% url 'common:signup' %}" >회원가입</a></button>
+                </div>
+        </div>
         {% endif %}
     <section>
     <script src={% static "js/main_page_time.js" %}  ></script>

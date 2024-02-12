@@ -5,6 +5,7 @@
 
 a{
     text-decoration-line: none;
+    all: unset;
 }
 
 ul, li{
