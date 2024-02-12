@@ -12,7 +12,7 @@
 
 <h1>아이디어 수정하기</h1>
 
-
+<!-- 가장최근 -->
 
 <form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" style="display: inline">
   {%csrf_token%}
