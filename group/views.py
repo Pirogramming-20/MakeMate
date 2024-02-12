@@ -585,16 +585,3 @@ def result(request, group_id):
     
     return render(request, 'group/result.html', context=ctx)
 
-def team_building(request, group_id):
-    group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group).order_by('-score')[:group.team_number]
-    members = MemberState.objects.filter(group = group) 
-    members_ability = []
-
-    for member_idx, member in enumerate(members):
-        members_ability.append(member.group_ability)
-
-    print(members_ability)
-
-    return render(request, 'group/result.html')
-
