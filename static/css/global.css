@@ -101,6 +101,7 @@ body {
 .home_btn,.back_btn{
     display: flex;
     align-items: center;
+    font-weight: bold;
 }
 
 .home_btn::before,.back_btn::before{
@@ -110,6 +111,5 @@ body {
     width: 18px;
     height: 18px;
     display: block;
+    filter: invert(100%);
 }
-
-
