@@ -492,12 +492,24 @@ def idea_delete(request, group_id, idea_id):
 def idea_detail(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
     
-    context = {
-        'group': group,
-        'idea': idea,
+    ideas_votes = {}
+    if user_state:
+        
+        ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
+        ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
+        ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
+
+    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2 or user_state.idea_vote3)
+
+    ctx = {
+        "group": group,
+        "idea" : idea,
+        "ideas_votes": ideas_votes,
+        "has_voted": has_voted,
     }
-    return render(request, 'group/group_idea_detail.html', context)
+    return render(request, 'group/group_idea_detail.html', ctx)
 
 def idea_download(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
