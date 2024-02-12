@@ -3,45 +3,61 @@
 {% block content %}
 
   <section>
-    <div>{{group_instance.title}}</div>
-    <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
-    <div>회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
-    <div>공유링크</div>
-    <div>링크를 사용하여 구성원과 모임을 공유할 수 있습니다.</div>
-    <div class="url_container">
+    <div class="admin_wrap_head">
+      <a href="{%url 'common:main_page'%}">
+        <div class='home_btn'>Home</div>
+      </a>
+      <div class="admin_inner_page_info">
+        <div class='admin_group_title'>{{group_instance.title}}</div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
+        <div>회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
+      </div>
+    </div>
+    <div class="admin_wrap_url">
+      <div class='admin_inner_url_info'>
+        <div>공유링크</div>
+        <div>링크를 사용하여 구성원과 모임을 공유할 수 있습니다.</div>
+      </div>
       <div class="group_member_url">
-        <span>참여자 링크 : {% url 'group:check_nonadmin' group_instance.id %}</span>
+        <div>참여자 링크</div>
+        <div>{% url 'group:check_nonadmin' group_instance.id %}</div>
         <div>비밀번호 : {{group_instance.password}}</div>
       </div>
       <div class="group_admin_url">
-        <span>운영진 링크 : {% url 'group:check_admin' group_instance.id %}</span>
+        <div>운영진 링크</div>
+        <div>{% url 'group:check_admin' group_instance.id %}</div>
         <div>비밀번호 : {{group_instance.password}}</div>
       </div>
     </div>
-    <a href="{%url 'common:main_page'%}"><button class='secondary_button'>홈으로</button></a>
-  </section>
-  <section>
-    <div>회원</div>
-    {% for admin_user in admin_states_users %}
-      <div class="user_container">
-        <div class='card_title'>{{admin_user.username}}</div>
-        <button class='primary_badge' data-user-id="{{ admin_user.id }}">운영진</button>
-        <form action="{% url 'group:user_delete' group_instance.id user.id %}" method="POST">
-          {% csrf_token %}
-          <button class='cta_red_badge' type="submit">삭제하기</button>
-        </form>
-      </div>
-    {% endfor %}
-    {% for member_user in member_states_users %}
-      <div class="user_container">
-        <div class='card_title' ><a href="{%url 'group:user_update' group_instance.id member_user.id %}">{{member_user.username}}</a></div>
-        <button class='secondary_badge' data-user-id="{{ member_user.id }}">비운영진</button>
-        <form action=" {%url 'group:user_delete' group_instance.id member_user.id %}" method="POST">
-          {% csrf_token %}
-          <button class='cta_red_badge' type="submit">삭제하기</button>
-        </form>
-      </div>
-    {% endfor %}
+    <div class='admin_wrap_members'>
+      <div class='admin_title_members'>회원</div>
+      {% for admin_user in admin_states_users %}
+        <div class="admin_user_wrap">
+          <div class='card_title'>{{admin_user.username}}</div>
+          <div class='inner_card_badge'>
+            <button class='primary_badge' data-user-id="{{ admin_user.id }}">운영진</button>
+            <form action="{% url 'group:user_delete' group_instance.id user.id %}" method="POST">
+              {% csrf_token %}
+              <button class='cta_red_badge' type="submit">삭제하기</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+      {% for member_user in member_states_users %}
+        <div class="admin_user_wrap">
+          <div class='card_title'>
+            <a href="{%url 'group:user_update' group_instance.id member_user.id %}">{{member_user.username}}</a>
+          </div>
+          <div class='inner_card_badge'>
+            <button class='cta_blue_badge' data-user-id="{{ member_user.id }}">비운영진</button>
+            <form action=" {%url 'group:user_delete' group_instance.id member_user.id %}" method="POST">
+              {% csrf_token %}
+              <button class='cta_red_badge' type="submit">삭제하기</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
   </section>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="{% static "js/admin_change.js" %}"></script>

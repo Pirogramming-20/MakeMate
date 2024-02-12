@@ -1,9 +1,10 @@
 :root{
     --color_main: #0bec12;
     --color_sub_dark: #292929;
-    --color_sub_bright: #35a67b;
+    --color_sub_bright: #35ab7b;
     --color_red_highlight: #c54422;
-    --color_blue_highlight: #007AFF;
+    --color_blue_highlight: #007aff;
+    --color_black_highlight:#333333;
     --color_bg_gray: #333333;
 
     --padding1: 0.8rem;
@@ -20,7 +21,7 @@
     --font_xlarge: 3.2rem;
     --font_xxlarge: 8rem;
 
-    --btn_border_radius: 2rem;
+    --btn_border_radius: 1rem;
     --badge_border_radius: 0.5rem;
     --card_border_radius: 1rem;
 }
