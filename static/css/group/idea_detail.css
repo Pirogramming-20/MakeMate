@@ -1,0 +1,29 @@
+body{
+    background-color: black;
+    width: 100%;
+}
+
+.idea_detail_btns{
+    margin: var(--padding6) 0;
+    display: flex;
+    gap: 5px;
+}
+
+.idea_create_btns > .primary_button{
+    border-radius: 1rem;
+    width: 19rem;
+}
+
+.group_detail_title{
+    color: var(--color_main);
+    line-height: var(--font_xlarge);
+    font-size: var(--font_xlarge);
+    font-weight: bold;
+}
+
+.idea_detail_title{
+    color: var(--color_main);
+    line-height: var(--font_xlarge);
+    font-size: var(--font_xlarge);
+    font-weight: bold;
+}

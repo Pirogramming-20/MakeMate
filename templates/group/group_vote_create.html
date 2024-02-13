@@ -1,6 +1,9 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% block content %}
+
+<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">< back</a>
+
 <h1>아이디어 투표하기</h1>
 
 <form method="post">
@@ -35,11 +38,13 @@
     {% endfor %}
   </select>
 
-  <button type="submit">투표하기</button>
-</form>
+  <div class="vote_create_btns">
+    <button type="submit" class="primary_button">투표하기</button>
+  </div>
+  </form>
 
-<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">이전</a>
 
+  
 <script src="{% static 'js/group_dropdowns.js' %}"></script>
 {% endblock %}
 

@@ -4,11 +4,11 @@
 <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
 <!-- 가장최근 -->
 <div class="container">
-    <h1>{{ group.title }}</h1>
+    <h1 class="group_detail_title" >{{ group.title }}</h1>
     
-    <p>
+    <p >
       <strong>
-        {{ idea.title }}
+        <p class="idea_detail_title">{{ idea.title }}</p>
         {% if ideas_votes %}
           {% if idea.id == ideas_votes.idea_vote1_id %} 
             <span>1지망</span>
@@ -37,8 +37,10 @@
 </div>
 {% if idea.author == request.user %}
     <!-- 내가 작성한 아이디어인 경우에만 수정 버튼 표시 -->
-    <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">내용 수정</a>
-{% endif %}
+    <div class="idea_detail_btns">
+      <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button">내용 수정</a>
+    </div>
+    {% endif %}
 
 <!-- 내 아이디어 삭제 
 {% if request.user == idea.author %}

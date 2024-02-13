@@ -3,18 +3,19 @@ body{
     width: 100%;
 }
 
-.idea_modify_btns{
+
+.idea_create_btns{
     margin: var(--padding6) 0;
     display: flex;
     gap: 5px;
 }
 
-.idea_modify_btns > .primary_button{
+.idea_create_btns > .primary_button{
     border-radius: 1rem;
     width: 19rem;
 }
 
-.idea_modify_btns > .cta_del_button{
+.idea_create_btns > .secondary_button{
     border-radius: 1rem;
     width: 11rem;
 }
