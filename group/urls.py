@@ -67,6 +67,7 @@ urlpatterns = [
         name="preresult_modify",
     ),
     path("<int:group_id>/result/", result, name="result"),
+    path("<int:group_id>/team_building/", team_building, name="team_building"),
 ]
 
 if settings.DEBUG:
