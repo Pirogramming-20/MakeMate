@@ -1,13 +1,8 @@
-section,.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members{
+.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members{
   display: flex;
   flex-direction: column;
 }
 
-section{
-  gap: var(--padding6) ;
-  margin: 8rem auto 0 auto;
-  padding: var(--padding4);
-}
 .admin_wrap_head>a{
   padding:var(--padding5) ;
 }
