@@ -13,6 +13,15 @@ body {
     font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+section {
+    display: flex;
+    width: 350px;
+    flex-direction: column;
+    gap: var(--padding6) ;
+    margin: 8rem auto;
+    padding: 0 var(--padding4);
+}
+
 .primary_button, .secondary_button, .cta_button,.cta_del_button{
     display: inline-block;
     width: 200px;
@@ -32,9 +41,22 @@ body {
     color: var(--color_main);
 }
 
+.primary_button_fill {
+    display: block;
+    width: 100%;
+    padding: 5px  0;
+    text-align: center;
+    border-radius: var(--btn_border_radius);
+    font-weight: bold;
+    background-color: var(--color_main);
+    color: black;
+    margin-top: var(--padding4);
+}
+
 .cta_button{
     background-color: var(--color_red_highlight);
-    color: white;   
+    background-color: var(--color_main);
+    color: black;
 }
 
 .cta_del_button{
@@ -106,6 +128,7 @@ body {
     display: flex;
     align-items: center;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .home_btn::before,.back_btn::before{
@@ -116,4 +139,95 @@ body {
     height: 18px;
     display: block;
     filter: invert(100%);
+}
+
+.inner_form_button {
+    padding-top: var(--padding4);
+}
+
+.wrap_title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding5);
+}
+
+.wrap_form, #form_container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding4);
+}
+
+.inner_form, #form_container > div, #form_container > p {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding1);
+}
+
+.form_highlight_content, .wrap_error {
+    color: var(--color_main);
+    font-size: var(--font_small);
+}
+
+input {
+    display: block;
+    width: calc(100% - 2 * var(--padding1));
+    height: var(--padding5);
+    border: 1px solid var(--color_main);
+    background-color: transparent;
+    color: white;
+    padding: 0 var(--padding1);
+}
+
+.title_content {
+    font-size: var(--font_xlarge);
+    color: var(--color_main);
+}
+
+.subtitle_content{
+    font-size: var(--font_large);
+    font-weight: bold;
+}
+
+.inner_title {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding4);
+}
+
+select {
+    /* 생략 */
+    color: var(--color_main);
+    background-color: transparent;
+  
+    padding: 0.6em 1.4em 0.5em 0.8em;
+    margin: 0;
+  
+    border: 1px solid var(--color_main);
+}
+  
+select:focus {
+    border-color: white;
+}
+  
+select:disabled {
+    opacity: 0.5;
+}
+
+option {
+    color: black;
+    background-color: transparent;
+}
+
+input:autofill {
+    background-color: transparent;
+    color: var(--color_main);
+}
+
+input:-webkit-autofill {
+    background-color: transparent;
+    color: var(--color_main);
+}
+
+input[type="date"], input[type="time"] {
+    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

@@ -40,7 +40,8 @@ class GroupDateForm(forms.ModelForm):
         time_attrs={
             'type':'time'
             },
-        )
+        ),
+        label = "결과 임시 발표일"
     )
 
     class Meta:
