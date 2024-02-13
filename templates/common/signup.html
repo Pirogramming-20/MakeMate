@@ -1,60 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
 <section>
-    <div>
-        <h3>회원가입</h3>
+    <div class="wrap_title">
+        <a href="{% url 'common:main_page' %}" class='home_btn'>Home</a>
+        <h3 class="title_content">회원가입</h3>
     </div>
-    <form method='POST' novalidate>
+    <form method='POST' class="wrap_form" autocomplete="off" novalidate>
         {% csrf_token %}
         <!-- 넌필드 오류 -->
         {% for error in form.non_field_errors %}
             <div>
-                <strong>{{ error }}</strong>
+                <span class="form_highlight_content">{{ error }}</span>
             </div>
         {% endfor %}
-        <div>
-            <label>아이디<i>*</i></label>
+        <div class="inner_form">
+            <label>아이디 <i class="form_highlight_content">*</i></label>
             <div>{{form.username}}</div>
             <!-- 필드 오류 -->
             {% if form.username.errors %}
-            <div>
+            <div class="form_highlight_content">
                 {{ form.username.errors }}
             </div>
             {% endif %}
-        <div>
-        <div>
-            <label>비밀번호<i>*</i></label>
+        </div>
+        <div class="inner_form">
+            <label>비밀번호 <i class="form_highlight_content">*</i></label>
             <div>{{form.password1}}</div>
             <!-- 필드 오류 -->
             {% if form.password1.errors %}
-            <div>
+            <div class="form_highlight_content">
                 {{ form.password1.errors }}
             </div>
             {% endif %}
-        <div>
-        <div>
-            <label>비밀번호 확인<i>*</i></label>
+        </div>
+        <div class="inner_form">
+            <label>비밀번호 확인 <i class="form_highlight_content">*</i></label>
             <div>{{form.password2}}</div>
             <!-- 필드 오류 -->
             {% if form.password2.errors %}
-            <div>
+            <div class="form_highlight_content">
                 {{ form.password2.errors }}
             </div>
             {% endif %}
-        <div>
-        <div>
-            <label>이메일 주소<i>*</i></label>
+        </div>
+        <div class="inner_form">
+            <label>이메일 주소 <i class="form_highlight_content">*</i></label>
             <div>{{form.email}}</div>
             <!-- 필드 오류 -->
             {% if form.email.errors %}
-            <div>
+            <div class="form_highlight_content">
                 {{ form.email.errors }}
             </div>
             {% endif %}
-        <div>
-        <div>
-            <button type='submit' class='primary_button'>회원가입</button>
-            <a href="{% url 'common:main_page' %}" class='secondary_button'>홈으로</a>
+        </div>
+        <div class="inner_form_button">
+            <button type='submit' class="primary_button_fill">Join</button>
         </div>
     </form>
 </section>
