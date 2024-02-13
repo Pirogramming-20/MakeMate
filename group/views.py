@@ -742,7 +742,7 @@ def team_building(request, group_id):
 
     maketeam(idea_list, members, project_fitness,
              group_id)  # 임시로 홈으로 리디렉션 되도록 설정함.
-
+    return redirect("/")
 
 def team_building2(group_id, members):
     group = Group.objects.get(id=group_id)
@@ -775,11 +775,11 @@ def team_building2(group_id, members):
 def maketeam(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
     print(project_fitness)
-    idea_list_copy = idea_list[:]
-    print(idea_list_copy)
-    members_copy = members[:]
-    print(members_copy)
-    if len(idea_list_copy) > 0:
+    idea_titles = idea_copy(idea_list)
+    print(idea_titles)
+    members_name = member_copy(members)
+    print(members_name)
+    if len(idea_titles) > 0:
         # 각열에서 가장 큰숫자의 인덱스 찾기
         argmax_columns = np.argmax(project_fitness, axis=0).astype(int)
         selected_column = int(
@@ -791,19 +791,53 @@ def maketeam(idea_list, members, project_fitness, group_id):
         # arrary_update
         project_fitness = np.delete(project_fitness, selected_row, axis=0)
         project_fitness = np.delete(project_fitness, selected_column, axis=1)
-        print(idea_list_copy)
-        print(members_copy)
+        print(idea_titles)
+        print(members_name)
         # 해당 그룹에 member 추가
         idea_list[selected_column].member.add(members[selected_row].user)
         members[selected_row].my_team_idea = idea_list[selected_column]
-        members_copy[selected_row].delete()
-        idea_list_copy[selected_column].delete()
+        members[selected_row].save()
+        del members_name[selected_row]
+        del idea_titles[selected_column]
         print("원본데이터에요 하하하하", members)
-        print('원본데이터터터텉터ㅓ',idea_list)
-        maketeam(idea_list_copy, members_copy, project_fitness, group_id)
+        print("원본데이터터터텉터ㅓ", idea_list)
+
+        idea_list = idea_change(idea_titles)
+        members = members_change(members_name)
+
+        maketeam(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:
             up_idea_list, up_members, up_project_fitness = team_building2(
                 group_id, members)
             maketeam(up_idea_list, up_members, up_project_fitness, group_id)
-    return redirect("/")
+
+
+def idea_copy(idea_list):
+    idea_titles = []
+    for idea in idea_list:
+        idea_titles.append(idea.title)
+    print(idea_titles)
+    return idea_titles
+
+
+def member_copy(members):
+    member_name = []
+    for member in members:
+        member_name.append(member.user.username)
+    return member_name
+
+
+def idea_change(idea_titles):
+    idea_list = []
+    for idea in idea_titles:
+        idea_list.append(Idea.objects.get(title=idea))
+    return idea_list
+
+
+def members_change(members_name):
+    members = []
+    for member in members_name:
+        members.append(
+            MemberState.objects.filter(user__username=member).first())
+    return members
