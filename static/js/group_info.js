@@ -3,10 +3,10 @@ let prev_data = new FormData();
 let prev_data_query = new URLSearchParams(prev_data).toString();
 
 document.getElementById('base_set_submit_btn').addEventListener('click', async ()=>{
-    prev_data_query = await changeInitialStage(state, prev_data);
+    prev_data_query = await changeStage(state, prev_data);
 })
 
-async function changeInitialStage(local_state, prev_data) {
+async function changeStage(local_state, prev_data) {
     const url = '/group/base_set/';
     const form_element = document.querySelector('form');
     const form_data = new FormData(form_element);
@@ -28,9 +28,52 @@ async function changeInitialStage(local_state, prev_data) {
 
     if (response.is_valid) {
         const next_state_messages = ['STEP 2. 상세 설정', 'STEP 3. 결과 발표 일정'];
+        const next_stage_html = [
+            `
+    <p>
+        <p>실력<p>
+        <span class="form_highlight_content">실력은 1(낮은 실력)부터 5(높은 실력)까지 입력 가능합니다.</span>
+        <span class="form_highlight_content">각 실력에 대한 설명을 작성할 수 있습니다.</span>
+    </p>
+    <p>
+        <label for="id_ability_description1">실력1 설명</label>
+        <input type="text" name="ability_description1" maxlength="100" id="id_ability_description1">
+    </p>
+    <p>
+        <label for="id_ability_description2">실력2 설명</label>
+        <input type="text" name="ability_description2" maxlength="100" id="id_ability_description2">
+    </p>
+    <p>
+        <label for="id_ability_description3">실력3 설명</label>
+        <input type="text" name="ability_description3" maxlength="100" id="id_ability_description3">
+    </p>
+    <p>
+        <label for="id_ability_description4">실력4 설명</label>
+        <input type="text" name="ability_description4" maxlength="100" id="id_ability_description4">
+    </p>
+    <p>
+        <label for="id_ability_description5">실력5 설명:</label>
+        <input type="text" name="ability_description5" maxlength="100" id="id_ability_description5">
+    </p>
+    <p>
+        <label for="id_choice">그룹 최대 투표 개수 <i class="form_highlight_content">*</i></label>
+        <span class="form_highlight_content">1인당 최대 투표 개수를 설정해주세요. 기본값은 3입니다.</span>
+        <span class="form_highlight_content">1~10까지의 자연수를 입력해주세요.</span>
+        <input type="number" name="choice" value="3" required id="id_choice">
+    </p>
+    `,
+    `
+    <p>
+        <label>결과 임시 발표일 <i class="form_highlight_content">*</i></label>
+        <span class="form_highlight_content">운영진에게 임시 결과가 발표되는 날짜를 설정합니다. 운영진은 결과를 수정할 수 있습니다.</span>
+        <span class="form_highlight_content">투표는 임시 발표일까지 운영되며, 이후에는 투표가 불가능합니다.</span>
+        <input type="date" name="end_date_0" required id="id_end_date_0"><input type="time" name="end_date_1" required id="id_end_date_1">    
+    </p>
+    `
+        ]
         if (local_state < 2){
             document.getElementById('state_desc').innerHTML = next_state_messages[local_state];
-            document.getElementById('form_container').innerHTML = response.form_html;
+            document.getElementById('form_container').innerHTML = next_stage_html[local_state];
 
             state += 1;
         }
@@ -48,7 +91,7 @@ async function changeInitialStage(local_state, prev_data) {
             showErrors(response);
         }
 
-        return prev_data
+        return prev_data_query
     }
 } 
 

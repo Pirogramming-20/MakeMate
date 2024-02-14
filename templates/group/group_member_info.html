@@ -20,6 +20,21 @@
         <div class="inner_form">
             <label>실력 <i class="form_highlight_content">*</i></label>
             <span class="form_highlight_content">실력은 1(낮은 실력)부터 5(높은 실력)까지 입력 가능합니다.</span>
+            {% if group.ability_description1 %}
+                <span class="form_highlight_content">실력 1: {{group.ability_description1}}</span>
+            {% endif %}
+            {% if group.ability_description2 %}
+                <span class="form_highlight_content">실력 2: {{group.ability_description2}}</span>
+            {% endif %}
+            {% if group.ability_description3 %}
+                <span class="form_highlight_content">실력 3: {{group.ability_description3}}</span>
+            {% endif %}
+            {% if group.ability_description4 %}
+                <span class="form_highlight_content">실력 4: {{group.ability_description4}}</span>
+            {% endif %}
+            {% if group.ability_description5 %}
+                <span class="form_highlight_content">실력 5: {{group.ability_description5}}</span>
+            {% endif %}
             <div>{{form.group_ability}}</div>
             <!-- 필드 오류 -->
             {% if form.group_ability.errors %}
