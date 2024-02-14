@@ -1,31 +1,54 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block head %}
-
-  {{ block.super }}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %} 
+{{ block.super }}
 <title>group_idea_modify</title>
 {% endblock %} 
 
 {% block content %}
-<a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}" class="btn"> < back</a>
+<div class="idea_modify_wrap_info">
+  <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}" class="btn"> < back</a>
 
-<h1>아이디어 수정하기</h1>
+  <div class="idea_modify_info_title">아이디어 수정하기</div>
 
-<!-- 가장최근 -->
+  <!-- 가장최근 -->
 
-<form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" style="display: inline">
-  {%csrf_token%}
-  {{form.as_p}} 
-  <div class ="idea_modify_btns" style="display: inline-block;">
-    <!-- 아이디어 삭제 버튼 -->
-    <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post" style="display: inline">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="delete" />
-      <button type="submit" class="cta_del_button">삭제</button>
-    </form>
-    <button type="'submit" class="primary_button">수정 완료</button>
-  </div>
-</form>
+  <form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" style="display: inline">
+    {%csrf_token%} 
+    <!-- 논필드 에러 표시 -->
+    {% if form.non_field_errors %}
+    <div class="error">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
 
+    <!-- 필드별 에러 표시 -->
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="display: block;">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="error">{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+      </p>
+    {% endfor %}
+    <div class="idea_modify_btns" style="display: inline-block">
+      <!-- 아이디어 삭제 버튼 -->
+      <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post" style="display: inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete" />
+        <button type="submit" class="cta_del_button">삭제</button>
+      </form>
+      <button type="'submit" class="primary_button">수정 완료</button>
+    </div>
+  </form>
+</div>
 
 {% endblock %}

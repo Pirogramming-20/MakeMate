@@ -41,7 +41,19 @@
   <div class="vote_create_btns">
     <button type="submit" class="primary_button">투표하기</button>
   </div>
-  </form>
+
+  <!-- 필드 에러 표시 -->
+  {% if form.errors %}
+  <div class="error">
+    {% for field in form %}
+      {% if field.errors %}
+        {{ field.label }}: {% for error in field.errors %}{{ error }}{% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</form>
 
 
   

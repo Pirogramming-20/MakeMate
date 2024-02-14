@@ -419,7 +419,7 @@ def group_detail(request, group_id):
     author_ideas = Idea.objects.filter(group=group, author=request.user)
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
     user_state = MemberState.objects.filter(user=request.user, group=group).first()
-
+    
     ideas_votes = {}
     if user_state:
         

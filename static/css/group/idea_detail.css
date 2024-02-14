@@ -3,6 +3,7 @@ body{
     width: 100%;
 }
 
+
 .idea_detail_btns{
     margin: var(--padding6) 0;
     display: flex;
