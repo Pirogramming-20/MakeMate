@@ -711,21 +711,64 @@ def calculate_project_pick(members, idea_list):
     return project_pick
 
 
-def team_building(request, group_id):
+# 리더 설정 보조함수
+def selected_idea_leader(idea_list, group):
+    for idea in idea_list:
+        idea.member.add(idea.author)
+        leader_state = MemberState.objects.get(group=group, user=idea.author)
+        leader_state.my_team_idea = idea
+        leader_state.save()
+
+
+# idea copy함수
+def idea_copy(idea_list):
+    idea_titles = []
+    for idea in idea_list:
+        idea_titles.append(idea.title)
+    return idea_titles
+
+
+# 멤버 copy함수
+def member_copy(members):
+    member_name = []
+    for member in members:
+        member_name.append(member.user.username)
+    return member_name
+
+
+# 원본데이터로 변환 함수
+def idea_change(idea_titles, group):
+    idea_list = []
+    for idea in idea_titles:
+        idea_list.append(Idea.objects.get(title=idea, group=group))
+    return idea_list
+
+
+# 원본데이터로 변환 함수
+def members_change(members_name):
+    members = []
+    for member in members_name:
+        members.append(
+            MemberState.objects.filter(user__username=member).first())
+    return members
+
+
+def start_team_building(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:group.team_number]
-    ##선정된 아이디어에 작성자는 팀원으로 넣기
-    selected_idea_leader(idea_list, group)
-    project_average_ability = []
-    # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
+
     if len(members) == 0:
         print("이미 팀빌딩이 완료 되었습니다")
         pass
     else:
+        ##선정된 아이디어에 작성자는 팀원으로 넣기
+        selected_idea_leader(idea_list, group)
+        project_average_ability = []
+        # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         # 나중에 "project_pick"을 만들 때 필요함.
         members_ability = (
             []
@@ -751,15 +794,7 @@ def team_building(request, group_id):
     return redirect("/")
 
 
-def selected_idea_leader(idea_list, group):
-    for idea in idea_list:
-        idea.member.add(idea.author)
-        leader_state = MemberState.objects.get(group=group, user=idea.author)
-        leader_state.my_team_idea = idea
-        leader_state.save()
-
-
-def team_building2(group_id, members):
+def team_building_cycle(group_id, members):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:group.team_number]
@@ -787,59 +822,28 @@ def team_building2(group_id, members):
     return idea_list, members, project_fitness  # 임시로 홈으로 리디렉션 되도록 설정함.
 
 
-def idea_copy(idea_list):
-    idea_titles = []
-    for idea in idea_list:
-        idea_titles.append(idea.title)
-    return idea_titles
-
-
-def member_copy(members):
-    member_name = []
-    for member in members:
-        member_name.append(member.user.username)
-    return member_name
-
-
-def idea_change(idea_titles):
-    idea_list = []
-    for idea in idea_titles:
-        idea_list.append(Idea.objects.get(title=idea))
-    return idea_list
-
-
-def members_change(members_name):
-    members = []
-    for member in members_name:
-        members.append(
-            MemberState.objects.filter(user__username=member).first())
-    return members
-
-
 def maketeam(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
+    # 사본 만들기
     idea_titles = idea_copy(idea_list)
     members_name = member_copy(members)
     if len(idea_titles) > 0:
-        print("idea리스트", idea_titles)
-        print("member리스트", members_name)
         # 각열에서 가장 큰숫자의 인덱스 찾기
         argmax_columns = np.argmax(project_fitness, axis=0).astype(int)
+        # 조건에 만족하는 팀&member 좌표 찾기
         selected_column = int(
             np.argmin(
                 project_fitness[argmax_columns.astype(int),
                                 range(project_fitness.shape[1])]).astype(int))
         selected_row = int(argmax_columns[selected_column])
-        print("column&row", selected_column, selected_row)
-        print("계산용", project_fitness)
         # arrary_update
         project_fitness = np.delete(project_fitness, selected_row, axis=0)
         project_fitness = np.delete(project_fitness, selected_column, axis=1)
-        print("update된 array", project_fitness)
         # 해당 그룹에 member 추가
         idea_list[selected_column].member.add(members[selected_row].user)
         members[selected_row].my_team_idea = idea_list[selected_column]
         members[selected_row].save()
+        # 추가된 인원&팀 삭제
         del members_name[selected_row]
         del idea_titles[selected_column]
 
@@ -847,11 +851,16 @@ def maketeam(idea_list, members, project_fitness, group_id):
             print("팀빌딩이 완료 되었습니다")
             return redirect("/")
         else:
-            idea_list = idea_change(idea_titles)
+            idea_list = idea_change(idea_titles, group)
             members = members_change(members_name)
             maketeam(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:
-            up_idea_list, up_members, up_project_fitness = team_building2(
+            up_idea_list, up_members, up_project_fitness = team_building_cycle(
                 group_id, members)
             maketeam(up_idea_list, up_members, up_project_fitness, group_id)
+
+
+""" ##팀빌딩 
+def MakeMate(group_id):
+    group=Group.objects.get(id=group_id) """
