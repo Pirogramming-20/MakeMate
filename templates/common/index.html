@@ -19,7 +19,7 @@
                 <div class='common_groups'>참여중인 모임</div>
                 {% comment %} admin_groups {% endcomment %}
                 {% for group in admin_groups %}
-                    {% if group.end_date.isoformat < current_time %}
+                    {% if group.end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.team_building.all  %}
                             <a href="{%url 'group:result' group.id %}">
                                 <div class="wrap_card">
@@ -77,7 +77,7 @@
                 {% endfor %}
                 {% comment %} member_groups {% endcomment %}
                 {% for group in member_groups %}
-                    {% if group.end_date.isoformat < current_time %}
+                    {% if group.end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.team_building.all  %}
                                 <a href="{%url 'group:result' group.id %}">
                                     <div class="wrap_card">
