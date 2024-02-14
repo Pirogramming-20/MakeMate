@@ -10,6 +10,13 @@
     color: black; 
 }
 
+@media screen and (min-width: 1024px){
+    #base_set_submit_btn {
+        width: 190px;
+        justify-content: center;
+    }
+}
+
 #state_desc{
     font-size: var(--font_large);
     font-weight: bold;

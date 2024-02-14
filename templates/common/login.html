@@ -33,8 +33,10 @@
             </div>
             {% endif %}
         </div>
-        <button type='submit' class='primary_button_fill'>로그인</button>
-        <input type="hidden" name="next" value="{{ next }}" />
+        <div class="inner_form_button">
+            <button type='submit' class='primary_button_fill'>로그인</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </div>
     </form>
 </section>
 {% endblock %}
