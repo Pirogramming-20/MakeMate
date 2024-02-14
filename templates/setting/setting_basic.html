@@ -2,27 +2,30 @@
 {% load static %}
 
 {% block content %}
-<div class="group_base_set_container">
-    <div>
-        <h3>모임 개설</h3>
-        <span id="state_desc">STEP 1. 기본 정보 작성</span>
+<section class="group_base_set_container">
+    <div class="wrap_title">
+        <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
+        <div class="inner_title">
+            <h3 class="title_content">모임 개설</h3>
+            <span id="state_desc">STEP 1. 기본 정보 작성</span>
+        </div>
     </div>
     <div>
-        <form action="{% url 'group:base_set' %}" method="post">
+        <form action="{% url 'group:base_set' %}" method="post" autocomplete="off">
             {% csrf_token %}
-
             <div id="form_container">
             {% for field in form %}
                 <div>
-                    <p>{{ field.label }}</p>
+                    <p>{{ field.label }} <i class="form_highlight_content">*</i></p>
                     {{ field }}
                 </div>
             {% endfor %}
             </div>
-            <a id="base_set_submit_btn" class="btn">다음</a>
-            <a href="{% url 'common:main_page' %}">홈으로</a>
         </form>
     </div>
-</div>
+    <div class="inner_form_button">
+        <a id="base_set_submit_btn" class="btn">다음</a>
+    </div>
+</section>
 <script src="{% static 'js/group_info.js' %}"></script>
 {% endblock %}
