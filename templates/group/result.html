@@ -1,35 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="preresult_admin_container">
-    <div class="preresult_admin_header_container">
-        <div class="preresult_admin_description">
-            <span>< back</span>
-            <p class="preresult_title">피로그래밍 20기</p>
-            <span>결과가 최종 발표되었습니다.</span>
+<section class='common_section_main_page'>
+    <div class="preresult_admin_container">
+        <div class="preresult_admin_header_container">
+            <div class="preresult_admin_description">
+                <span>< back</span>
+                <p class="preresult_title">피로그래밍 20기</p>
+                <span>결과가 최종 발표되었습니다.</span>
+            </div>
+            <button id="result_home_button" class="primary_button"><a href="/">홈으로</a></button>
         </div>
-        <button id="result_home_button" class="primary_button"><a href="/">홈으로</a></button>
-    </div>
-    <div class="preresult_admin_body_container">
-        <h1>팀빌딩 최종 결과</h1>
-        <div class="preresult_admin_idea_container">
-        {% for idea in idea_list %}
-            <div class="choice_idea_modal">
-                <h2 class="choice_idea_title">{{idea.title}}</h2>
-                <p class="choice_intro_title">{{idea.intro}}</p>
-                <div class="preresult_admin_idea_desc">
-                    <p>팀장</p>
-                    <div class="cta_button">{{idea.author.username}}</div>
-                    <p>전체 팀원</p>
-                    <div class="preresult_admin_member_list">
-                        {% for member in idea.member.all %}
-                            <div class="secondary_button">{{member.username}}</div>
-                        {% endfor %}
+        <div class="preresult_admin_body_container">
+            <h1>팀빌딩 최종 결과</h1>
+            <div class="preresult_admin_idea_container">
+            {% for idea in idea_list %}
+                <div class="choice_idea_modal">
+                    <h2 class="choice_idea_title">{{idea.title}}</h2>
+                    <p class="choice_intro_title">{{idea.intro}}</p>
+                    <div class="preresult_admin_idea_desc">
+                        <p>팀장</p>
+                        <div class="cta_button">{{idea.author.username}}</div>
+                        <p>전체 팀원</p>
+                        <div class="preresult_admin_member_list">
+                            {% for member in idea.member.all %}
+                                <div class="secondary_button">{{member.username}}</div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
+            {% endfor %}
             </div>
-        {% endfor %}
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

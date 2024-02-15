@@ -277,6 +277,9 @@ def preresult(request, group_id):
             return render(request, "preresult/preresult_admin.html", context=ctx)
         else:
             return redirect('/')
+    else:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
 
 
 def admin_page(request, group_id):
@@ -439,6 +442,9 @@ def preresult_modify(request, group_id):
                 return render(request, "preresult/preresult_modify.html", context=ctx)
         else:
             return redirect('/')
+    else:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
 
 
 def group_detail(request, group_id):
@@ -527,7 +533,7 @@ def idea_modify(request, group_id, idea_id):
             "idea": idea,
         }
         return render(request, "group/group_idea_modify.html", ctx)
-    elif state == State.ADMIN:
+    elif state == State.ADMIN and idea == None:
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
@@ -676,6 +682,10 @@ def result(request, group_id):  # 최종 결과 페이지
             return render(request, "group/result.html", context=ctx)
         else:
             return redirect('/')
+    else:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+
 
 
 def member_preresult(request, group_id):
@@ -706,6 +716,9 @@ def member_preresult(request, group_id):
             return render(request, "preresult/preresult_member.html", ctx)
         else:
             return redirect('/')
+    else:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
 
 
 @login_required
