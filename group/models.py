@@ -40,8 +40,7 @@ class Group(models.Model):
                                             blank=True)
     choice = models.IntegerField("그룹 최대 투표 개수", default=3, null=True)
     # array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
-    team_building = models.ManyToManyField(User,
-                                           related_name="user_groups")
+    is_end = models.BooleanField(default=False)
     end_date = models.DateTimeField(default=timezone.now().date() +
                                     timezone.timedelta(days=3))
 

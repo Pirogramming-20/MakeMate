@@ -607,6 +607,9 @@ def result(request, group_id):
     idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
 
+    group.is_end = True
+    group.save()
+
     ctx = {"idea_list": idea_list, "members": members, "group": group}
 
     return render(request, "group/result.html", context=ctx)
