@@ -97,6 +97,8 @@ class MemberState(models.Model):
                                      on_delete=models.CASCADE,
                                      related_name="my_team_idea_set",
                                      null=True)
+    def __str__(self):
+        return self.user.username
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group,
