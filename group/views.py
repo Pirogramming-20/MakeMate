@@ -309,7 +309,6 @@ def group_user_delete(request, group_id, user_id):
             admin_user_state = get_object_or_404(AdminState,
                                                  user__id=user_id,
                                                  group__id=group_id)
-            print("이거이거", admin_user_state)
             admin_user_state.delete()
             if MemberState.objects.filter(user__id=user_id,
                                           group__id=group_id).exists():
