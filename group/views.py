@@ -113,14 +113,15 @@ def redirect_by_auth(user, group_id):
     admin_state = AdminState.objects.filter(user=user,
                                             group_id=group_id).first()
 
+
+    if admin_state:
+        return State.ADMIN
+    
     if user_state:
         if user_state.group is None:
             return State.NO_HISTORY
         else:
             return State.WITH_HISTORY
-
-    if admin_state:
-        return State.ADMIN
 
     return State.NO_HISTORY
 
@@ -269,9 +270,13 @@ def preresult(request, group_id):
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
-    if state == State.ADMIN:
-        ctx = {"idea_list": idea_list, "members": members, "group": group}
-        return render(request, "preresult/preresult_admin.html", context=ctx)
+    current_time = timezone.now()
+    if current_time >= group.end_date:
+        if state == State.ADMIN:
+            ctx = {"idea_list": idea_list, "members": members, "group": group}
+            return render(request, "preresult/preresult_admin.html", context=ctx)
+        else:
+            return redirect('/')
 
 
 def admin_page(request, group_id):
@@ -294,6 +299,11 @@ def admin_page(request, group_id):
             "member_states_users": member_states_users,
         }
         return render(request, "admin/group_admin.html", ctx)
+    elif state == State.WITH_HISTORY:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+    else:
+        return redirect('/')
 
 
 # 운영진&비운영진 멤버 리스트뽑는 함수
@@ -349,7 +359,7 @@ def group_user_update(request, group_id, user_id):
         }
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
-        user_state = MemberState.objects.get(user_id=user_id)
+        user_state = MemberState.objects.get(group=group, user_id=user_id)
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
             form.save()
@@ -386,41 +396,45 @@ def preresult_modify(request, group_id):
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
-    if state == State.ADMIN:
-        if request.method == "POST":
-            selected_values = request.POST.get("team_modify").split(",")
-            member_id = int(selected_values[0])
-            idea_id = int(selected_values[1])
-            mod_mem = MemberState.objects.get(id=member_id)
-            prev_idea = mod_mem.my_team_idea
-            mod_idea = Idea.objects.get(id=idea_id)
+    current_time = timezone.now()
+    if current_time >= group.end_date:
+        if state == State.ADMIN:
+            if request.method == "POST":
+                selected_values = request.POST.get("team_modify").split(",")
+                member_id = int(selected_values[0])
+                idea_id = int(selected_values[1])
+                mod_mem = MemberState.objects.get(id=member_id)
+                prev_idea = mod_mem.my_team_idea
+                mod_idea = Idea.objects.get(id=idea_id)
 
-            # (전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
-            for idea in idea_list:
-                if idea.author == mod_mem.user:
-                    url = reverse("group:preresult", args=[group.id])
-                    return redirect(url)
+                # (전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
+                for idea in idea_list:
+                    if idea.author == mod_mem.user:
+                        url = reverse("group:preresult", args=[group.id])
+                        return redirect(url)
 
-            # (수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
-            if prev_idea != mod_idea:
-                prev_idea.member.remove(mod_mem.user)
-                prev_idea.save()
-            # (수정과정2)해당 멤버스테이트의 최종 팀을 수정한 아이디어의 팀으로 설정
-            mod_mem.my_team_idea = mod_idea
-            mod_mem.save()
-            # (수정과정3)수정한 아이디어의 멤버에 해당 멤버스테이트의 유저를 추가.
-            mod_idea.member.add(mod_mem.user)
-            mod_idea.save()
+                # (수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
+                if prev_idea != mod_idea:
+                    prev_idea.member.remove(mod_mem.user)
+                    prev_idea.save()
+                # (수정과정2)해당 멤버스테이트의 최종 팀을 수정한 아이디어의 팀으로 설정
+                mod_mem.my_team_idea = mod_idea
+                mod_mem.save()
+                # (수정과정3)수정한 아이디어의 멤버에 해당 멤버스테이트의 유저를 추가.
+                mod_idea.member.add(mod_mem.user)
+                mod_idea.save()
 
-            url = reverse("group:preresult", args=[group.id])
-            return redirect(url)
+                url = reverse("group:preresult", args=[group.id])
+                return redirect(url)
+            else:
+                ctx = {
+                    "members": members,
+                    "idea_list": idea_list,
+                    "group": group,
+                }
+                return render(request, "preresult/preresult_modify.html", context=ctx)
         else:
-            ctx = {
-                "members": members,
-                "idea_list": idea_list,
-                "group": group,
-            }
-            return render(request, "preresult/preresult_modify.html", context=ctx)
+            return redirect('/')
 
 
 def group_detail(request, group_id):
@@ -449,6 +463,8 @@ def group_detail(request, group_id):
             "has_voted": has_voted,
         }
         return render(request, "group/group_detail.html", ctx)
+    else:
+        return redirect('/')
 
 
 def idea_create(request, group_id):
@@ -475,6 +491,11 @@ def idea_create(request, group_id):
             "group": group,
         }
         return render(request, "group/group_idea_create.html", ctx)
+    elif state == State.ADMIN:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+    else:
+        return redirect('/')
 
 
 def idea_modify(request, group_id, idea_id):
@@ -502,6 +523,11 @@ def idea_modify(request, group_id, idea_id):
             "idea": idea,
         }
         return render(request, "group/group_idea_modify.html", ctx)
+    elif state == State.ADMIN:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+    else:
+        return redirect('/')
 
 
 def idea_delete(request, group_id, idea_id):
@@ -516,6 +542,11 @@ def idea_delete(request, group_id, idea_id):
         if request.method == "POST" and request.POST.get("action") == "delete":
             idea.delete()
             return redirect("group:group_detail", group_id=group.id)
+    elif state == State.ADMIN:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+    else:
+        return redirect('/')
 
 
 def idea_detail(request, group_id, idea_id):
@@ -529,6 +560,8 @@ def idea_detail(request, group_id, idea_id):
             "idea": idea,
         }
         return render(request, "group/group_idea_detail.html", context)
+    else:
+        return redirect('/')
 
 
 def idea_download(request, group_id, idea_id):
@@ -615,6 +648,11 @@ def vote_create(request, group_id):
                 "form": form
             },
         )
+    elif state == State.ADMIN:
+        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        return redirect(redirect_url)
+    else:
+        return redirect('/')
 
 
 def result(request, group_id):  # 최종 결과 페이지
@@ -624,9 +662,13 @@ def result(request, group_id):  # 최종 결과 페이지
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
-    if (state == State.WITH_HISTORY or state == State.ADMIN):
-        ctx = {"idea_list": idea_list, "members": members, "group": group}
-        return render(request, "group/result.html", context=ctx)
+    current_time = timezone.now()
+    if current_time >= group.end_date:
+        if (state == State.WITH_HISTORY or state == State.ADMIN):
+            ctx = {"idea_list": idea_list, "members": members, "group": group}
+            return render(request, "group/result.html", context=ctx)
+        else:
+            return redirect('/')
 
 
 def member_preresult(request, group_id):
@@ -637,22 +679,26 @@ def member_preresult(request, group_id):
                                             group=group).first()
     state = redirect_by_auth(request.user, group_id)
 
-    if (state == State.WITH_HISTORY or state == State.ADMIN):
-        ideas_votes = {}
-        if user_state:
-            ideas_votes["idea_vote1_id"] = (user_state.idea_vote1.id
-                                            if user_state.idea_vote1 else None)
-            ideas_votes["idea_vote2_id"] = (user_state.idea_vote2.id
-                                            if user_state.idea_vote2 else None)
-            ideas_votes["idea_vote3_id"] = (user_state.idea_vote3.id
-                                            if user_state.idea_vote3 else None)
-        ctx = {
-            "group": group,
-            "idea_list": idea_list,
-            "ideas_votes": ideas_votes,
-        }
+    current_time = timezone.now()
+    if current_time >= group.end_date:
+        if (state == State.WITH_HISTORY or state == State.ADMIN):
+            ideas_votes = {}
+            if user_state:
+                ideas_votes["idea_vote1_id"] = (user_state.idea_vote1.id
+                                                if user_state.idea_vote1 else None)
+                ideas_votes["idea_vote2_id"] = (user_state.idea_vote2.id
+                                                if user_state.idea_vote2 else None)
+                ideas_votes["idea_vote3_id"] = (user_state.idea_vote3.id
+                                                if user_state.idea_vote3 else None)
+            ctx = {
+                "group": group,
+                "idea_list": idea_list,
+                "ideas_votes": ideas_votes,
+            }
 
-        return render(request, "preresult/preresult_member.html", ctx)
+            return render(request, "preresult/preresult_member.html", ctx)
+        else:
+            return redirect('/')
 
 
 @login_required
@@ -663,34 +709,38 @@ def vote_modify(request, group_id):
     vote, _ = Vote.objects.get_or_create(user=user, group=group)
     own_ideas = Idea.objects.filter(group=group, author=user)
     ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user)
+    state = redirect_by_auth(user, group_id)
 
-    if request.method == "POST":
-        form = VoteForm(request.POST, instance=vote, group_id=group.id)
-        if form.is_valid():
-            vote_instance = form.save(commit=False)
+    if state == State.WITH_HISTORY:
+        if request.method == "POST":
+            form = VoteForm(request.POST, instance=vote, group_id=group.id)
+            if form.is_valid():
+                vote_instance = form.save(commit=False)
 
-            user_state = MemberState.objects.get(user=user, group=group)
-            user_state.idea_vote1 = vote_instance.idea_vote1
-            user_state.idea_vote2 = vote_instance.idea_vote2
-            user_state.idea_vote3 = vote_instance.idea_vote3
-            user_state.save()
+                user_state = MemberState.objects.get(user=user, group=group)
+                user_state.idea_vote1 = vote_instance.idea_vote1
+                user_state.idea_vote2 = vote_instance.idea_vote2
+                user_state.idea_vote3 = vote_instance.idea_vote3
+                user_state.save()
 
-            messages.success(request, "투표가 수정되었습니다.")
-            return redirect("group:group_detail", group_id=group.id)
+                messages.success(request, "투표가 수정되었습니다.")
+                return redirect("group:group_detail", group_id=group.id)
 
+        else:
+            form = VoteForm(instance=vote, group_id=group.id)
+
+        return render(
+            request,
+            "group/group_vote_modify.html",
+            {
+                "form": form,
+                "group": group,
+                "vote": vote,
+                "ideas_for_voting": ideas_for_voting,
+            },
+        )
     else:
-        form = VoteForm(instance=vote, group_id=group.id)
-
-    return render(
-        request,
-        "group/group_vote_modify.html",
-        {
-            "form": form,
-            "group": group,
-            "vote": vote,
-            "ideas_for_voting": ideas_for_voting,
-        },
-    )
+        return redirect("/")
 
 
 def calculate_members_ability(members):
