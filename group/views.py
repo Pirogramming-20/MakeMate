@@ -338,7 +338,7 @@ def group_user_update(request, group_id, user_id):
         user = User.objects.get(id=user_id)
         user_state = MemberState.objects.get(user=user, group=group)
         form = NonAdminInfoForm(instance=user_state)
-        idea = Idea.objects.get(group=group, author=user)
+        idea = Idea.objects.filter(group=group, author=user)
         ctx = {
             "form": form,
             "group": group,

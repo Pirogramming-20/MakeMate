@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
+    <div class="wrap_main_img">
+        <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
+    </div>
     <section class='common_section_main_page'>
         {% if user.is_authenticated %}
         <div class="common_wrap_login_info">
@@ -18,6 +21,8 @@
             <div class='common_section_group_list'>
                 <div class='common_groups'>참여중인 모임</div>
                 {% comment %} admin_groups {% endcomment %}
+                <div class="wrap_wrap_card">
+                {% if admin_groups %}
                 {% for group in admin_groups %}
                     {% if group.end_date.isoformat < current_time %}
                         {% comment %} {% if group.team_building.all  %} 이부분 수정 필요 {% endcomment %}
@@ -126,9 +131,13 @@
                             </a>
                     {% endif %} 
                 {% endfor %}
+                </div>
+                {% else %}
+                    <div>참여중인 모임이 없습니다.</div>
+                {% endif %}
             </div>
         {% else %}
-            <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div>
+            {% comment %} <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div> {% endcomment %}
             <div class='common_wrap_info'>
                 <div class='common_info_title'>효율적인 팀빌딩의 시작,</div>
                 <div>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀 활동을 지원합니다 .</div>
@@ -138,6 +147,6 @@
                 </div>
         </div>
         {% endif %}
-    <section>
+    </section>
     <script src={% static "js/main_page_time.js" %}  ></script>
 {% endblock %}
