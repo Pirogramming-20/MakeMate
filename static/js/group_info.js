@@ -7,7 +7,7 @@ document.getElementById('base_set_submit_btn').addEventListener('click', async (
 })
 
 async function changeInitialStage(local_state, prev_data) {
-    const url = '/group/base_set/';
+    const url = '/group_setting/';
     const form_element = document.querySelector('form');
     const form_data = new FormData(form_element);
     const csrf_token = getCookie('csrftoken');
@@ -35,7 +35,7 @@ async function changeInitialStage(local_state, prev_data) {
             state += 1;
         }
         else {
-            window.location.href = `/group/share/${response.group_id}`;
+            window.location.href = `/group_setting/share/${response.group_id}`;
         }
         
         return new URLSearchParams(response.prev_data).toString();
@@ -48,7 +48,7 @@ async function changeInitialStage(local_state, prev_data) {
             showErrors(response);
         }
 
-        return prev_data
+        return prev_data_query
     }
 } 
 

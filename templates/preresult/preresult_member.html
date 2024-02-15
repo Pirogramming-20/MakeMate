@@ -15,7 +15,7 @@
         {% for idea in idea_list %}
         <div class="preresult_member_idea_desc">
             <h3>
-            <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
+            <a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
                 {{ idea.title }}
             </a>
             </h3>

@@ -28,8 +28,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'common.apps.CommonConfig',
-    'group.apps.GroupConfig',
+    'apps.common.apps.CommonConfig',
+    'apps.group.apps.GroupConfig',
+    'apps.group_admin.apps.GroupAdminConfig',
+    'apps.group_setting.apps.GroupSettingConfig',
+    'apps.preresult.apps.PreresultConfig',
+    'apps.idea.apps.IdeaConfig',
 ]
 
 MIDDLEWARE = [

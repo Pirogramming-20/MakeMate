@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    <div class="wrap_title">
+        <a href="{% url 'common:main_page' %}" class='home_btn'>Home</a>
+        <div class="inner_title">
+            <h3 class="title_content">{{group.title}}</h3>
+            <span class="subtitle_content">그룹 가입하기 (운영자)</span>
+        </div>
+    </div>
+    <!-- 넌필드 오류 -->
+    {% for error in form.non_field_errors %}
+    <div class="form_highlight_content">
+        {{ error }}
+    </div>
+    {% endfor %}
+    <form method='post' action={% url 'group_setting:check_admin' group_id=group.id %} class="wrap_form" novalidate>
+        {% csrf_token %}
+        <div class="inner_form">
+            <label>비밀번호를 입력해주세요.</label>
+            <div>{{form.password}}</div>
+            <!-- 필드 오류 -->
+            {% if is_wrong %}
+            <div class="form_highlight_content">
+                비밀번호가 일치하지 않습니다. 다시 입력해주세요.
+            </div>
+            {% endif %}
+        </div>
+        <button type='submit' class='primary_button_fill'>그룹 가입</button>
+    </form>
+ 
+</section>
+{% endblock %}

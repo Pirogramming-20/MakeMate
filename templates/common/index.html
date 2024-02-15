@@ -12,7 +12,7 @@
             <div class='common_title_txt'>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀활동을 지원합니다.</div>
             <div class="common_inner_btn">
                 <button class='secondary_button' ><a href="{% url 'common:logout' %}">로그아웃</a> </button>
-                <button class='primary_button' ><a href="{% url 'group:base_set' %}">모임개설</a></button>
+                <button class='primary_button' ><a href="{% url 'group_setting:base_set' %}">모임개설</a></button>
             </div>
         </div>
             <div class='common_section_group_list'>
@@ -39,7 +39,7 @@
                                     </div>
                             </a>
                         {% else %}
-                            <a href="{%url 'group:preresult' group.id%}">
+                            <a href="{%url 'preresult:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div class='inner_card_badge'>
@@ -58,7 +58,7 @@
                             </a>
                         {% endif %}
                     {%else%}
-                        <a href="{%url 'group:admin_page' group.id%}">
+                        <a href="{%url 'group_admin:admin_page' group.id%}">
                             <div class="wrap_card">
                                 <div class='card_title'>{{group.title}}</div>
                                 <div><button class='primary_badge'>운영진</button></div>
@@ -94,7 +94,7 @@
                                     </div>
                                 </a>
                             {% else %}
-                                <a href="{%url 'group:member_preresult' group.id%}">
+                                <a href="{%url 'preresult:member_preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div><button class='cta_red_badge'>임시종료</button></div>

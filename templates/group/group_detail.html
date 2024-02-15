@@ -13,12 +13,12 @@
         <span>원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
     </div>
     <div class="group_detail_btns">
-      <button class="secondary_button"><a href="{% url 'group:group_vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
+      <button class="secondary_button"><a href="{% url 'idea:group_vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
       {% if not author_ideas %}
-        <button class="primary_button"><a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a></button>
+        <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a></button>
       {% else %}
         {% for idea in author_ideas %}
-          <button class="primary_button"><a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a></button>
+          <button class="primary_button"><a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정하기</a></button>
         {% endfor %}
       {% endif %}
     </div>
@@ -29,7 +29,7 @@
       <h2>나의 아이디어</h2>
     {% for idea in author_ideas %}
       <div class="group_detail_idea_desc">
-        <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+        <h3><a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
         <p>{{ idea.content }}</p>
         <span>{{idea.author}}</span>
       </div>
@@ -43,7 +43,7 @@
     {% for idea in other_ideas %}
       <div class="group_detail_idea_desc">
         <h3>
-          <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
+          <a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
             {{ idea.title }}
           </a>
         </h3>

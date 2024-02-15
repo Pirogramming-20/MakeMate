@@ -3,7 +3,7 @@
   <div>{{group.title}}</div>
   <div>{{user}}</div>
   <section>
-  <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
+  <form method='post' action={% url 'group_admin:user_update' group.id user_state.user.id %}>
       {% csrf_token %}
       <div>
           <label>실력<i>*</i></label>
@@ -19,7 +19,7 @@
       <button type='submit' class='primary_button'>회원 정보 수정하기</button>
       <a href="{% url 'common:main_page'%}" class='secondary_button'>홈으로</a>
   </form>
-  <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
+  <form action=" {%url 'group_admin:user_delete' group.id user_state.user.id %}" method="POST">
     {% csrf_token %}
     <button class='cta_button' type="submit">삭제하기</button>
   </form>

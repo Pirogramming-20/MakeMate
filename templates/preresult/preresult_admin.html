@@ -9,7 +9,7 @@
             <span>결과가 임시발표되었습니다. 내용을 수정한 뒤 전체 구성원에게 공지할 수 있습니다.</span>
         </div>
         <div class="preresult_btns">
-            <button class="primary_button"><a href="{% url 'group:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
+            <button class="primary_button"><a href="{% url 'preresult:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
             <button class="secondary_button"><a href="{% url 'group:result' group.pk %}">발표하기</a></button>
         </div>
     </div>
