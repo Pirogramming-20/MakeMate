@@ -7,6 +7,7 @@
   gap: var(--padding6) ;
   margin: 8rem auto 0 auto;
   padding: var(--padding4);
+  width: 350px;
 }
 .admin_wrap_head>a{
   padding:var(--padding5) ;

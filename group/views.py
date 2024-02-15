@@ -349,7 +349,7 @@ def group_user_update(request, group_id, user_id):
         }
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
-        user_state = MemberState.objects.get(user_id=user_id)
+        user_state = MemberState.objects.get(user_id=user_id, group=group)
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
             form.save()

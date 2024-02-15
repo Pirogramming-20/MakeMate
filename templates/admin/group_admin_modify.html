@@ -1,56 +1,63 @@
 {% extends 'base.html' %}
 {% block content %}
   <section class='admin_section_modify'>
-    <div>
+    <div  class='admin_wrap_modify_header'>
       <a href="{%url 'group:admin_page' group.id%}"><button class='home_btn'>back</button></a>
-      <div>{{group.title}}</div>
-      <div>{{user}}</div>
+      <div class='admin_modify_group'>{{group.title}}</div>
+      <div class='admin_modify_user'>{{user}}</div>
     </div>
-    <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
-        {% csrf_token %}
-        <div>
-            <label>실력</label>
-            <div>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
-            <div>{{group.ability_description1}}</div>
-            <div>{{group.ability_description2}}</div>
-            <div>{{group.ability_description3}}</div>
-            <div>{{group.ability_description4}}</div>
-            <div>{{group.ability_description5}}</div>
-            <div>{{form.group_ability}}</div>
-            <!-- 필드 오류 -->
-            {% if form.group_ability.errors %}
-            <div>
-                {{ form.group_ability.errors }}
-            </div>
-            {% endif %}
-        <div>
-        <button type='submit' class='primary_button'>회원 정보 수정하기</button>
-    </form>
-      <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
-        {% csrf_token %}
-        <button class='cta_button' type="submit">삭제하기</button>
+    <div class='admin_wrap_modify_info'>
+      <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
+          {% csrf_token %}
+          <div class='admin_inner_info'>
+              <label>실력</label>
+              <div class='card_contents_green'>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
+              <div class='card_contents_green'>
+                <div>실력1: {{group.ability_description1}}</div>
+                <div>실력2:{{group.ability_description2}}</div>
+                <div>실력3:{{group.ability_description3}}</div>
+                <div>실력4:{{group.ability_description4}}</div>
+                <div>실력5:{{group.ability_description5}}</div>
+              </div>
+              <div>{{form.group_ability}}</div>
+              <!-- 필드 오류 -->
+              {% if form.group_ability.errors %}
+              <div>
+                  {{ form.group_ability.errors }}
+              </div>
+              {% endif %}
+          <div>
+          <div class="admin_wrap_modify_btn">
+            <button type='submit' class='primary_button'>회원 정보 수정</button>
+            <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
+              {% csrf_token %}
+              <button class='cta_del_button' type="submit">삭제</button>
+            </form>
+          </div>
       </form>
-
-
-      <div class='tset'>
-        <div>작성한 아이디어</div>
+    </div>
+    <div class='admin_warp_user_idea'>
+      <div class="admin_inner_idea_header">
+        <div class='admin_written_idea'>작성한 아이디어</div>
         <form action=" {%url 'group:idea_delete' group.id idea.id%}" method="POST">
           {% csrf_token %}
           <button class='cta_red_badge' type="submit">삭제</button>
         </form>
-        <div>{{idea.title}}</div>
-        <div>{{idea.intro}}</div>
-        {% if idea.file %}
-            <p><strong>첨부파일:</strong></p>
-            <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
-                {% csrf_token %}
-                <button>다운로드</button>
-            </form>
-            <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
-        {% endif %}
-        <div>{{idea.content}}</div>
       </div>
+      <div>{{idea.title}}</div>
+      <div>{{idea.intro}}</div>
+      {% if idea.file %}
+          <p><strong>첨부파일:</strong></p>
+          <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
+              {% csrf_token %}
+              <button>다운로드</button>
+          </form>
+          <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
+      {% endif %}
+      <div>{{idea.content}}</div>
+    </div>
   </section>
+
 
 
 {% endblock %}
