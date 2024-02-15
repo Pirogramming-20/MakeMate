@@ -1,0 +1,48 @@
+.admin_section_modify{
+  margin: 80px auto 0 auto;
+  padding:  0 var(--padding4);
+  width: 350px;
+}
+.admin_wrap_modify_header{
+  margin-bottom: var(--padding6);
+}
+.admin_modify_group{
+  font-size: var(--font_xlarge);
+  color: var(--color_main);
+  font-weight: bold;
+  margin-top: var(--padding5) ;
+}
+.admin_modify_user{
+  font-weight: bold;
+  font-size: var(--font_large);
+  margin-top: var(--padding4);
+}
+
+.admin_inner_info{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding2);
+}
+.admin_wrap_modify_btn{
+  display: flex;
+  gap: var(--padding1) ;
+  margin: var(--padding6) 0;
+}
+.admin_wrap_modify_btn> .primary_button{
+  width: 330px;
+}
+.admin_warp_user_idea{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding2);
+}
+
+.admin_inner_idea_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin_written_idea{
+  font-weight: bold;
+  font-size: var(--font_large);
+}

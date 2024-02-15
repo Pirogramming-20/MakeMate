@@ -1,7 +1,7 @@
 /* 비 로그인 css */
 .common_wrap_info{
   padding: 0 1rem;
-  width: 300px;
+  width: 350px;
   margin: 0 auto;
 
 }
@@ -29,8 +29,8 @@
   justify-content: flex-end;
 }
 .common_main_img > img{
-  height: 360px;
-  width: 340px;
+  height: 356px;
+  width: 393px;
 }
 @media screen and (min-width:1000px) {
   .common_main_img{

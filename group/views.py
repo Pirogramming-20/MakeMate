@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from common.models import User
-from .models import Group, MemberState, AdminState, Idea, Vote 
+from .models import Group, MemberState, AdminState, Idea, Vote
 from .forms import *
 
 
@@ -286,6 +286,7 @@ def admin_page(request, group_id):
         "group_instance": group_instance,
         "admin_states_users": admin_states_users,
         "member_states_users": member_states_users,
+        "user": request.user,
     }
     return render(request, "admin/group_admin.html", ctx)
 
@@ -309,13 +310,15 @@ def group_user_delete(request, group_id, user_id):
                                                  user__id=user_id,
                                                  group__id=group_id)
             admin_user_state.delete()
-            member_user_state = get_object_or_404(MemberState,
-                                                  user__id=user_id,
+            if MemberState.objects.filter(user__id=user_id,
+                                          group__id=group_id).exists():
+                member_user_state = get_object_or_404(MemberState,
+                                                      user__id=user_id,
+                                                      group__id=group_id)
+                member_idea = Idea.objects.filter(author__id=user_id,
                                                   group__id=group_id)
-            member_idea = Idea.objects.filter(author__id=user_id,
-                                              group__id=group_id)
-            member_idea.delete()
-            member_user_state.delete()
+                member_idea.delete()
+                member_user_state.delete()
         elif MemberState.objects.filter(user__id=user_id,
                                         group__id=group_id).exists():
             member_user_state = get_object_or_404(MemberState,
@@ -325,7 +328,7 @@ def group_user_delete(request, group_id, user_id):
                                               group__id=group_id)
             member_idea.delete()
             member_user_state.delete()
-        return redirect("group:admin_page", group_id=group_id)
+    return redirect("group:admin_page", group_id=group_id)
 
 
 # patch말고 일단 POST
@@ -335,15 +338,17 @@ def group_user_update(request, group_id, user_id):
         user = User.objects.get(id=user_id)
         user_state = MemberState.objects.get(user=user, group=group)
         form = NonAdminInfoForm(instance=user_state)
+        idea = Idea.objects.get(group=group, author=user)
         ctx = {
             "form": form,
             "group": group,
             "user_state": user_state,
-            "user": user
+            "user": user,
+            "idea": idea,
         }
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
-        user_state = MemberState.objects.get(user_id=user_id)
+        user_state = MemberState.objects.get(user_id=user_id, group=group)
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
             form.save()
@@ -373,7 +378,7 @@ def admin_delete(request, group_id):
     return JsonResponse({"message": "AdminState deleted successfully"})
 
 
-def preresult_modify(request, group_id): 
+def preresult_modify(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.all().order_by("-score")[:group.team_number]
     members = MemberState.objects.filter(group=group)
@@ -418,16 +423,17 @@ def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     author_ideas = Idea.objects.filter(group=group, author=request.user)
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
-    user_state = MemberState.objects.filter(user=request.user, group=group).first()
+    user_state = MemberState.objects.filter(user=request.user,
+                                            group=group).first()
 
     ideas_votes = {}
     if user_state:
-        
         ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
         ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
         ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
 
-    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2 or user_state.idea_vote3)
+    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
+                                or user_state.idea_vote3)
 
     ctx = {
         "group": group,
@@ -637,30 +643,33 @@ def vote_modify(request, group_id):
     user = request.user
 
     vote, _ = Vote.objects.get_or_create(user=user, group=group)
-    own_ideas = Idea.objects.filter(group=group, author=user)  
-    ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user)  
+    own_ideas = Idea.objects.filter(group=group, author=user)
+    ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = VoteForm(request.POST, instance=vote, group_id=group.id)
         if form.is_valid():
             vote_instance = form.save(commit=False)
-            
+
             user_state = MemberState.objects.get(user=user, group=group)
             user_state.idea_vote1 = vote_instance.idea_vote1
             user_state.idea_vote2 = vote_instance.idea_vote2
             user_state.idea_vote3 = vote_instance.idea_vote3
             user_state.save()
-            
-            messages.success(request, '투표가 수정되었습니다.')
-            return redirect('group:group_detail', group_id=group.id)
+
+            messages.success(request, "투표가 수정되었습니다.")
+            return redirect("group:group_detail", group_id=group.id)
 
     else:
         form = VoteForm(instance=vote, group_id=group.id)
 
-    return render(request, 'group/group_vote_modify.html', {
-        'form': form,
-        'group': group,
-        'vote': vote,
-        'ideas_for_voting': ideas_for_voting
-    })
-
+    return render(
+        request,
+        "group/group_vote_modify.html",
+        {
+            "form": form,
+            "group": group,
+            "vote": vote,
+            "ideas_for_voting": ideas_for_voting,
+        },
+    )
