@@ -1,31 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div>{{group.title}}</div>
-  <div>{{user}}</div>
-  <section>
-  <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
-      {% csrf_token %}
-      <div>
-          <label>실력<i>*</i></label>
-          <div>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
-          <div>{{form.group_ability}}</div>
-          <!-- 필드 오류 -->
-          {% if form.group_ability.errors %}
-          <div>
-              {{ form.group_ability.errors }}
-          </div>
-          {% endif %}
-      <div>
-      <button type='submit' class='primary_button'>회원 정보 수정하기</button>
-      <a href="{% url 'common:main_page'%}" class='secondary_button'>홈으로</a>
-  </form>
-  <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
-    {% csrf_token %}
-    <button class='cta_button' type="submit">삭제하기</button>
-  </form>
+  <section class='admin_section_modify'>
+    <div>
+      <a href="{%url 'group:admin_page' group.id%}"><button class='home_btn'>back</button></a>
+      <div>{{group.title}}</div>
+      <div>{{user}}</div>
+    </div>
+    <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
+        {% csrf_token %}
+        <div>
+            <label>실력</label>
+            <div>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
+            <div>{{group.ability_description1}}</div>
+            <div>{{group.ability_description2}}</div>
+            <div>{{group.ability_description3}}</div>
+            <div>{{group.ability_description4}}</div>
+            <div>{{group.ability_description5}}</div>
+            <div>{{form.group_ability}}</div>
+            <!-- 필드 오류 -->
+            {% if form.group_ability.errors %}
+            <div>
+                {{ form.group_ability.errors }}
+            </div>
+            {% endif %}
+        <div>
+        <button type='submit' class='primary_button'>회원 정보 수정하기</button>
+    </form>
+      <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
+        {% csrf_token %}
+        <button class='cta_button' type="submit">삭제하기</button>
+      </form>
 
+
+      <div class='tset'>
+        <div>작성한 아이디어</div>
+        <form action=" {%url 'group:idea_delete' group.id idea.id%}" method="POST">
+          {% csrf_token %}
+          <button class='cta_red_badge' type="submit">삭제</button>
+        </form>
+        <div>{{idea.title}}</div>
+        <div>{{idea.intro}}</div>
+        {% if idea.file %}
+            <p><strong>첨부파일:</strong></p>
+            <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
+                {% csrf_token %}
+                <button>다운로드</button>
+            </form>
+            <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
+        {% endif %}
+        <div>{{idea.content}}</div>
+      </div>
   </section>
-
 
 
 {% endblock %}

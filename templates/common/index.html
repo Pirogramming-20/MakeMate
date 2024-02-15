@@ -20,7 +20,7 @@
                 {% comment %} admin_groups {% endcomment %}
                 {% for group in admin_groups %}
                     {% if group.end_date.isoformat < current_time %}
-                        {% if group.team_building.all  %}
+                        {% comment %} {% if group.team_building.all  %} 이부분 수정 필요 {% endcomment %}
                             <a href="{%url 'group:result' group.id %}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
@@ -38,7 +38,7 @@
                                                                         </div>
                                     </div>
                             </a>
-                        {% else %}
+                        {% comment %} {% else %} {% endcomment %}
                             <a href="{%url 'group:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
@@ -56,7 +56,7 @@
                                                                         </div>
                                     </div>
                             </a>
-                        {% endif %}
+                        {% comment %} {% endif %} {% endcomment %}
                     {%else%}
                         <a href="{%url 'group:admin_page' group.id%}">
                             <div class="wrap_card">
@@ -78,7 +78,7 @@
                 {% comment %} member_groups {% endcomment %}
                 {% for group in member_groups %}
                     {% if group.end_date.isoformat < current_time %}
-                        {% if group.team_building.all  %}
+                        {% comment %} {% if group.team_building.all  %} 이부분도 수정{% endcomment %}
                                 <a href="{%url 'group:result' group.id %}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                 </a>
-                            {% else %}
+                            {% comment %} {% else %} {% endcomment %}
                                 <a href="{%url 'group:member_preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
@@ -108,7 +108,7 @@
                                         </div>
                                     </div>
                                 </a>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                     {%else%}
                             <a href="{%url 'group:group_detail' group.id%}">
                                 <div class="wrap_card">
@@ -124,7 +124,7 @@
                                     </div>
                                 </div>
                             </a>
-                    {% endif %}
+                    {% endif %} 
                 {% endfor %}
             </div>
         {% else %}

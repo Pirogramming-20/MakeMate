@@ -1,0 +1,8 @@
+.admin_section_modify{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding4);
+}
+.test{
+  background-color: aqua;
+}

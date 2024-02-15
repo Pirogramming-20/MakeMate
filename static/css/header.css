@@ -11,4 +11,5 @@ header{
     font-size: var(--font_small);
     color: var(--color_main);
     padding: var(--padding5) 0 22px var(--padding5) ;
+    cursor: pointer;
 }
