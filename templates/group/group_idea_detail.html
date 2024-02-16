@@ -1,8 +1,8 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section class="group_base_set_container">
+  
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
       <div class="inner_title">
@@ -34,7 +34,7 @@
         {% endif %}
 
         {% if idea.author == request.user %} 
-        <div class="idea_detail_modify_btns">
+        <div class="vote_create_btns">
           <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>
         </div>
         {% endif %}

@@ -1,10 +1,10 @@
 {% extends 'base.html' %} {% load static %} {% block head %} {{ block.super }}
 <title>group_idea_modify</title>
 {% endblock %} {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section class="group_base_set_container">
+ 
     <div class="wrap_title">
-      <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn"> < back</a>
       <div class="inner_title">
         <h3 class="title_content">아이디어 수정하기</h3>
 
@@ -18,7 +18,7 @@
       enctype="multipart/form-data"
       style="display: inline">
       {%csrf_token%}
-      <div id="vote_modify_form_container">
+      <div id="form_container">
         <!-- 논필드 에러 표시 -->
         {% if form.non_field_errors %}
         <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>

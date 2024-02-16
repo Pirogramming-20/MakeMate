@@ -983,6 +983,6 @@ def admin_idea_delete(request, group_id, user_id):
     return redirect("group:user_update", group_id=group_id, user_id=user_id)
 
 ##스케줄러 시작##
-make_auto(start_team_building)
-start_scheduler()
+#make_auto(start_team_building)
+#start_scheduler()
 ####

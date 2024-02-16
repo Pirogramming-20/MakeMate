@@ -1,8 +1,10 @@
-{% extends 'base.html' %} {% block head %}
+{% extends 'base.html' %} 
+{% block head %}
 <title>idea_create</title>
-{% endblock %} {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+{% endblock %} 
+{% block content %}
+<section class="group_base_set_container">
+  
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
       <div class="inner_title">
@@ -12,18 +14,35 @@
     </div>
 
     <form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
-      <div id="vote_modify_form_container">
-        {% csrf_token %} {% if form.non_field_errors %}
-        <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
-        {% endif %} {% for field in form %}
+      <div id="form_container">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="wrap_error">
+          {% for error in form.non_field_errors %} 
+            {{ error }} 
+          {% endfor %}
+        </div>
+        {% endif %} 
+        {% for field in form %}
         <div id="vote_modify_form_container">
-          {{ field.label_tag }} {{ field }} {% if field.help_text %}
-          <div class="wrap_error">{{ field.help_text }}</div>
+          {{ field.label_tag }}
+          {% if field.name == 'file' %}
+              <div class="custom-file-upload">
+                  {{ field }}
+              </div>
+          {% else %}
+              {{ field }}
+          {% endif %}
+          {% if field.help_text %}
+              <div class="wrap_error">{{ field.help_text }}</div>
           {% endif %}
         </div>
-        {% if field.errors %} {% for error in field.errors %}
-        <div class="wrap_error">{{ error }}</div>
-        {% endfor %} {% endif %} {% endfor %}
+        {% if field.errors %} 
+          {% for error in field.errors %}
+            <div class="wrap_error">{{ error }}</div>
+          {% endfor %} 
+        {% endif %} 
+        {% endfor %}
       </div>
 
       <div class="vote_create_btns">

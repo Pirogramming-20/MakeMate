@@ -191,6 +191,21 @@ section {
     }
 }
 
+.choice_title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding5);
+  padding-top: var(--padding3);
+  padding-bottom: var(--padding1);
+}
+
+@media screen and (min-width: 1024px){
+    .choice_title {
+        width: 600px;
+        text-align: flex-start;
+    }
+}
+
 .wrap_form, #form_container {
     display: flex;
     flex-direction: column;
@@ -198,7 +213,7 @@ section {
 }
 
 @media screen and (min-width: 1024px){
-    .wrap_form, #form_container {
+    .wrap_form, #form_container, #vote_create_form_container {
         width: 600px;
     }
 }
@@ -278,4 +293,9 @@ input:-webkit-autofill {
 input[type="date"],
 input[type="time"] {
   font-family: "Nanum Gothic", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-file-upload{
+  display: flex;
+  align-items: center;
 }

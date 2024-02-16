@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section class="group_base_set_container">
+ 
     <div class="group_detail_header_container">
       <div class="group_detail_description">
         <div class="wrap_title">
@@ -55,8 +55,9 @@
     {% endif %} 
     
     {% if other_ideas %}
-    <div class="group_detail_idea">
+    <div class="group_detail_idea_list">
       <h2>투표</h2>
+      <div class="wrap_wrap_card">
       {% for idea in other_ideas %}
       <div class="wrap_card">
         <div class="group_detail_idea_desc">
@@ -76,6 +77,7 @@
         </div>
       </div>
       {% endfor %}
+    </div>
 
       </div>
       

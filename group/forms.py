@@ -53,6 +53,10 @@ class GroupDateForm(forms.ModelForm):
 
 
 class IdeaForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['file'].widget.attrs.update({'class': 'custom-file-input'})
     class Meta():
         model = Idea
         fields = ('title', 'intro', 'file', 'content')

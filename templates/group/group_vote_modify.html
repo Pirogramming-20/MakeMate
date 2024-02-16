@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section class="group_base_set_container">
+  
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
       <div class="inner_title">
@@ -15,7 +15,7 @@
       <div id="vote_modify_form_container">
       {% csrf_token %}
       <div>
-        <div class="wrap_title">1지망 아이디어 선택</div>
+        <div class="choice_title">1지망 아이디어 선택</div>
         <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
@@ -33,7 +33,7 @@
   
     
       <div>
-        <div class="wrap_title">2지망 아이디어 선택</div>
+        <div class="choice_title">2지망 아이디어 선택</div>
         <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
@@ -50,7 +50,7 @@
       </div>
       
       <div>
-        <div class="wrap_title">3지망 아이디어 선택</div>
+        <div class="choice_title">3지망 아이디어 선택</div>
         <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
