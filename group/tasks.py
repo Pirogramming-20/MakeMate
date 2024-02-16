@@ -13,8 +13,6 @@ current_datetime = timezone.now()
 def make_auto(function):
     groups = Group.objects.filter(end_date__gt=current_datetime)
     for group in groups:
-        print(group)
-        print("서버가 재시작되었습니다")
         scheduler.add_job(function,
                           trigger=DateTrigger(group.end_date),
                           args=[group.id])
@@ -29,8 +27,6 @@ def start_scheduler():
 ##view에서 팀빌딩 함수 실행
 def team_building_auto(function, group):
     if group.end_date > current_datetime:
-        print("스케줄 추가중")
         scheduler.add_job(function,
                           trigger=DateTrigger(group.end_date),
                           args=[group.id])
-        print("스케줄 추가 완료")

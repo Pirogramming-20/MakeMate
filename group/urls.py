@@ -77,9 +77,3 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
 
-## 서버 실행시 sheduler함수 실행
-from .tasks import start_scheduler, make_auto
-
-make_auto(start_team_building)
-start_scheduler()
-####

@@ -14,7 +14,7 @@ from django.core.files.storage import FileSystemStorage
 from common.models import User
 from .models import Group, MemberState, AdminState, Idea, Vote
 from .forms import *
-from .tasks import team_building_auto
+from .tasks import team_building_auto, start_scheduler, make_auto
 
 
 # 유저 상태를 저장하는 ENUM
@@ -764,10 +764,7 @@ def start_team_building(group_id):
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
-    print(idea_list)
-    print(members)
     if len(members) == 0:
-        print("이미 팀빌딩이 완료 되었습니다")
         pass
     else:
         project_average_ability = []
@@ -799,7 +796,6 @@ def start_team_building(group_id):
 
 def team_building_cycle(group_id, members):
     if len(members) == 0:
-        print("팀빌딩이 완료 되었습니다")
         pass
     else:
         group = Group.objects.get(id=group_id)
@@ -855,7 +851,6 @@ def make_team(idea_list, members, project_fitness, group_id):
         del idea_titles[selected_column]
 
         if len(members_name) == 0:
-            print("팀빌딩이 완료 되었습니다")
             return redirect("/")
         else:
             idea_list = idea_change(idea_titles, group)
@@ -866,3 +861,9 @@ def make_team(idea_list, members, project_fitness, group_id):
             up_idea_list, up_members, up_project_fitness = team_building_cycle(
                 group_id, members)
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
+
+
+##스케줄러 시작##
+make_auto(start_team_building)
+start_scheduler()
+####
