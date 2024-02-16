@@ -95,10 +95,7 @@ def info_nonadmin(request, group_id):
                                             group_id=group_id).first()
     form = NonAdminInfoForm()
 
-    if state == State.WITH_HISTORY:  # 이전 인증 내역이 있는 참여자
-        return redirect(f"/group/{group_id}/")
-
-    elif state == State.ADMIN:  # 운영진인 경우
+    if state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
     
     if request.method == "POST":
@@ -863,16 +860,16 @@ def members_change(members_name):
             MemberState.objects.filter(user__username=member).first())
     return members
 
-
 def start_team_building(group_id):
-    print("팀빌딩이 시작되었습니다")
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     selected_idea_leader(idea_list, group)
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
-    members = MemberState.objects.filter(group=group).exclude(
+    selected_idea_leader(idea_list, group)
+    members = MemberState.objects.filter(group=group, group_ability__isnull=False).exclude(
         my_team_idea__isnull=False)
+
     if len(members) == 0:
         pass
     else:
@@ -909,7 +906,7 @@ def team_building_cycle(group_id, members):
     else:
         group = Group.objects.get(id=group_id)
         idea_list = Idea.objects.filter(
-            group=group).order_by("-score")[:group.team_number]
+            group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
         project_average_ability = [
         ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         members_ability = (
@@ -985,7 +982,7 @@ def admin_idea_delete(request, group_id, user_id):
     
     return redirect("group:user_update", group_id=group_id, user_id=user_id)
 
-##스케줄러 시작##
-make_auto(start_team_building)
-start_scheduler()
-####
+# ##스케줄러 시작##
+# make_auto(start_team_building)
+# start_scheduler()
+# ####
