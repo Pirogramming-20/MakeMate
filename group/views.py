@@ -14,6 +14,7 @@ from django.core.files.storage import FileSystemStorage
 from common.models import User
 from .models import Group, MemberState, AdminState, Idea, Vote
 from .forms import *
+from .tasks import team_building_auto
 
 
 # 유저 상태를 저장하는 ENUM
@@ -154,7 +155,6 @@ def group_base_info(request):
         elif state == 2:
             form = GroupDateForm(data=req)
             return handle_form_valid(form, state, req, prev_req, request.user)
-
     form = GroupBaseForm()
     ctx = {"form": form, "state": 0}
     return render(request, "setting/setting_basic.html", context=ctx)
@@ -245,14 +245,16 @@ def save_group_data(prev_req, user):
         choice=int(prev_req["choice"]),
         end_date=prev_req["end_date"],
     )
-
     AdminState.objects.create(group=group, user=user)
-
     return group
 
 
+# 팀빌딩 마지막부분에 추가
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
+    ##팀빙딩 함수 예약
+    team_building_auto(start_team_building, group)
+    ####
     ctx = {"group": group}
     return render(request, "setting/setting_sharing.html", context=ctx)
 
@@ -680,7 +682,6 @@ def calculate_project_average_ability(idea_list):
 
     for idea in idea_list:
         followers = MemberState.objects.filter(user__in=idea.member.all())
-        print(followers)
         score = 0
 
         for follower in followers:
@@ -753,20 +754,22 @@ def members_change(members_name):
     return members
 
 
-def start_team_building(request, group_id):
+def start_team_building(group_id):
+    print("팀빌딩이 시작되었습니다")
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:group.team_number]
+    ##선정된 아이디어에 작성자는 팀원으로 넣기
+    selected_idea_leader(idea_list, group)
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
-
+    print(idea_list)
+    print(members)
     if len(members) == 0:
         print("이미 팀빌딩이 완료 되었습니다")
         pass
     else:
-        ##선정된 아이디어에 작성자는 팀원으로 넣기
-        selected_idea_leader(idea_list, group)
         project_average_ability = []
         # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         # 나중에 "project_pick"을 만들 때 필요함.
@@ -789,40 +792,44 @@ def start_team_building(request, group_id):
         project_fitness = np.transpose(
             abs(members_ability - project_average_ability) + project_pick)
 
-        maketeam(idea_list, members, project_fitness,
-                 group_id)  # 임시로 홈으로 리디렉션 되도록 설정함.
+        make_team(idea_list, members, project_fitness,
+                  group_id)  # 임시로 홈으로 리디렉션 되도록 설정함.
     return redirect("/")
 
 
 def team_building_cycle(group_id, members):
-    group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
-    project_average_ability = [
-    ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
-    members_ability = (
-        []
-    )  # 후에 project_average_ability와 meshigrid하여 서로 뺄 거임. 사이클 한번당 수정이 필요함.
+    if len(members) == 0:
+        print("팀빌딩이 완료 되었습니다")
+        pass
+    else:
+        group = Group.objects.get(id=group_id)
+        idea_list = Idea.objects.filter(
+            group=group).order_by("-score")[:group.team_number]
+        project_average_ability = [
+        ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
+        members_ability = (
+            []
+        )  # 후에 project_average_ability와 meshigrid하여 서로 뺄 거임. 사이클 한번당 수정이 필요함.
 
-    members_ability = calculate_members_ability(
-        members)  # member_ability 리스트에 그룹 내 모든 멤버의 실력을 저장하는 코드.
+        members_ability = calculate_members_ability(
+            members)  # member_ability 리스트에 그룹 내 모든 멤버의 실력을 저장하는 코드.
 
-    project_average_ability = calculate_project_average_ability(
-        idea_list)  # 각 아이디어 별로 평균 실력을 리스트로 저장하는 코드.
+        project_average_ability = calculate_project_average_ability(
+            idea_list)  # 각 아이디어 별로 평균 실력을 리스트로 저장하는 코드.
 
-    members_ability, project_average_ability = np.meshgrid(
-        members_ability,
-        project_average_ability)  # 위의 두 리스트를 2차원 배열로 만들어 빼줄거임.
+        members_ability, project_average_ability = np.meshgrid(
+            members_ability,
+            project_average_ability)  # 위의 두 리스트를 2차원 배열로 만들어 빼줄거임.
 
-    project_pick = calculate_project_pick(members, idea_list)
+        project_pick = calculate_project_pick(members, idea_list)
 
-    project_fitness = np.transpose(
-        abs(members_ability - project_average_ability) + project_pick)
+        project_fitness = np.transpose(
+            abs(members_ability - project_average_ability) + project_pick)
 
-    return idea_list, members, project_fitness  # 임시로 홈으로 리디렉션 되도록 설정함.
+        return idea_list, members, project_fitness
 
 
-def maketeam(idea_list, members, project_fitness, group_id):
+def make_team(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
     # 사본 만들기
     idea_titles = idea_copy(idea_list)
@@ -853,14 +860,9 @@ def maketeam(idea_list, members, project_fitness, group_id):
         else:
             idea_list = idea_change(idea_titles, group)
             members = members_change(members_name)
-            maketeam(idea_list, members, project_fitness, group_id)
+            make_team(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:
             up_idea_list, up_members, up_project_fitness = team_building_cycle(
                 group_id, members)
-            maketeam(up_idea_list, up_members, up_project_fitness, group_id)
-
-
-""" ##팀빌딩 
-def MakeMate(group_id):
-    group=Group.objects.get(id=group_id) """
+            make_team(up_idea_list, up_members, up_project_fitness, group_id)
