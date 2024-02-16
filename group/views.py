@@ -665,7 +665,7 @@ def result(request, group_id):  # 최종 결과 페이지
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
-    group.is_end = True
+    group.is_second_end = True
     group.save()
     
     current_time = timezone.now()

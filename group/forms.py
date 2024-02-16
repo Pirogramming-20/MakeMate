@@ -35,7 +35,7 @@ class GroupDetailForm(forms.ModelForm):
 
 
 class GroupDateForm(forms.ModelForm):
-    end_date=forms.SplitDateTimeField(
+    first_end_date=forms.SplitDateTimeField(
         widget=forms.SplitDateTimeWidget(
         date_attrs={
             'type':'date'
@@ -44,12 +44,36 @@ class GroupDateForm(forms.ModelForm):
             'type':'time'
             },
         ),
-        label = "결과 임시 발표일"
+        label = "1차 결과 임시 발표일"
+    )
+
+    second_end_date=forms.SplitDateTimeField(
+        widget=forms.SplitDateTimeWidget(
+        date_attrs={
+            'type':'date'
+            },
+        time_attrs={
+            'type':'time'
+            },
+        ),
+        label = "2차 결과 임시 발표일"
+    )
+
+    third_end_date=forms.SplitDateTimeField(
+        widget=forms.SplitDateTimeWidget(
+        date_attrs={
+            'type':'date'
+            },
+        time_attrs={
+            'type':'time'
+            },
+        ),
+        label = "3차 결과 임시 발표일"
     )
 
     class Meta:
         model = Group
-        fields = ['end_date']
+        fields = ['firt_end_date', 'second_end_date', 'third_end_date']
 
 
 class IdeaForm(forms.ModelForm):
