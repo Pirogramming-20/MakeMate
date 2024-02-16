@@ -368,6 +368,9 @@ def group_user_update(request, group_id, user_id):
             "user": user,
             "idea": idea,
         }
+        for my_idea in idea: 
+            print(my_idea.title)
+        
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
         user_state = MemberState.objects.get(user_id=user_id, group=group)
@@ -866,6 +869,7 @@ def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
+    selected_idea_leader(idea_list, group)
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
@@ -928,7 +932,6 @@ def team_building_cycle(group_id, members):
             abs(members_ability - project_average_ability) + project_pick)
 
         return idea_list, members, project_fitness
-
 
 def make_team(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)

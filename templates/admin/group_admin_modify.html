@@ -36,25 +36,29 @@
           </div>
       </form>
     </div>
-    <div class='admin_warp_user_idea'>
-      <div class="admin_inner_idea_header">
-        <div class='admin_written_idea'>작성한 아이디어</div>
-        <form action=" {%url 'group:admin_idea_delete' group_id=group.id user_id=user_state.user.id%}" method="POST">
-          {% csrf_token %}
-          <button class='cta_red_badge' type="submit">삭제</button>
-        </form>
-      </div>
-      <div>{{idea.title}}</div>
-      <div>{{idea.intro}}</div>
-      {% if idea.file %}
-          <p><strong>첨부파일:</strong></p>
-          <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
-              {% csrf_token %}
-              <button>다운로드</button>
+    {% if idea %}
+      {% for my_idea in idea%}
+      <div class='admin_warp_user_idea'>
+        <div class="admin_inner_idea_header">
+          <div class='admin_written_idea'>작성한 아이디어</div>
+          <form action="{% url 'group:admin_idea_delete' group_id=group.id user_id=user.id %}" method="POST">
+            {% csrf_token %}
+            <button class='cta_red_badge' type="submit">삭제</button>
           </form>
-          <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
-      {% endif %}
-      <div>{{idea.content}}</div>
-    </div>
+        </div>
+        <div>{{ my_idea.title }}</div>
+        <div>{{ my_idea.intro }}</div>
+        {% if my_idea.file %}
+            <p><strong>첨부파일:</strong></p>
+            <form action="{% url 'group:idea_download' group_id=group.id idea_id=my_idea.id %}">
+                {% csrf_token %}
+                <button>다운로드</button>
+            </form>
+            <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
+        {% endif %}
+        <div>{{my_idea.content}}</div>
+      </div>
+      {% endfor %}
+    {% endif %}
   </section>
 {% endblock %}
