@@ -20,11 +20,19 @@ body{
     font-weight: bold;
 }
 
-.idea_modify_btns{
+.idea_modify_btns {
     margin: var(--padding6) 0;
     display: flex;
-    gap: 5px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+
 }
+
+.idea_modify_btns form {
+    margin-right: 5px; 
+}
+
 
 .idea_modify_btns > .primary_button{
     border-radius: 1rem;
@@ -34,4 +42,8 @@ body{
 .idea_modify_btns > .cta_del_button{
     border-radius: 1rem;
     width: 11rem;
+}
+
+p{
+    margin-bottom: 2rem; 
 }

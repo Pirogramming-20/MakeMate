@@ -1,59 +1,85 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% block content %}
-
-<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">< back</a>
-
-<h1>아이디어 투표하기</h1>
-
-<form method="post">
-  {% csrf_token %}
-  <h2>1지망 아이디어 선택</h2>
-  <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
-    
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <h2>2지망 아이디어 선택</h2>
-  <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
-    
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <h2>3지망 아이디어 선택</h2>
-  <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
-
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <div class="vote_create_btns">
-    <button type="submit" class="primary_button">투표하기</button>
+<section class="container">
+  <div class="wrap_title">
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
+    <div class="inner_title">
+      <h3 class="title_content">{{ group.title }}</h3>
+      <h3 class="subtitle_content">아이디어 투표</h3>
+    </div>
   </div>
+  
+  <form method="post">
+    <div id="vote_create_form_container">
+      {% csrf_token %}
+    
+      <div>
+        <div class="wrap_title">1지망 아이디어 선택</div>
+        <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
+          <option value="" selected disabled >아이디어 선택</option>
+          <option value="">선택 취소</option>
+          
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}">{{ idea.title }}</option>
+          {% endfor %}
+        </select>
 
-  <!-- 필드 에러 표시 -->
-  {% if form.errors %}
-  <div class="error">
-    {% for field in form %}
-      {% if field.errors %}
-        {{ field.label }}: {% for error in field.errors %}{{ error }}{% endfor %}
-      {% endif %}
-    {% endfor %}
-  </div>
-  {% endif %}
+        {% if form.idea_vote1.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote1.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
 
-</form>
+      <div>
+        <div class="wrap_title">2지망 아이디어 선택</div>
+        <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
+        <option value="" selected disabled>아이디어 선택</option>
+        <option value="">선택 취소</option>
+        
+        {% for idea in ideas_for_voting %}
+        <option value="{{ idea.id }}">{{ idea.title }}</option>
+        {% endfor %}
+        </select>
+
+        {% if form.idea_vote2.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote2.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div>
+        <div class="wrap_title">3지망 아이디어 선택</div>
+        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
+          <option value="" selected disabled>아이디어 선택</option>
+          <option value="">선택 취소</option>
+      
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}">{{ idea.title }}</option>
+          {% endfor %}
+        </select>
+
+        {% if form.idea_vote3.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote3.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+          {% endif %}
+      </div>
+    </div>
+
+    <div class="vote_create_btns">
+      <button type="submit" class="primary_button_fill">투표하기</button>
+    </div>
+  </form>
+</section>
 
 
   

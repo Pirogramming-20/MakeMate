@@ -5,38 +5,52 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <!-- 논필드 에러 표시 -->
-    {% if form.non_field_errors %}
-    <div class="error">
-      {% for error in form.non_field_errors %}
-        {{ error }}
-      {% endfor %}
-    </div>
-    {% endif %}
+<section class="container">
+  <div class="wrap_title">
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
+    <div class="inner_title">
+      <h3 class="title_content">아이디어 추가하기</h3>
+      <strong>
+        <p class="inner_title">{{ group.title }}</p>
+      </strong>
+    </div>  
+  </div>
 
-    <!-- 필드별 에러 표시 -->
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: block;">{{ field.help_text }}</small>
-        {% endif %}
-        {% if field.errors %}
-          {% for error in field.errors %}
-            <div class="error">{{ error }}</div>
+  <form id="form_container" action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <!-- <div class="inner_form"> -->
+        <!-- 논필드 에러 표시 -->
+        {% if form.non_field_errors %}
+        <div class="wrap_error">
+          {% for error in form.non_field_errors %}
+            {{ error }}
           {% endfor %}
+        </div>
         {% endif %}
-      </p>
-    {% endfor %}
-    <div class="idea_create_btns">
-      <button type="submit" class="secondary_button">저장하기</button>
-      <!-- 홈으로 버튼에 URL 추가 필요 -->
-      <button class="primary_button">
-        <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">홈으로</a>
-      </button>
-    </div>
-</form>
+
+        <!-- 필드별 에러 표시 -->
+        {% for field in form %}
+          <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+              <small style="display: block;">{{ field.help_text }}</small>
+            {% endif %}
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <div class="error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+          </p>
+        {% endfor %}
+      <!-- </div> -->
+      
+      <div class="idea_create_btns">
+        <button type="submit" class="secondary_button">저장하기</button>
+        <!-- 홈으로 버튼에 URL 추가 필요 -->
+      </div>
+  </form>
+
+
+</section>
 {% endblock %}

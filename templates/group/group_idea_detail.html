@@ -1,46 +1,50 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
+{% extends "base.html" %} {% load static %} {% block content %}
 <!-- 가장최근 -->
-<div class="container">
-    <h1 class="group_detail_title" >{{ group.title }}</h1>
+<section class="container">
+  <div class="wrap_title">
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
     
-    <p >
-      <strong>
-        <p class="idea_detail_title">{{ idea.title }}</p>
-        {% if ideas_votes %}
-          {% if idea.id == ideas_votes.idea_vote1_id %} 
-            <span>1지망</span>
-          {% elif idea.id == ideas_votes.idea_vote2_id %} 
-            <span>2지망</span>
-          {% elif idea.id == ideas_votes.idea_vote3_id %} 
-            <span>3지망</span>
-          {% endif %}
-        {% endif %}
-      </strong>
-    </p>
-   
-    
-    <p>{{ idea.intro }}</p>
-    {% if idea.file %}
+  </div>
+
+  <div class="wrap_form">
+    <!-- <div class="inner_form"> -->
+      <h3 class="title_content">{{ group.title }}</h3> 
+      <p class="subtitle_content">{{ idea.title }}</p>
+      {% if ideas_votes %} 
+        {% if idea.id == ideas_votes.idea_vote1_id %}
+          <span>1지망</span>
+          {% elif idea.id == ideas_votes.idea_vote2_id %}
+          <span>2지망</span>
+          {% elif idea.id == ideas_votes.idea_vote3_id %}
+          <span>3지망</span>
+        {% endif %} 
+      {% endif %}
+      <p>{{ idea.intro }}</p>
+      {% if idea.file %}
         <p><strong>첨부파일:</strong></p>
         <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
-            {% csrf_token %}
-            <button>다운로드</button>
+          {% csrf_token %}
+          <button>다운로드</button>
         </form>
-        <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
-    {% endif %}
-    <p>{{ idea.content|linebreaks }}</p>
-    <p>{{ idea.author.username }}</p>
-    <!-- 기타 아이디어에 대한 상세 정보 -->
-</div>
-{% if idea.author == request.user %}
-    <!-- 내가 작성한 아이디어인 경우에만 수정 버튼 표시 -->
-    <div class="idea_detail_btns">
-      <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button">내용 수정</a>
-    </div>
-    {% endif %}
+      {% endif %}
+
+      <p>{{ idea.content|linebreaks }}</p>
+      <p>{{ idea.author.username }}</p>
+
+      <!-- 기타 아이디어에 대한 상세 정보 -->
+      {% if idea.author == request.user %}
+
+
+    <!-- </div> -->
+    
+  </div>
+  
+  <!-- 내가 작성한 아이디어인 경우에만 수정 버튼 표시 -->
+  <div class="idea_detail_btns">
+    <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button">내용 수정</a>
+  </div>
+  {% endif %}
+</section>
 
 <!-- 내 아이디어 삭제 
 {% if request.user == idea.author %}
@@ -51,6 +55,5 @@
         <button type="submit" class="btn btn-danger">삭제하기</button>
     </form>
 {% endif %} -->
-
 
 {% endblock %}
