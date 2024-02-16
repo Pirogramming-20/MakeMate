@@ -4,29 +4,32 @@
 
   <section class='admin_section_admin_page'>
     <div class="admin_wrap_head">
-      <a href="{%url 'common:main_page'%}">
-        <div class='home_btn'>Home</div>
-      </a>
+      <a href="{%url 'common:main_page'%}" class="home_btn">Home</a>
       <div class="admin_inner_page_info">
         <div class='admin_group_title'>{{group_instance.title}}</div>
         <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
-        <div>회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
       </div>
+      <div class="admin_desc_content">회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
     </div>
     <div class="admin_wrap_url">
       <div class='admin_inner_url_info'>
-        <div>공유링크</div>
+        <div class="subtitle_content">공유링크</div>
         <div>링크를 사용하여 구성원과 모임을 공유할 수 있습니다.</div>
       </div>
-      <div class="group_member_url">
-        <div>참여자 링크</div>
-        <div>{% url 'group:check_nonadmin' group_instance.id %}</div>
-        <div>비밀번호 : {{group_instance.password}}</div>
+
+      <div class="admin_inner_url_info">
+        <span>참여자 링크</span>
+        <div class="group_member_url">
+          <span>{% url 'group:check_nonadmin' group_instance.id %}</span>
+        </div>
+        <span class="group_admin_password">비밀번호 : {{group_instance.password}}</span>
       </div>
-      <div class="group_admin_url">
-        <div>운영진 링크</div>
-        <div>{% url 'group:check_admin' group_instance.id %}</div>
-        <div>비밀번호 : {{group_instance.password}}</div>
+      <div class="admin_inner_url_info">
+        <span>운영진 링크</span>
+        <div class="group_member_url">
+          <span>{% url 'group:check_admin' group_instance.id %}</span>
+        </div>
+        <span class="group_admin_password">비밀번호 : {{group_instance.password}}</span>
       </div>
     </div>
     <div class='admin_wrap_members'>

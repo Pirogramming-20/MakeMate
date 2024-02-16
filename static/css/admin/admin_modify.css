@@ -1,8 +1,15 @@
 .admin_section_modify{
-  margin: 80px auto 0 auto;
+  margin: var(--padding7) auto;
   padding:  0 var(--padding4);
   width: 350px;
 }
+
+@media screen and (min-width: 1024px){
+  .admin_section_modify {
+    width: 600px;
+  }
+}
+
 .admin_wrap_modify_header{
   margin-bottom: var(--padding6);
 }
@@ -10,12 +17,17 @@
   font-size: var(--font_xlarge);
   color: var(--color_main);
   font-weight: bold;
-  margin-top: var(--padding5) ;
+  text-align: center;
 }
 .admin_modify_user{
   font-weight: bold;
   font-size: var(--font_large);
-  margin-top: var(--padding4);
+}
+
+@media screen and (min-width: 1024px){
+  .admin_modify_user {
+    width: 600px;
+  }
 }
 
 .admin_inner_info{
@@ -23,8 +35,16 @@
   flex-direction: column;
   gap: var(--padding2);
 }
+
+@media screen and (min-width: 1024px){
+  .admin_inner_info {
+    width: 600px;
+  }
+}
+
 .admin_wrap_modify_btn{
   display: flex;
+  justify-content: center;
   gap: var(--padding1) ;
   margin: var(--padding6) 0;
 }

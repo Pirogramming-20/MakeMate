@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
   <section class='admin_section_modify'>
-    <div  class='admin_wrap_modify_header'>
-      <a href="{%url 'group:admin_page' group.id%}"><button class='home_btn'>back</button></a>
+    <div class='admin_wrap_head'>
+      <a href="{%url 'group:admin_page' group.id%}" class='home_btn'>back</a>
       <div class='admin_modify_group'>{{group.title}}</div>
       <div class='admin_modify_user'>{{user}}</div>
     </div>
@@ -13,11 +13,21 @@
               <label>실력</label>
               <div class='card_contents_green'>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
               <div class='card_contents_green'>
+                {% if group.ability_description1 %}
                 <div>실력1: {{group.ability_description1}}</div>
-                <div>실력2:{{group.ability_description2}}</div>
-                <div>실력3:{{group.ability_description3}}</div>
-                <div>실력4:{{group.ability_description4}}</div>
-                <div>실력5:{{group.ability_description5}}</div>
+                {% endif %}
+                {% if group.ability_description2 %}
+                <div>실력2: {{group.ability_description2}}</div>
+                {% endif %}
+                {% if group.ability_description3 %}
+                <div>실력3: {{group.ability_description3}}</div>
+                {% endif %}
+                {% if group.ability_description4 %}
+                <div>실력4: {{group.ability_description4}}</div>
+                {% endif %}
+                {% if group.ability_description5 %}
+                <div>실력5: {{group.ability_description5}}</div>
+                {% endif %}
               </div>
               <div>{{form.group_ability}}</div>
               <!-- 필드 오류 -->
@@ -28,14 +38,15 @@
               {% endif %}
           <div>
           <div class="admin_wrap_modify_btn">
-            <button type='submit' class='primary_button'>회원 정보 수정</button>
             <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
               {% csrf_token %}
               <button class='cta_del_button' type="submit">삭제</button>
             </form>
+            <button type='submit' class='primary_button'>회원 정보 수정</button>
           </div>
       </form>
     </div>
+    {% if idea %}
     <div class='admin_warp_user_idea'>
       <div class="admin_inner_idea_header">
         <div class='admin_written_idea'>작성한 아이디어</div>
@@ -56,5 +67,6 @@
       {% endif %}
       <div>{{idea.content}}</div>
     </div>
+    {% endif %}
   </section>
 {% endblock %}
