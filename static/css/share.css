@@ -36,3 +36,9 @@
   border: 1px solid var(--color_main);
   gap: var(--padding2);
 }
+
+@media screen and (min-width: 1024px){
+  .group_member_url {
+    padding: var(--padding1);
+  }
+}

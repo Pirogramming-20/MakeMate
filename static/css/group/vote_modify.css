@@ -1,0 +1,28 @@
+.vote_modify_btns > .primary_button {
+  border-radius: 1rem;
+  width: 19rem;
+}
+
+.wrap_title {
+  padding-top: var(--padding3);
+}
+
+#vote_modify_form_container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding4);
+  justify-content: center;
+}
+
+#vote_modify_form_container > div,
+#vote_modify_form_container > p {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
+}
+
+#vote_modify_btns {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--padding6)
+}
