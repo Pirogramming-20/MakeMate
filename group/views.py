@@ -851,15 +851,15 @@ def members_change(members_name):
             MemberState.objects.filter(user__username=member).first())
     return members
 
-
 def start_team_building(group_id):
-    print("팀빌딩이 시작되었습니다")
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
-    members = MemberState.objects.filter(group=group).exclude(
+    selected_idea_leader(idea_list, group)
+    members = MemberState.objects.filter(group=group, group_ability__isnull=False).exclude(
         my_team_idea__isnull=False)
+
     if len(members) == 0:
         pass
     else:
@@ -896,7 +896,7 @@ def team_building_cycle(group_id, members):
     else:
         group = Group.objects.get(id=group_id)
         idea_list = Idea.objects.filter(
-            group=group).order_by("-score")[:group.team_number]
+            group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
         project_average_ability = [
         ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         members_ability = (

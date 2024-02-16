@@ -84,7 +84,7 @@ class MemberState(models.Model):
     my_team_idea = models.ForeignKey(Idea,
                                      on_delete=models.CASCADE,
                                      related_name="my_team_idea_set",
-                                     null=True)
+                                     null=True, blank=True)
     def __str__(self):
         return self.user.username
 
