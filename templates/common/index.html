@@ -22,7 +22,7 @@
                 <div class='common_groups'>참여중인 모임</div>
                 {% comment %} admin_groups {% endcomment %}
                 <div class="wrap_wrap_card">
-                {% if admin_groups %}
+                {% if admin_groups or member_groups %}
                 {% for group in admin_groups %}
                     {% if group.end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_end == True  %}
