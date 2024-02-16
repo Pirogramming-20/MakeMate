@@ -1,73 +1,51 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block head %} 
-{{ block.super }}
+{% extends 'base.html' %} {% load static %} {% block head %} {{ block.super }}
 <title>group_idea_modify</title>
-{% endblock %} 
-
-{% block content %}
+{% endblock %} {% block content %}
 <section class="container">
-  <div class="wrap_title">
-    <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
-    <div class="inner_title">
-      <h3 class="title_content">아이디어 수정하기</h3>
-      <strong>
-        <p class="inner_title">{{ group.title }}</p>
-      </strong>
-    </div>
-  </div>
-  
-  <form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" style="display: inline">
-    {%csrf_token%} 
-    <div class="inner_form">
-      <!-- 논필드 에러 표시 -->
-      {% if form.non_field_errors %}
-      <div class="wrap_error">
-        {% for error in form.non_field_errors %}
-          {{ error }}
-        {% endfor %}
-      </div>
-      {% endif %}
-  
-      <!-- 필드별 에러 표시 -->
-      {% for field in form %}
-        <p>
-          {{ field.label_tag }}<br>
-          {{ field }}
-          {% if field.help_text %}
-            <small style="display: block;" class="wrap_error">{{ field.help_text }}</small>
-          {% endif %}
-          {% if field.errors %}
-            {% for error in field.errors %}
-              <div class="wrap_error">{{ error }}</div>
-            {% endfor %}
-          {% endif %}
-        </p>
-      {% endfor %}
+  <div class="preresult_admin_container">
+    <div class="wrap_title">
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
+      <div class="inner_title">
+        <h3 class="title_content">아이디어 수정하기</h3>
 
+        <p class="inner_title">{{ group.title }}</p>
+      </div>
     </div>
-  </form>  
-   
+
+    <form
+      action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
+      method="post"
+      enctype="multipart/form-data"
+      style="display: inline">
+      {%csrf_token%}
+      <div id="vote_modify_form_container">
+        <!-- 논필드 에러 표시 -->
+        {% if form.non_field_errors %}
+        <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
+        {% endif %} {% for field in form %}
+        <div>
+          {{ field.label_tag }} {{ field }} {% if field.help_text %}
+          <div class="wrap_error">{{ field.help_text }}</div>
+          {% endif %}
+        </div>
+        {% if field.errors %} {% for error in field.errors %}
+        <div class="wrap_error">{{ error }}</div>
+        {% endfor %} {% endif %} {% endfor %}
+      </div>
+    </form>
+
     <div class="idea_modify_btns">
       <!-- 아이디어 삭제 버튼 -->
-      
+
       <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post" style="display: inline">
         {% csrf_token %}
         <input type="hidden" name="action" value="delete" />
         <button type="submit" class="cta_del_button">삭제</button>
-      </form>  
-      
+      </form>
+
       <button type="'submit" class="primary_button">수정 완료</button>
     </div>
-
-    
-
-    
-  
-
-  
-  
- 
+  </div>
 </section>
 
 {% endblock %}

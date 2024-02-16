@@ -1,23 +1,23 @@
-body{
-    background-color: black;
-    width: 100%;
+body {
+  background-color: black;
+  width: 100%;
 }
 
-.idea_modify_wrap_info{
-    padding: 0 1rem;
-    width: 300px;
-    margin: 80px auto;
-    display: flex;
-    justify-content: center;
+.idea_modify_wrap_info {
+  padding: 0 1rem;
+  width: 300px;
+  margin: 80px auto;
+  display: flex;
+  justify-content: center;
 }
 
-.idea_modify_wrap_info>div{
-    padding-bottom: var(--padding4) ;
+.idea_modify_wrap_info > div {
+  padding-bottom: var(--padding4);
 }
 
-.idea_modify_info_title{
-    font-size: var(--font_large);
-    font-weight: bold;
+.idea_modify_info_title {
+  font-size: var(--font_large);
+  font-weight: bold;
 }
 
 .idea_modify_btns {
@@ -36,12 +36,12 @@ body{
 
 .idea_modify_btns > .primary_button{
     border-radius: 1rem;
-    width: 19rem;
+    width: 200px;
 }
 
 .idea_modify_btns > .cta_del_button{
     border-radius: 1rem;
-    width: 11rem;
+    
 }
 
 p{

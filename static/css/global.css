@@ -1,233 +1,246 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 body {
-    background-color: black;
-    color: white;
-    font-size: var(--font_medium);
-    line-height: 1.5;
-    box-sizing: border-box;
-    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: black;
+  color: white;
+  font-size: var(--font_medium);
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-family: "Nanum Gothic", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 section {
-    display: flex;
-    width: 350px;
-    flex-direction: column;
-    gap: var(--padding6) ;
-    margin: 8rem auto;
-    padding: 0 var(--padding4);
+  display: flex;
+  width: 350px;
+  flex-direction: column;
+  gap: var(--padding6);
+  margin: 8rem auto;
+  padding: 0 var(--padding4);
 }
 
-.primary_button, .secondary_button, .cta_button,.cta_del_button{
-    display: inline-block;
-    width: 200px;
-    padding: 5px  0;
-    text-align: center;
-    border-radius: var(--btn_border_radius);
-    font-weight: bold;
+.primary_button,
+.secondary_button,
+.cta_button,
+.cta_del_button {
+  display: inline-block;
+  width: 200px;
+  padding: 5px 0;
+  text-align: center;
+  border-radius: var(--btn_border_radius);
+  font-weight: bold;
 }
 
 .primary_button {
-    background-color: var(--color_main);
-    color: black;
+  background-color: var(--color_main);
+  color: black;
 }
 
 .secondary_button {
-    border: 1px solid var(--color_main);
-    color: var(--color_main);
+  border: 1px solid var(--color_main);
+  color: var(--color_main);
 }
 
 .primary_button_fill {
-    display: block;
-    width: 100%;
-    padding: 5px  0;
-    text-align: center;
-    border-radius: var(--btn_border_radius);
-    font-weight: bold;
-    background-color: var(--color_main);
-    color: black;
-    margin-top: var(--padding4);
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  border-radius: var(--btn_border_radius);
+  font-weight: bold;
+  background-color: var(--color_main);
+  color: black;
+  margin-top: var(--padding4);
 }
 
-.cta_button{
-    background-color: var(--color_red_highlight);
-    background-color: var(--color_main);
-    color: black;
+.cta_button {
+  background-color: var(--color_red_highlight);
+  background-color: var(--color_main);
+  color: black;
 }
 
-.cta_del_button{
-    border: 1px solid var(--color_red_highlight);
-    background-color: var(--color_black_highlight);
-    color: var(--color_red_highlight);
+.cta_del_button {
+  border: 1px solid var(--color_red_highlight);
+  background-color: var(--color_black_highlight);
+  color: var(--color_red_highlight);
+  width: 100px;
 }
 
-.primary_badge, .cta_blue_badge, .cta_red_badge, .secondary_badge {
-    padding: 5px;
-    border-radius: var(--badge_border_radius);
-    font-size: var(--font_small);
+.primary_badge,
+.cta_blue_badge,
+.cta_red_badge,
+.secondary_badge {
+  padding: 5px;
+  border-radius: var(--badge_border_radius);
+  font-size: var(--font_small);
 }
 
 .primary_badge {
-    background-color: var(--color_main);
-    color: black;
+  background-color: var(--color_main);
+  color: black;
 }
 
 .cta_blue_badge {
-    background-color: var(--color_blue_highlight);
-    color: white;
+  background-color: var(--color_blue_highlight);
+  color: white;
 }
 
 .cta_red_badge {
-    background-color: var(--color_red_highlight);
-    color: white;
+  background-color: var(--color_red_highlight);
+  color: white;
 }
 
 .secondary_badge {
-    background-color: var(--color_sub_bright);
-    color: black;
+  background-color: var(--color_sub_bright);
+  color: black;
 }
 
 .cta_green_badge {
-    background-color: var(--color_main);
+  background-color: var(--color_main);
 }
 
 .wrap_card {
-    display: flex;
-    flex-direction: column;
-    padding: var(--padding3);
-    gap: var(--padding2);
-    border-radius: var(--card_border_radius);
-    background-color: var(--color_black_highlight);
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding3);
+  gap: var(--padding2);
+  border-radius: var(--card_border_radius);
+  background-color: var(--color_black_highlight);
 }
 
 .card_title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .inner_card_badge {
-    display: flex;
-    gap: var(--padding2);
+  display: flex;
+  gap: var(--padding2);
 }
 
 .inner_card_contents {
-    display: flex;
-    flex-direction: column;
-    font-size: var(--font_small);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font_small);
 }
-
 
 .card_contents_green {
-    color: var(--color_main);
+  color: var(--color_main);
 }
 
-.home_btn,.back_btn{
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    cursor: pointer;
+.home_btn,
+.back_btn {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.home_btn::before,.back_btn::before{
-    content: '';
-    background-image: url('../images/화살표.png');
-    background-size: cover;
-    width: 18px;
-    height: 18px;
-    display: block;
-    filter: invert(100%);
+.home_btn::before,
+.back_btn::before {
+  content: "";
+  background-image: url("../images/화살표.png");
+  background-size: cover;
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: invert(100%);
 }
 
 .inner_form_button {
-    padding-top: var(--padding4);
+  padding-top: var(--padding4);
 }
 
 .wrap_title {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding5);
 }
 
-.wrap_form, #form_container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding4);
+.wrap_form,
+#form_container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding4);
 }
 
-.inner_form, #form_container > div, #form_container > p {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding1);
+.inner_form,
+#form_container > div,
+#form_container > p {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
 }
 
-.form_highlight_content, .wrap_error {
-    color: var(--color_main);
-    font-size: var(--font_small);
+.form_highlight_content,
+.wrap_error {
+  color: var(--color_main);
+  font-size: var(--font_small);
 }
 
 input {
-    display: block;
-    width: calc(100% - 2 * var(--padding1));
-    height: var(--padding5);
-    border: 1px solid var(--color_main);
-    background-color: transparent;
-    color: white;
-    padding: 0 var(--padding1);
+  display: block;
+  width: calc(100% - 2 * var(--padding1));
+  height: var(--padding5);
+  border: 1px solid var(--color_main);
+  background-color: transparent;
+  color: white;
+  padding: 0 var(--padding1);
 }
 
 .title_content {
-    font-size: var(--font_xlarge);
-    color: var(--color_main);
+  font-size: var(--font_xlarge);
+  color: var(--color_main);
 }
 
-.subtitle_content{
-    font-size: var(--font_large);
-    font-weight: bold;
+.subtitle_content {
+  font-size: var(--font_large);
+  font-weight: bold;
 }
 
 .inner_title {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
 }
 
 select {
-    /* 생략 */
-    color: var(--color_main);
-    background-color: transparent;
-  
-    padding: 0.6em 1.4em 0.5em 0.8em;
-    margin: 0;
-  
-    border: 1px solid var(--color_main);
+  /* 생략 */
+  color: var(--color_main);
+  background-color: transparent;
+
+  padding: 0.6em 1.4em 0.5em 0.8em;
+  margin: 0;
+
+  border: 1px solid var(--color_main);
 }
-  
+
 select:focus {
-    border-color: white;
+  border-color: white;
 }
-  
+
 select:disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 option {
-    color: black;
-    background-color: transparent;
+  color: black;
+  background-color: transparent;
 }
 
 input:autofill {
-    background-color: transparent;
-    color: var(--color_main);
+  background-color: transparent;
+  color: var(--color_main);
 }
 
 input:-webkit-autofill {
-    background-color: transparent;
-    color: var(--color_main);
+  background-color: transparent;
+  color: var(--color_main);
 }
 
-input[type="date"], input[type="time"] {
-    font-family: 'Nanum Gothic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+input[type="date"],
+input[type="time"] {
+  font-family: "Nanum Gothic", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
