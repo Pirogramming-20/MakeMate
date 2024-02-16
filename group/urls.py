@@ -63,8 +63,13 @@ urlpatterns = [
          start_team_building,
          name="team_building"),
      path("<int:group_id>/admin/idea_delete/<int:user_id>/", admin_idea_delete, name="admin_idea_delete")
+    # 요청으로 실행시킬게 아니라 일단 주석처리했습니다!
+    # path("<int:group_id>/team_building/",
+    # start_team_building,
+    # name="team_building"),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
