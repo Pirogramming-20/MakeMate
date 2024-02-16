@@ -29,7 +29,7 @@
           <div><strong>발표자료 다운로드</strong></div>
           <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
             {% csrf_token %}
-            <button>발표자료 다운로드</button>
+            <button>다운로드</button>
           </form>
         {% endif %}
 
