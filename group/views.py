@@ -368,6 +368,9 @@ def group_user_update(request, group_id, user_id):
             "user": user,
             "idea": idea,
         }
+        for my_idea in idea: 
+            print(my_idea.title)
+        
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
         user_state = MemberState.objects.get(user_id=user_id, group=group)
@@ -457,16 +460,14 @@ def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     author_ideas = Idea.objects.filter(group=group, author=request.user)
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
-    user_state = MemberState.objects.filter(user=request.user,
-                                            group=group).first()
-    state = redirect_by_auth(request.user, group_id)
-
-    if (state == State.WITH_HISTORY or state == State.ADMIN):
-        ideas_votes = {}
-        if user_state:
-            ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
-            ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
-            ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
+    
+    ideas_votes = {}
+    if user_state:
+        
+        ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
+        ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
+        ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
 
         has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
                                     or user_state.idea_vote3)
@@ -569,16 +570,24 @@ def idea_delete(request, group_id, idea_id):
 def idea_detail(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
-    state = redirect_by_auth(request.user, group_id)
+    user_state = MemberState.objects.filter(user=request.user, group=group).first()
+    
+    ideas_votes = {}
+    if user_state:
+        
+        ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
+        ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
+        ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
 
-    if (state == State.WITH_HISTORY or state == State.ADMIN):
-        context = {
-            "group": group,
-            "idea": idea,
-        }
-        return render(request, "group/group_idea_detail.html", context)
-    else:
-        return redirect('/')
+    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2 or user_state.idea_vote3)
+
+    ctx = {
+        "group": group,
+        "idea" : idea,
+        "ideas_votes": ideas_votes,
+        "has_voted": has_voted,
+    }
+    return render(request, 'group/group_idea_detail.html', ctx)
 
 @login_required(login_url="common:login")
 def idea_download(request, group_id, idea_id):
@@ -860,6 +869,7 @@ def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
+    selected_idea_leader(idea_list, group)
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
@@ -922,7 +932,6 @@ def team_building_cycle(group_id, members):
             abs(members_ability - project_average_ability) + project_pick)
 
         return idea_list, members, project_fitness
-
 
 def make_team(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
