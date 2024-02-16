@@ -22,6 +22,8 @@ class State(Enum):
     WITH_HISTORY = 1
     ADMIN = 2
 
+class TeamNumber(Enum):
+    THIRD_TEAM = 5
 
 # Create your views here.
 @login_required(login_url="common:login")
@@ -49,6 +51,7 @@ def check_nonadmin(request, group_id):
                 return redirect(f"/group/{group_id}/non_admin_info/")
             else:
                 wrong_flag = True
+
     form = GroupPasswordForm()
     ctx = {"group": group, "is_wrong": wrong_flag, "form": form}
     return render(request, "group/group_nonadmin_certification.html", ctx)
@@ -78,31 +81,34 @@ def check_admin(request, group_id):
                 return redirect(f"/group/{group_id}/admin/")
             else:
                 wrong_flag = True
+
     form = GroupPasswordForm()
     ctx = {"group": group, "is_wrong": wrong_flag, "form": form}
     return render(request, "group/group_admin_certification.html", ctx)
 
-
+@login_required(login_url="common:login")
 def info_nonadmin(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     state = redirect_by_auth(request.user, group_id)  # 권한에 따른 리다이렉트
     user_state = MemberState.objects.filter(user=request.user,
                                             group_id=group_id).first()
+    form = NonAdminInfoForm()
 
     if state == State.WITH_HISTORY:  # 이전 인증 내역이 있는 참여자
         return redirect(f"/group/{group_id}/")
 
     elif state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
-
+    
     if request.method == "POST":
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
+            print("valid!")
             form.save()
             return redirect(f"/group/{group_id}/")
-
-    form = NonAdminInfoForm()
+    
     ctx = {"group": group, "form": form}
+    # print(form.group_ability.errors)
     return render(request, "group/group_member_info.html", ctx)
 
 
@@ -113,12 +119,11 @@ def redirect_by_auth(user, group_id):
     admin_state = AdminState.objects.filter(user=user,
                                             group_id=group_id).first()
 
-
     if admin_state:
         return State.ADMIN
     
     if user_state:
-        if user_state.group is None:
+        if user_state.group_ability is None:
             return State.NO_HISTORY
         else:
             return State.WITH_HISTORY
@@ -127,6 +132,7 @@ def redirect_by_auth(user, group_id):
 
 
 # 모임 개설 메인 함수
+@login_required(login_url="common:login")
 def group_base_info(request):
     if request.method == "POST":
         # request를 딕셔너리 형태로 변환 및 state 확인
@@ -243,23 +249,24 @@ def save_group_data(prev_req, user):
         end_date=prev_req["end_date"],
     )
 
+    MemberState.objects.create(group=group, user=user)
     AdminState.objects.create(group=group, user=user)
 
     return group
 
-
+@login_required(login_url="common:login")
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
     ctx = {"group": group}
     return render(request, "setting/setting_sharing.html", context=ctx)
 
-
+@login_required(login_url="common:login")
 def preresult(request, group_id):
     # 그룹에 있는 아이디어를 모두 가져오고, 이를 투표점수 순서로 정렬
     # 그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -274,7 +281,7 @@ def preresult(request, group_id):
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
 
-
+@login_required(login_url="common:login")
 def admin_page(request, group_id):
     group_instance = get_object_or_404(Group, id=group_id)
     # 운영진 인원
@@ -312,7 +319,7 @@ def group_people(group_instance, state):
     users = User.objects.filter(id__in=users_ids)
     return users
 
-
+@login_required(login_url="common:login")
 def group_user_delete(request, group_id, user_id):
     if request.method == "POST":
         if AdminState.objects.filter(user__id=user_id,
@@ -343,13 +350,14 @@ def group_user_delete(request, group_id, user_id):
 
 
 # patch말고 일단 POST
+@login_required(login_url="common:login")
 def group_user_update(request, group_id, user_id):
     group = get_object_or_404(Group, id=group_id)
     if request.method == "GET":
         user = User.objects.get(id=user_id)
         user_state = MemberState.objects.get(user=user, group=group)
         form = NonAdminInfoForm(instance=user_state)
-        idea = Idea.objects.get(group=group, author=user)
+        idea = Idea.objects.filter(group=group, author=user)
         ctx = {
             "form": form,
             "group": group,
@@ -368,6 +376,7 @@ def group_user_update(request, group_id, user_id):
 
 ##Admin state 추가
 @csrf_exempt
+@login_required(login_url="common:login")
 def admin_add(request, group_id):
     user_data = json.loads(request.body)
     user = User.objects.get(id=user_data["user_id"])
@@ -379,6 +388,7 @@ def admin_add(request, group_id):
 
 ##Admin state제거
 @csrf_exempt
+@login_required(login_url="common:login")
 def admin_delete(request, group_id):
     user_data = json.loads(request.body)
     user = User.objects.get(id=user_data["user_id"])
@@ -388,11 +398,11 @@ def admin_delete(request, group_id):
     bye_admin.delete()
     return JsonResponse({"message": "AdminState deleted successfully"})
 
-
+@login_required(login_url="common:login")
 def preresult_modify(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -439,7 +449,7 @@ def preresult_modify(request, group_id):
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
 
-
+@login_required(login_url="common:login")
 def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     author_ideas = Idea.objects.filter(group=group, author=request.user)
@@ -464,12 +474,13 @@ def group_detail(request, group_id):
             "other_ideas": other_ideas,
             "ideas_votes": ideas_votes,
             "has_voted": has_voted,
+            "user_state": user_state
         }
         return render(request, "group/group_detail.html", ctx)
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def idea_create(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     state = redirect_by_auth(request.user, group_id)
@@ -500,7 +511,7 @@ def idea_create(request, group_id):
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def idea_modify(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea,
@@ -532,7 +543,7 @@ def idea_modify(request, group_id, idea_id):
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def idea_delete(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea,
@@ -551,7 +562,7 @@ def idea_delete(request, group_id, idea_id):
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def idea_detail(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
@@ -566,7 +577,7 @@ def idea_detail(request, group_id, idea_id):
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def idea_download(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
@@ -582,7 +593,7 @@ def idea_download(request, group_id, idea_id):
         "Content-Disposition"] = f'attachment; filename="{file_path.split("/")[-1]}"'
     return response
 
-
+@login_required(login_url="common:login")
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
@@ -657,11 +668,11 @@ def vote_create(request, group_id):
     else:
         return redirect('/')
 
-
+@login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -680,11 +691,11 @@ def result(request, group_id):  # 최종 결과 페이지
         return redirect(redirect_url)
 
 
-
+@login_required(login_url="common:login")
 def member_preresult(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     user_state = MemberState.objects.filter(user=request.user,
                                             group=group).first()
     state = redirect_by_auth(request.user, group_id)
@@ -714,7 +725,7 @@ def member_preresult(request, group_id):
         return redirect(redirect_url)
 
 
-@login_required
+@login_required(login_url="common:login")
 def vote_modify(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     user = request.user
@@ -845,7 +856,7 @@ def members_change(members_name):
 def start_team_building(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     members = MemberState.objects.filter(group=group).exclude(
         my_team_idea__isnull=False)
@@ -886,7 +897,7 @@ def start_team_building(request, group_id):
 def team_building_cycle(group_id, members):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
     project_average_ability = [
     ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
     members_ability = (
@@ -953,3 +964,13 @@ def maketeam(idea_list, members, project_fitness, group_id):
 """ ##팀빌딩 
 def MakeMate(group_id):
     group=Group.objects.get(id=group_id) """
+
+def admin_idea_delete(request, group_id, user_id):
+    group = get_object_or_404(Group, pk=group_id)
+    author = get_object_or_404(User, pk=user_id)
+    idea = Idea.objects.filter(group=group, author=author)
+
+    if request.method == "POST":
+        idea.delete()
+    
+    return redirect("group:user_update", group_id=group_id, user_id=user_id)

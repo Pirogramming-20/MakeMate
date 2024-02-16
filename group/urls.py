@@ -47,6 +47,7 @@ urlpatterns = [
          idea_detail,
          name="idea_detail"),
     path("<int:group_id>/idea_vote/", vote_create, name="group_vote_create"),
+    path("<int:group_id>/idea_vote/modify", vote_modify, name="group_vote_modify"),
     path(
         "<int:group_id>/idea_download/<int:idea_id>/",
         idea_download,
@@ -61,6 +62,7 @@ urlpatterns = [
     path("<int:group_id>/team_building/",
          start_team_building,
          name="team_building"),
+     path("<int:group_id>/admin/idea_delete/<int:user_id>/", admin_idea_delete, name="admin_idea_delete")
 ]
 
 if settings.DEBUG:
