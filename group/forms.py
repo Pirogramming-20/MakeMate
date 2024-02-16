@@ -14,9 +14,13 @@ class NonAdminInfoForm(forms.ModelForm):
         fields = ['group_ability']
 
 class GroupBaseForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        label = "비밀번호"
+    )
     class Meta:
         model = Group
-        fields = ['title', 'team_number', 'password', 'type']
+        fields = ['title', 'password']
 
 class GroupDetailForm(forms.ModelForm):
     class Meta:
@@ -27,7 +31,6 @@ class GroupDetailForm(forms.ModelForm):
             'ability_description3',
             'ability_description4',
             'ability_description5',
-            'choice',
         ]
 
 

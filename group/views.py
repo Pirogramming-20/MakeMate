@@ -215,17 +215,13 @@ def get_prev_data(form, prev_req, req, state):
     if state == 0:
         prev_req = {
             "title": req["title"],
-            "team_number": req["team_number"],
             "password": req["password"],
-            "type": req["type"],
         }
 
     if state == 1:
         for idx in range(1, 6):
             prev_req[f"group_ability{idx}"] = req.get(
                 f"ability_description{idx}", "")
-
-        prev_req["choice"] = int(req["choice"])
 
     if state == 2:
         prev_req["end_date"] = form.cleaned_data["end_date"]
@@ -238,15 +234,12 @@ def get_prev_data(form, prev_req, req, state):
 def save_group_data(prev_req, user):
     group = Group.objects.create(
         title=prev_req["title"],
-        team_number=int(prev_req["team_number"]),
         password=prev_req["password"],
-        type=prev_req["type"],
         ability_description1=prev_req.get("group_ability1", ""),
         ability_description2=prev_req.get("group_ability2", ""),
         ability_description3=prev_req.get("group_ability3", ""),
         ability_description4=prev_req.get("group_ability4", ""),
         ability_description5=prev_req.get("group_ability5", ""),
-        choice=int(prev_req["choice"]),
         end_date=prev_req["end_date"],
     )
 
