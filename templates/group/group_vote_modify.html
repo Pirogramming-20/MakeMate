@@ -2,74 +2,78 @@
 {% load static %}
 {% block content %}
 <section class="container">
-  <div class="wrap_title">
-    <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
-    <div class="inner_title">
-      <h3 class="title_content">{{ group.title }}</h3> 
-      <h3 class="subtitle_content">투표 수정</h3>
+  <div class="preresult_admin_container">
+    <div class="wrap_title">
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
+      <div class="inner_title">
+        <h3 class="title_content">{{ group.title }}</h3> 
+        <h3 class="subtitle_content">투표 수정</h3>
+      </div>
     </div>
-  </div>
-
-  <form method="post">
-    <div id="vote_modify_form_container">
-    {% csrf_token %}
-    <div>
-      <div class="wrap_title">1지망 아이디어 선택</div>
-      <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
-        <option value="">선택 취소</option>
-        {% for idea in ideas_for_voting %}
-        <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote1.id %}selected{% endif %}>{{ idea.title }}</option>
-        {% endfor %}
-      </select>
-      {% if form.idea_vote1.errors %}
-        <div class="wrap_error">
-          {% for error in form.idea_vote1.errors %}
-            {{ error }}
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
-
   
-    <div>
-      <div class="wrap_title">2지망 아이디어 선택</div>
-      <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
-        <option value="">선택 취소</option>
-        {% for idea in ideas_for_voting %}
-        <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote2.id %}selected{% endif %}>{{ idea.title }}</option>
-        {% endfor %}
-      </select>
-      {% if form.idea_vote2.errors %}
-        <div class="wrap_error">
-          {% for error in form.idea_vote2.errors %}
-            {{ error }}
+    <form method="post">
+      <div id="vote_modify_form_container">
+      {% csrf_token %}
+      <div>
+        <div class="wrap_title">1지망 아이디어 선택</div>
+        <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
+          <option value="">선택 취소</option>
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote1.id %}selected{% endif %}>{{ idea.title }}</option>
           {% endfor %}
-        </div>
-      {% endif %}
-    </div>
-    
-    <div>
-      <div class="wrap_title">3지망 아이디어 선택</div>
-      <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
-        <option value="">선택 취소</option>
-        {% for idea in ideas_for_voting %}
-        <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote3.id %}selected{% endif %}>{{ idea.title }}</option>
-        {% endfor %}
-      </select>
-      {% if form.idea_vote3.errors %}
-        <div class="wrap_error">
-          {% for error in form.idea_vote3.errors %}
-            {{ error }}
-          {% endfor %}
-        </div>
+        </select>
+        {% if form.idea_vote1.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote1.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
         {% endif %}
+      </div>
+  
+    
+      <div>
+        <div class="wrap_title">2지망 아이디어 선택</div>
+        <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
+          <option value="">선택 취소</option>
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote2.id %}selected{% endif %}>{{ idea.title }}</option>
+          {% endfor %}
+        </select>
+        {% if form.idea_vote2.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote2.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div>
+        <div class="wrap_title">3지망 아이디어 선택</div>
+        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
+          <option value="">선택 취소</option>
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote3.id %}selected{% endif %}>{{ idea.title }}</option>
+          {% endfor %}
+        </select>
+        {% if form.idea_vote3.errors %}
+          <div class="wrap_error">
+            {% for error in form.idea_vote3.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+          {% endif %}
+      </div>
     </div>
-  </div>
+  
+      <div id="vote_modify_btns" >
+        <button type="submit" class="primary_button_fill" >수정완료</button>
+      </div>
+    </form>
 
-    <div id="vote_modify_btns" >
-      <button type="submit" class="primary_button_fill" >수정완료</button>
-    </div>
-  </form>
+  </div>
+  
 </section>
 
 <script src="{% static 'js/group_dropdowns.js' %}"></script>
