@@ -89,10 +89,7 @@ def info_nonadmin(request, group_id):
     user_state = MemberState.objects.filter(user=request.user,
                                             group_id=group_id).first()
 
-    if state == State.WITH_HISTORY:  # 이전 인증 내역이 있는 참여자
-        return redirect(f"/group/{group_id}/")
-
-    elif state == State.ADMIN:  # 운영진인 경우
+    if state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
 
     if request.method == "POST":
