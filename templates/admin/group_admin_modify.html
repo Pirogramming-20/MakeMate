@@ -39,7 +39,7 @@
     <div class='admin_warp_user_idea'>
       <div class="admin_inner_idea_header">
         <div class='admin_written_idea'>작성한 아이디어</div>
-        <form action=" {%url 'group:idea_delete' group.id idea.id%}" method="POST">
+        <form action=" {%url 'group:admin_idea_delete' group_id=group.id user_id=user_state.user.id%}" method="POST">
           {% csrf_token %}
           <button class='cta_red_badge' type="submit">삭제</button>
         </form>
@@ -57,7 +57,4 @@
       <div>{{idea.content}}</div>
     </div>
   </section>
-
-
-
 {% endblock %}

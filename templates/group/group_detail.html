@@ -5,7 +5,7 @@
     <div class="group_detail_header_container">
       <div class="group_detail_description">
           <span>< Home</span>
-          <p class="group_detail_title">피로그래밍 20기</p>
+          <p class="group_detail_title">{{group.title}}</p>
           {% if group.end_date.isoformat < current_time %} 
             <span class="group_detail_end_date">마감까지 남은 시간 : {{group.end_date.isoformat}}</span>
           {% else %}
@@ -14,7 +14,12 @@
           <span>원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
       </div>
       <div class="group_detail_btns">
+        {% if user_state.idea_vote1 %}
+        <button class="secondary_button"><a href="{% url 'group:group_vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
+        {% else %}
         <button class="secondary_button"><a href="{% url 'group:group_vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
+        {% endif %}
+
         {% if not author_ideas %}
           <button class="primary_button"><a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가하기</a></button>
         {% else %}

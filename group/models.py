@@ -5,19 +5,8 @@ from django.core.files.storage import FileSystemStorage
 from common.models import User
 
 class Group(models.Model):
-    TYPE_CHOICE = (
-        ("모각코", "모각코"),
-        ("프로젝트", "프로젝트"),
-    )
-
     title = models.CharField("그룹 이름", max_length=30)
-    team_number = models.PositiveIntegerField(
-        "그룹 내 팀 수",
-        default=1,
-        validators=[MaxValueValidator(10),
-                    MinValueValidator(1)])
     password = models.CharField("그룹 비밀번호", max_length=15)
-    type = models.CharField("모임 종류", max_length=20, choices=TYPE_CHOICE)
     ability_description1 = models.CharField("실력1 설명",
                                             max_length=100,
                                             null=True,
@@ -38,7 +27,6 @@ class Group(models.Model):
                                             max_length=100,
                                             null=True,
                                             blank=True)
-    choice = models.IntegerField("그룹 최대 투표 개수", default=3, null=True)
     # array필드를 지원하지 않기 때문에 manyToMany필드로 저장, 이 후 정보를 가져오려면 역참조하여 사용
     is_end = models.BooleanField(default=False)
     end_date = models.DateTimeField(default=timezone.now().date() +
