@@ -4,17 +4,22 @@
   object-fit: cover;
   overflow: hidden;
 }
-.wrap_main_img > img{
+.wrap_main_img > img, .wrap_main_img_auth > img{
   width: 100%;
 }
 
+.wrap_main_img_auth {
+  display: none;
+}
+
 @media screen and (min-width: 1024px){
-  .wrap_main_img {
+  .wrap_main_img, .wrap_main_img_auth {
+    display: block;
     width: 50vw;
-      height: calc(100vh - 80px);
-      position: absolute;
-      right: 0;
-      top: 80px;
+    height: calc(100vh - 80px);
+    position: absolute;
+    right: 0;
+    top: 80px;
   }
 }
 

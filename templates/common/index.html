@@ -2,11 +2,11 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
-    <div class="wrap_main_img">
+    {% if user.is_authenticated %}
+    <div class="wrap_main_img_auth">
         <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
     </div>
     <section class='common_section_main_page'>
-        {% if user.is_authenticated %}
         <div class="common_wrap_login_info">
             <div class='common_inner_title'>
                 <div>효율적인 팀빌딩의 시작,</div>
@@ -136,7 +136,12 @@
                     <div>참여중인 모임이 없습니다.</div>
                 {% endif %}
             </div>
-        {% else %}
+        </section>
+    {% else %}
+        <div class="wrap_main_img">
+            <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
+        </div>
+        <section class='common_section_main_page'>
             {% comment %} <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div> {% endcomment %}
             <div class='common_wrap_info'>
                 <div class='common_info_title'>효율적인 팀빌딩의 시작,</div>
@@ -145,8 +150,8 @@
                     <button class='secondary_button'><a href="{% url 'common:login' %}" >로그인</a></button>
                     <button class='primary_button'><a href="{% url 'common:signup' %}" >회원가입</a></button>
                 </div>
-        </div>
-        {% endif %}
-    </section>
+            </div>
+        </section>
+    {% endif %}
     <script src={% static "js/main_page_time.js" %}  ></script>
 {% endblock %}

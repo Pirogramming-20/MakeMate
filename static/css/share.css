@@ -6,7 +6,7 @@
 .setting_section_group_share{
   gap: var(--padding6);
   padding: 0 var(--padding4);
-  margin: 8rem auto 0 auto;
+  margin: 8rem auto;
   
 }
 .setting_section_group_share>button{
@@ -38,7 +38,7 @@
 }
 
 @media screen and (min-width: 1024px){
-  .group_member_url {
+  .group_member_url, .group_admin_url {
     padding: var(--padding1);
   }
 }

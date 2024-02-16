@@ -7,7 +7,7 @@
   gap: var(--padding6) ;
   margin: var(--padding7) auto;
   padding: var(--padding4);
-  width: 350px;
+  width: 270px;
 }
 
 @media screen and (min-width: 1024px){
