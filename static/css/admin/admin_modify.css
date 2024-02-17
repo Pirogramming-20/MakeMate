@@ -1,7 +1,7 @@
 .admin_section_modify{
   margin: var(--padding7) auto;
   padding:  0 var(--padding4);
-  width: 350px;
+  width: 270px;
 }
 
 @media screen and (min-width: 1024px){
