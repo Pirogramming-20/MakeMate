@@ -28,15 +28,17 @@
               {% csrf_token %}
               <button>다운로드</button>
             </form>
-        </div>
+          </div>
         {% endif %}
         </div>
         {% if idea.author == request.user %} 
         <div class="idea_detail_modify_btns">
           <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="POST">
             {% csrf_token %}
-            <button class='cta_del_button' type="submit">삭제</button>
+            <input type="hidden" name="action" value="delete">
+            <button type="submit" class='cta_del_button'>삭제</button>
           </form>
+          
           <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>
         </div>
         {% endif %}

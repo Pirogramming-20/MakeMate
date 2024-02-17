@@ -1,45 +1,41 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <section>
-    <div class="wrap_title">
-      <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
-      <div class="inner_title">
-        <h3 class="title_content">아이디어 수정하기</h3>
-        <p class="subtitle_content">{{ idea.title }}</p>
-      </div>
+  <div class="wrap_title">
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
+    <div class="inner_title">
+      <h3 class="title_content">아이디어 수정하기</h3>
+      <p class="subtitle_content">{{ idea.title }}</p>
     </div>
+  </div>
 
-    <form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" class="wrap_idea_modify_form" novalidate>
+  <form
+    action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
+    method="post"
+    enctype="multipart/form-data"
+    class="wrap_idea_modify_form"
+    novalidate>
+    <div id="vote_modify_form_container">
+      {% csrf_token %} {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %} {% endif %} {% for field in form %}
       <div id="vote_modify_form_container">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
-          <div class="wrap_error">
-            {{ error }}
-          </div>
-          {% endfor %}
+        
+        {{ field.label }} {{ field }} {% if field.help_text %}
+        <div class="wrap_error">{{ field.help_text }}</div>
         {% endif %}
 
-        {% for field in form %}
-          <div id="vote_modify_form_container">
-            {{ field.label }}
-            {{ field }}
-            {% if field.help_text %}
-            <div class="wrap_error">{{ field.help_text }}</div>
-            {% endif %}
-          </div>
-          {% if field.errors %}
-            {% for error in field.errors %}
-            <div class="wrap_error">{{ error }}</div>
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
+        
       </div>
+      {% if field.errors %} {% for error in field.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %} {% endif %} {% endfor %}
+    </div>
 
-      <div class="vote_create_btns">
-        <button type="submit" class="primary_button_fill">저장하기</button>
-        <!-- 홈으로 버튼에 URL 추가 필요 -->
-      </div>
-    </form>
+
+
+    <div class="vote_create_btns">
+      <button type="submit" class="primary_button_fill">저장하기</button>
+    </div>
+  </form>
 </section>
 {% endblock %}

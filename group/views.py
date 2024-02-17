@@ -6,7 +6,7 @@ from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, FileResponse
+from django.http import JsonResponse, FileResponse, HttpResponseRedirect 
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib import messages
@@ -531,11 +531,14 @@ def idea_modify(request, group_id, idea_id):
                                 idea_id=idea.id)
         else:
             form = IdeaForm(instance=idea)
+        
+        file_url = idea.file.url if idea.file else None
 
         ctx = {
             "form": form,
             "group": group,
             "idea": idea,
+            "file_url": file_url,
         }
         return render(request, "group/group_idea_modify.html", ctx)
     elif state == State.ADMIN and idea == None:
@@ -557,11 +560,13 @@ def idea_delete(request, group_id, idea_id):
         if request.method == "POST" and request.POST.get("action") == "delete":
             idea.delete()
             return redirect("group:group_detail", group_id=group.id)
+        else:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
     elif state == State.ADMIN:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
-        return redirect(redirect_url)
-    else:
-        return redirect('/')
+        idea.delete()
+        return redirect("group:group_detail", group_id=group_id)
+    return redirect("group:group_detail", group_id=group_id)
 
 @login_required(login_url="common:login")
 def idea_detail(request, group_id, idea_id):
