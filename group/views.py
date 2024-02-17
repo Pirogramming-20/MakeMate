@@ -465,6 +465,20 @@ def group_detail(request, group_id):
         has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
                                     or user_state.idea_vote3)
 
+        # idea를 지망 순서로 정렬
+        def sort_by_vote_rank(idea):
+            if idea.id == ideas_votes["idea_vote1_id"]:
+                return 1
+            elif idea.id == ideas_votes["idea_vote2_id"]:
+                return 2
+            elif idea.id == ideas_votes["idea_vote3_id"]:
+                return 3
+            else:
+                return 4  # 1, 2, 3지망이 아닌 아이디어는 4순위로
+            
+        if has_voted:
+            other_ideas = sorted(other_ideas, key=sort_by_vote_rank)
+
         ctx = {
             "group": group,
             "author_ideas": author_ideas,
@@ -476,6 +490,7 @@ def group_detail(request, group_id):
         return render(request, "group/group_detail.html", ctx)
     else:
         return redirect('/')
+
 
 @login_required(login_url="common:login")
 def idea_create(request, group_id):
