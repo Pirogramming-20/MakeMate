@@ -120,6 +120,7 @@
 /* 카드 틀 */
 .wrap_wrap_card {
   display: grid;
+  width: 100%;
   grid-template-columns: 1fr;
   gap: var(--padding4);
 }
@@ -128,10 +129,6 @@
   .wrap_wrap_card {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-
-.wrap_card{
-  margin-bottom: var(--padding4);
 }
 
 .re_card_title{
