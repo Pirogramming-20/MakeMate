@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.utils import timezone
 from .models import User
 from .forms import UserForm
-from group.models import Group, MemberState, AdminState
+from group.models import Group, MemberState, AdminState, Vote
 
 
 # Create your views here.
@@ -17,7 +17,7 @@ def main_page(request):
         member_set = set(Group.objects.filter(member_states__user=user))
         admin_set = set(admin_groups)
         member_groups = list(member_set - admin_set)
-        
+    
         # 시간비교하게 현재 시간도 view에서 보내기
         ctx = {
             "admin_groups": admin_groups,
