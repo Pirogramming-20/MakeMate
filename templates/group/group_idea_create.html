@@ -15,25 +15,48 @@
         {% csrf_token %}
           {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
-            <div class="wrap_error">
-              {{ error }}
-            </div>
-            {% endfor %}
+              <div class="wrap_error">
+                {{ error }}
+              </div>
+              {% endfor %}
           {% endif %}
-          {% for field in form %}
             <div id="vote_modify_form_container">
-              {{ field.label }}
-              {{ field }}
-              {% if field.help_text %}
-              <div class="wrap_error">{{ field.help_text }}</div>
-              {% endif %}
+              <span>제목 <i class="form_highlight_content">*</i></span>
+              {{ form.title }}
             </div>
-            {% if field.errors %}
-              {% for error in field.errors %}
+            {% if form.title.errors %}
+              {% for error in form.title.errors %}
               <div class="wrap_error">{{ error }}</div>
               {% endfor %}
             {% endif %}
-          {% endfor %}
+            <div id="vote_modify_form_container">
+              <span>한 줄 소개 <i class="form_highlight_content">*</i></span>
+              {{ form.intro }}
+              <div class="wrap_error">50자 미만으로 작성해주세요.</div>         
+            </div>
+            {% if form.intro.errors %}
+              {% for error in form.intro.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+            <div id="vote_modify_form_container">
+              <span>첨부파일</span>
+              {{ form.file }}        
+            </div>
+            {% if form.file.errors %}
+              {% for error in form.file.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+            <div id="vote_modify_form_container">
+              <span>내용</span>
+              {{ form.content }}        
+            </div>
+            {% if form.content.errors %}
+              {% for error in form.content.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
       </div>
 
       <div class="vote_create_btns">

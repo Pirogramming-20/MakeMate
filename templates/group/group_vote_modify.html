@@ -50,7 +50,7 @@
       
       <div>
         <div class="wrap_title">3지망 아이디어 선택</div>
-        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
+        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()" class="wrap_form">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
           <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote3.id %}selected{% endif %}>{{ idea.title }}</option>

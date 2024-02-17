@@ -120,12 +120,12 @@ section {
 .wrap_card {
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
   padding: var(--padding3);
   gap: var(--padding2);
   border-radius: var(--card_border_radius);
   background-color: var(--color_black_highlight);
+  cursor: pointer;
 }
 
 .card_title {
@@ -139,8 +139,16 @@ section {
 
 .inner_card_contents {
   display: flex;
+  width: 26rem;
   flex-direction: column;
   font-size: var(--font_small);
+  word-wrap: break-word;
+}
+
+@media screen and (min-width: 850px){
+  .inner_card_contents {
+      width: 34rem;
+  }
 }
 
 .card_contents_green {
@@ -239,6 +247,17 @@ input {
   font-weight: bold;
 }
 
+.title_content_left {
+  font-size: var(--font_xlarge);
+  color: var(--color_main);
+  text-align: left;
+}
+
+.subtitle_content_left {
+  font-size: var(--font_large);
+  font-weight: bold;
+  text-align: left;
+}
 .inner_title {
   display: flex;
   flex-direction: column;

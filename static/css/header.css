@@ -6,6 +6,7 @@ header{
     width: 100%;
     height: var(--padding7);
     background-color: black;
+    z-index: 1;
 }
 
 .logo {

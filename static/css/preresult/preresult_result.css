@@ -76,7 +76,7 @@ body{
 }
 
 .choice_idea_modal{
-    width: 25.1rem;
+    width: 100%;
     border: 1px solid var(--color_sub_bright);
     border-radius: 9px;
     padding: var(--padding4);
@@ -94,22 +94,20 @@ body{
     gap: 0.8rem;
 }
 
-.preresult_admin_idea_desc > p{
-    line-height: var(--font_medium);
-}
-
-.preresult_admin_idea_desc > .cta_button{
-    width: fit-content;
-    font-size: var(--font_medium);
-    line-height: var(--font_medium);
-    border-radius: 5px;
-    padding: 0.5rem;
-    color: black;
-}
-
 .preresult_admin_member_list{
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media screen and (min-width:850px) {
+    .preresult_admin_member_list{
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: start;
+    }
 }
 
 .preresult_admin_member_list > .secondary_button{

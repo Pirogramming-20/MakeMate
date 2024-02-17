@@ -101,12 +101,10 @@ def info_nonadmin(request, group_id):
     if request.method == "POST":
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
-            print("valid!")
             form.save()
             return redirect(f"/group/{group_id}/")
     
     ctx = {"group": group, "form": form}
-    # print(form.group_ability.errors)
     return render(request, "group/group_member_info.html", ctx)
 
 
@@ -365,8 +363,6 @@ def group_user_update(request, group_id, user_id):
             "user": user,
             "idea": idea,
         }
-        for my_idea in idea: 
-            print(my_idea.title)
         
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
@@ -983,6 +979,6 @@ def admin_idea_delete(request, group_id, user_id):
     return redirect("group:user_update", group_id=group_id, user_id=user_id)
 
 # ##스케줄러 시작##
-# make_auto(start_team_building)
-# start_scheduler()
+make_auto(start_team_building)
+start_scheduler()
 # ####
