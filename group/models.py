@@ -48,7 +48,7 @@ class Idea(models.Model):
                             upload_to="ideas/files/%Y/%m/%d/",
                             null=True,
                             blank=True)
-    content = models.TextField("아이디어 설명", max_length=1000, default="기본 설명")
+    content = models.TextField("아이디어 설명", max_length=1000, default="자신의 아이디어를 간단하게 소개해주세요.")
     score = models.IntegerField("아이디어 점수", default=0)
     member = models.ManyToManyField(User,
                                     related_name="idea_member",

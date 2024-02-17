@@ -57,15 +57,15 @@
           <h3 class="card_title">{{ idea.title }}</h3>
           <!-- 투표 순위 표시 로직 -->
           {% if ideas_votes %}
-          <div>
+          
             {% if idea.id == ideas_votes.idea_vote1_id %}
-            <span class="cta_blue_badge">1지망</span>
+            <div><span class="cta_blue_badge">1지망</span></div>  
             {% elif idea.id == ideas_votes.idea_vote2_id %}
-            <span class="cta_blue_badge">2지망</span>
+            <div><span class="cta_blue_badge">2지망</span></div>  
             {% elif idea.id == ideas_votes.idea_vote3_id %}
-            <span class="cta_blue_badge">3지망</span>
+            <div><span class="cta_blue_badge">3지망</span></div>  
             {% endif %}
-          </div>
+          
           {% endif %}
           <span class="inner_card_contents">{{ idea.intro }}</span>
           <span>{{idea.author}}</span>
