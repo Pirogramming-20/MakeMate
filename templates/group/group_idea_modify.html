@@ -22,7 +22,7 @@
 
         {% for field in form %}
           <div id="vote_modify_form_container">
-            {{ field.label_tag }}
+            {{ field.label }}
             {{ field }}
             {% if field.help_text %}
             <div class="wrap_error">{{ field.help_text }}</div>
