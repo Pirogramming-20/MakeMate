@@ -526,25 +526,28 @@ def idea_create(request, group_id):
 @login_required(login_url="common:login")
 def idea_modify(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
-    idea = get_object_or_404(Idea,
-                             id=idea_id,
-                             group=group,
-                             author=request.user)
+    idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)
     state = redirect_by_auth(request.user, group_id)
 
     if state == State.WITH_HISTORY:
         if request.method == "POST":
+            
+            if 'file-clear' in request.POST and idea.file:
+                idea.file.delete()
+                idea.file = None  
+                idea.save(update_fields=['file'])  
+
             form = IdeaForm(request.POST, request.FILES, instance=idea)
+            
             if form.is_valid():
                 form.save()
-                return redirect("group:idea_detail",
-                                group_id=group.id,
-                                idea_id=idea.id)
+                idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)  # 이 부분 추가
+                return redirect("group:idea_detail", group_id=group.id, idea_id=idea.id)
+
         else:
             form = IdeaForm(instance=idea)
-        
-        file_url = idea.file.url if idea.file else None
 
+        file_url = idea.file.url if idea.file else None
         ctx = {
             "form": form,
             "group": group,
@@ -552,7 +555,7 @@ def idea_modify(request, group_id, idea_id):
             "file_url": file_url,
         }
         return render(request, "group/group_idea_modify.html", ctx)
-    elif state == State.ADMIN and idea == None:
+    elif state == State.ADMIN and idea is None:
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
