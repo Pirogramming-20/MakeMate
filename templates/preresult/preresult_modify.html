@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class='common_section_main_page'>
-    <div class="preresult_admin_container">
+<section>
         <div class="preresult_admin_header_container">
             <div class="preresult_admin_description">
                 <span>< back</span>
@@ -18,7 +17,7 @@
                     <div class="group_preresult_modify_container">
                         <div class="preresult_modify_member_title">
                             <h2>{{member.user.username}}</h2>
-                            <span class="group_preresult_modify_badge">{{member.my_team_idea}}</span>
+                            <span class="secondary_badge">{{member.my_team_idea}}</span>
                         </div>
                         <!-- 생각해보니 여기도 동적으로 만들어야 하는데 3지망 고정값으로 만들면 안되네요;; -->
                         <!-- 근데 db모델부터 3개 하드코딩으로 박혀있네....? 일단 패스-->
@@ -42,6 +41,5 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
 </section>
 {% endblock %}

@@ -4,9 +4,9 @@
   width: 270px;
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .admin_section_modify {
-    width: 600px;
+    width: 800px;
   }
 }
 
@@ -24,9 +24,9 @@
   font-size: var(--font_large);
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .admin_modify_user {
-    width: 600px;
+    width: 800px;
   }
 }
 
@@ -36,9 +36,9 @@
   gap: var(--padding2);
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .admin_inner_info {
-    width: 600px;
+    width: 800px;
   }
 }
 

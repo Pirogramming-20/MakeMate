@@ -1,12 +1,11 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
+      <h3 class="title_content">{{ group.title }}</h3> 
       <div class="inner_title">
-        <h3 class="title_content">{{ group.title }}</h3> 
         <div class="title_with_badge">
           <div class="subtitle_content">{{ idea.title }}</div>
           {% if ideas_votes %} 
@@ -19,35 +18,32 @@
             {% endif %} 
           {% endif %}
         </div>
-      </div>
-    </div>
-  
-    <div class="wrap_form">
-        
-        <div>{{ idea.intro }}</div>
+        <div class="inner_idea_intro">
+          <span>{{ idea.intro }}</span>
+        </div>
         {% if idea.file %}
-          <div><strong>발표자료 다운로드</strong></div>
-          <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}">
-            {% csrf_token %}
-            <button>다운로드</button>
-          </form>
+          <div class="wrap_download">
+            <span class="download_content">발표자료 다운로드</span>
+            <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}" class="secondary_badge">
+              {% csrf_token %}
+              <button>다운로드</button>
+            </form>
+        </div>
         {% endif %}
-
+        </div>
         {% if idea.author == request.user %} 
         <div class="idea_detail_modify_btns">
+          <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="POST">
+            {% csrf_token %}
+            <button class='cta_del_button' type="submit">삭제</button>
+          </form>
           <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>
         </div>
         {% endif %}
-  
-        <div>{{ idea.content|linebreaks }}</div>
-        
     </div>
-
-    
-
-  </div>
-  
-
+    <div class="wrap_form">  
+        <div>{{ idea.content|linebreaks }}</div>      
+    </div>
 </section>
 
 {% endblock %}

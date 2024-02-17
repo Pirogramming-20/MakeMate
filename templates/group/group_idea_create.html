@@ -1,8 +1,7 @@
 {% extends 'base.html' %} {% block head %}
 <title>idea_create</title>
 {% endblock %} {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
       <div class="inner_title">
@@ -11,19 +10,30 @@
       </div>
     </div>
 
-    <form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data" class="wrap_form" novalidate>
       <div id="vote_modify_form_container">
-        {% csrf_token %} {% if form.non_field_errors %}
-        <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
-        {% endif %} {% for field in form %}
-        <div id="vote_modify_form_container">
-          {{ field.label_tag }} {{ field }} {% if field.help_text %}
-          <div class="wrap_error">{{ field.help_text }}</div>
+        {% csrf_token %}
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <div class="wrap_error">
+              {{ error }}
+            </div>
+            {% endfor %}
           {% endif %}
-        </div>
-        {% if field.errors %} {% for error in field.errors %}
-        <div class="wrap_error">{{ error }}</div>
-        {% endfor %} {% endif %} {% endfor %}
+          {% for field in form %}
+            <div id="vote_modify_form_container">
+              {{ field.label }}
+              {{ field }}
+              {% if field.help_text %}
+              <div class="wrap_error">{{ field.help_text }}</div>
+              {% endif %}
+            </div>
+            {% if field.errors %}
+              {% for error in field.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
       </div>
 
       <div class="vote_create_btns">
@@ -31,6 +41,5 @@
         <!-- 홈으로 버튼에 URL 추가 필요 -->
       </div>
     </form>
-  </div>
 </section>
 {% endblock %}

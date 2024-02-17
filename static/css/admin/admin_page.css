@@ -10,7 +10,7 @@
   width: 270px;
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .admin_section_admin_page,.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members {
     width: 600px;
   }
@@ -34,7 +34,7 @@
   gap: var(--padding4);
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .admin_inner_page_info {
     align-items: center;
   }

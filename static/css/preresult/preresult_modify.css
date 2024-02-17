@@ -1,11 +1,17 @@
 .group_preresult_modify_container{
-    width: 25.1rem;
+    width: 100%;
     border: 1px solid var(--color_sub_bright);
     border-radius: 9px;
     padding: var(--padding4);
     background-color: black;
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (min-width: 850px){
+    .group_preresult_modify_container {
+        width: 100%;
+    }
 }
 
 .group_preresult_modify_container > h2{
@@ -22,9 +28,15 @@
 }
 
 .preresult_modify_container{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: var(--padding4);
+}
+
+@media screen and (min-width: 850px){
+    .preresult_modify_container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .group_preresult_modify_container > form > button{
@@ -48,5 +60,6 @@
 
 .preresult_modify_member_title{
     display: flex;
-    gap: var(--padding1);
+    gap: var(--padding2);
+    align-items: center;
 }
