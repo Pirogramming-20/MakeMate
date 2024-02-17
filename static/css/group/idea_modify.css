@@ -47,3 +47,8 @@ body {
 p{
     margin-bottom: 2rem; 
 }
+
+.idea_file{
+  color: var(--color_main);
+  font-size: var(--font_small);
+}
