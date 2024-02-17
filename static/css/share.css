@@ -37,8 +37,12 @@
   gap: var(--padding2);
 }
 
-@media screen and (min-width: 1024px){
+@media screen and (min-width: 850px){
   .group_member_url, .group_admin_url {
     padding: var(--padding1);
   }
+}
+
+.group_member_url > span, .group_admin_url > span {
+    word-wrap: break-word;
 }

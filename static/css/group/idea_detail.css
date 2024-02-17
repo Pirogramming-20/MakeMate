@@ -33,7 +33,6 @@ body {
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  margin-bottom: var(--padding3);
 }
 
 .badge_idea_detail {
@@ -45,9 +44,25 @@ body {
   margin: 10px;
 }
 
+.wrap_download {
+  display: flex;
+  gap: var(--padding2);
+  vertical-align: center;
+}
 
-.idea_detail_modify_btns{
-    margin-bottom: var(--padding3);
+.download_content {
+  font-weight: bold;
+  height: 100%;
+  padding-top: 3px;
+}
 
+.inner_idea_intro {
+  display: flex;
+  width: 100%;
+}
 
+.idea_detail_modify_btns {
+  display: flex;
+  justify-content: center;
+  gap: var(--padding1);
 }

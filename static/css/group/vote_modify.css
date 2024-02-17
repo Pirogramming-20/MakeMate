@@ -1,6 +1,6 @@
-.vote_modify_btns > .primary_button {
-  border-radius: 1rem;
-  width: 19rem;
+.vote_modify_btns {
+  display: flex;
+  justify-content: center;
 }
 
 .wrap_title {
@@ -9,6 +9,7 @@
 
 #vote_modify_form_container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: var(--padding4);
   justify-content: center;
@@ -25,4 +26,19 @@
   display: flex;
   justify-content: center;
   padding-top: var(--padding6)
+}
+
+@media screen and (min-width: 850px){
+  #vote_modify_form_container {
+    width: 100%;
+  }
+}
+
+#id_file {
+  padding: 0;
+}
+
+#vote_modify_form_container > a {
+  font-size: var(--font_small);
+  color: var(--color_main);
 }

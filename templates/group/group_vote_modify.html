@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
       <div class="inner_title">
@@ -70,10 +69,7 @@
       <div id="vote_modify_btns" >
         <button type="submit" class="primary_button_fill" >수정완료</button>
       </div>
-    </form>
-
-  </div>
-  
+    </form> 
 </section>
 
 <script src="{% static 'js/group_dropdowns.js' %}"></script>

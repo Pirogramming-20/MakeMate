@@ -1,51 +1,45 @@
-{% extends 'base.html' %} {% load static %} {% block head %} {{ block.super }}
-<title>group_idea_modify</title>
-{% endblock %} {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+{% extends 'base.html' %}
+{% block content %}
+<section>
     <div class="wrap_title">
-      <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
       <div class="inner_title">
         <h3 class="title_content">아이디어 수정하기</h3>
-
-        <p class="subtitle_content">{{ group.title }}</p>
+        <p class="subtitle_content">{{ idea.title }}</p>
       </div>
     </div>
 
-    <form
-      action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
-      method="post"
-      enctype="multipart/form-data"
-      style="display: inline">
-      {%csrf_token%}
+    <form action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" method="post" enctype="multipart/form-data" class="wrap_idea_modify_form" novalidate>
       <div id="vote_modify_form_container">
-        <!-- 논필드 에러 표시 -->
+        {% csrf_token %}
         {% if form.non_field_errors %}
-        <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
-        {% endif %} {% for field in form %}
-        <div>
-          {{ field.label_tag }} {{ field }} {% if field.help_text %}
-          <div class="wrap_error">{{ field.help_text }}</div>
+          {% for error in form.non_field_errors %}
+          <div class="wrap_error">
+            {{ error }}
+          </div>
+          {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+          <div id="vote_modify_form_container">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+            <div class="wrap_error">{{ field.help_text }}</div>
+            {% endif %}
+          </div>
+          {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="wrap_error">{{ error }}</div>
+            {% endfor %}
           {% endif %}
-        </div>
-        {% if field.errors %} {% for error in field.errors %}
-        <div class="wrap_error">{{ error }}</div>
-        {% endfor %} {% endif %} {% endfor %}
+        {% endfor %}
+      </div>
+
+      <div class="vote_create_btns">
+        <button type="submit" class="primary_button_fill">저장하기</button>
+        <!-- 홈으로 버튼에 URL 추가 필요 -->
       </div>
     </form>
-
-    <div class="idea_modify_btns">
-      <!-- 아이디어 삭제 버튼 -->
-
-      <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post" style="display: inline">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="delete" />
-        <button type="submit" class="cta_del_button">삭제</button>
-      </form>
-
-      <button type="'submit" class="primary_button">수정 완료</button>
-    </div>
-  </div>
 </section>
-
 {% endblock %}
