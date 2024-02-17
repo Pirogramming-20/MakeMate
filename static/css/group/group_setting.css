@@ -1,0 +1,24 @@
+#base_set_submit_btn {
+    display: block;
+    width: 100%;
+    padding: 5px  0;
+    margin-top: var(--padding4);
+    text-align: center;
+    border-radius: var(--btn_border_radius);
+    font-weight: bold;
+    background-color: var(--color_main);
+    color: black; 
+}
+
+@media screen and (min-width: 850px){
+    #base_set_submit_btn {
+        width: 190px;
+        justify-content: center;
+    }
+}
+
+#state_desc{
+    font-size: var(--font_large);
+    font-weight: bold;
+}
+

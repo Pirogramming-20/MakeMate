@@ -1,73 +1,89 @@
-{% extends 'base.html' %} {% block content %}
-<h1>아이디어 투표하기</h1>
-
-<form method="post">
-  {% csrf_token %}
-  <h2>1지망 아이디어 선택</h2>
-  <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<section>
+    <div class="wrap_title">
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
+      <div class="inner_title">
+        <h3 class="title_content">{{ group.title }}</h3>
+        <h3 class="subtitle_content">아이디어 투표</h3>
+      </div>
+    </div>
     
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <h2>2지망 아이디어 선택</h2>
-  <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
-    
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <h2>3지망 아이디어 선택</h2>
-  <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
-    <option value="" selected disabled>아이디어 선택</option>
-    <option value="">선택 취소</option>
-
-    {% for idea in ideas_for_voting %}
-    <option value="{{ idea.id }}">{{ idea.title }}</option>
-    {% endfor %}
-  </select>
-
-  <button type="submit">투표하기</button>
-</form>
-
-<script>
-  function updateDropdowns() {
-    var vote1 = document.getElementById("idea_vote1").value;
-    var vote2 = document.getElementById("idea_vote2").value;
-    var vote3 = document.getElementById("idea_vote3").value;
-
-    document.querySelectorAll('select').forEach(function(select) {
-      let isOptionSelected = select.value !== "" && select.value !== "아이디어 선택";
-
-      Array.from(select.options).forEach(function(option) {
-        if (option.value === "") {
-          option.style.display = isOptionSelected ? "block" : "none"; 
-        } else if (option.value !== "아이디어 선택") {
-          if (option.value === vote1 || option.value === vote2 || option.value === vote3) {
-            if (select.value !== option.value) {
-              option.style.display = "none"; 
-            }
-          } else {
-            option.style.display = "block"; 
-          }
-        }
-      });
-
-      if (!isOptionSelected) {
+    <form method="post" class="wrap_form" novalidate>
+      <div id="vote_create_form_container">
+        {% csrf_token %}
+      
+        <div>
+          <span>1지망 아이디어 선택</span>
+          <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
+            <option value="" selected disabled >아이디어 선택</option>
+            <option value="">선택 취소</option>
+            
+            {% for idea in ideas_for_voting %}
+            <option value="{{ idea.id }}">{{ idea.title }}</option>
+            {% endfor %}
+          </select>
+  
+          {% if form.idea_vote1.errors %}
+            <div class="wrap_error">
+              {% for error in form.idea_vote1.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+  
+        <div>
+          <span>2지망 아이디어 선택</span>
+          <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
+          <option value="" selected disabled>아이디어 선택</option>
+          <option value="">선택 취소</option>
+          
+          {% for idea in ideas_for_voting %}
+          <option value="{{ idea.id }}">{{ idea.title }}</option>
+          {% endfor %}
+          </select>
+  
+          {% if form.idea_vote2.errors %}
+            <div class="wrap_error">
+              {% for error in form.idea_vote2.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+  
+        <div>
+          <span>3지망 아이디어 선택</span>
+          <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
+            <option value="" selected disabled>아이디어 선택</option>
+            <option value="">선택 취소</option>
         
-        select.selectedIndex = 0;
-      }
-    });
-  }
+            {% for idea in ideas_for_voting %}
+            <option value="{{ idea.id }}">{{ idea.title }}</option>
+            {% endfor %}
+          </select>
+  
+          {% if form.idea_vote3.errors %}
+            <div class="wrap_error">
+              {% for error in form.idea_vote3.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+      </div>
+  
+      <div class="vote_create_btns">
+        <button type="submit" class="primary_button_fill">투표하기</button>
+      </div>
+    </form>
+</section>
 
-  window.onload = updateDropdowns;
-</script>
 
-<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">이전</a>
+  
+<script src="{% static 'js/group_dropdowns.js' %}"></script>
 {% endblock %}
+
+

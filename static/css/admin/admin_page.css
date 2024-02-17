@@ -1,0 +1,74 @@
+.admin_section_admin_page,.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin_section_admin_page{
+  gap: var(--padding6) ;
+  margin: var(--padding7) auto;
+  padding: var(--padding4);
+  width: 270px;
+}
+
+@media screen and (min-width: 850px){
+  .admin_section_admin_page,.admin_inner_page_info,.admin_wrap_url,.admin_inner_url_info,.admin_wrap_members {
+    width: 600px;
+  }
+}
+
+.admin_wrap_head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding6);
+}
+.admin_group_title,.admin_endtime {
+  color: var(--color_main);
+}
+
+.admin_group_title{
+  font-size: var(--font_xlarge) ;
+  font-weight: bold;
+}
+
+.admin_inner_page_info{
+  gap: var(--padding4);
+}
+
+@media screen and (min-width: 850px){
+  .admin_inner_page_info {
+    align-items: center;
+  }
+}
+
+.admin_wrap_url{
+  gap: var(--padding5);
+}
+
+.admin_inner_url_info{
+  gap: var(--padding1);
+}
+/* 회원 부분 */
+.admin_title_members{
+  font-weight: bold;
+  font-size: var(--font_large);
+}
+.admin_wrap_members{
+  gap: var(--padding4);
+}
+.admin_user_wrap{
+  display: flex;
+  padding: 1.8rem 2.4rem;
+  border: 1px solid var(--color_main);
+  border-radius: var(--card_border_radius);
+  justify-content: space-between;
+}
+
+.admin_desc_content {
+  width: 100%;
+}
+
+.group_admin_password {
+  font-size: var(--font_small);
+  color: var(--color_red_highlight);
+  text-align: end;
+}

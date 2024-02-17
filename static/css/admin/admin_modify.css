@@ -1,0 +1,76 @@
+.admin_section_modify{
+  margin: var(--padding7) auto;
+  padding:  0 var(--padding4);
+  width: 270px;
+}
+
+@media screen and (min-width: 850px){
+  .admin_section_modify {
+    width: 800px;
+  }
+}
+
+.admin_wrap_modify_header{
+  margin-bottom: var(--padding6);
+}
+.admin_modify_group{
+  font-size: var(--font_xlarge);
+  color: var(--color_main);
+  font-weight: bold;
+  text-align: center;
+}
+.admin_modify_user{
+  font-weight: bold;
+  font-size: var(--font_large);
+}
+
+@media screen and (min-width: 850px){
+  .admin_modify_user {
+    width: 800px;
+  }
+}
+
+.admin_inner_info{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding2);
+}
+
+@media screen and (min-width: 850px){
+  .admin_inner_info {
+    width: 800px;
+  }
+}
+
+.admin_wrap_modify_btn{
+  display: flex;
+  justify-content: center;
+  gap: var(--padding1) ;
+  margin: var(--padding6) 0;
+}
+.admin_wrap_modify_btn> .primary_button{
+  width: 330px;
+}
+.admin_warp_user_idea{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding2);
+}
+
+.admin_inner_idea_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin_written_idea {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: var(--font_large);
+}
+
+.admin_wrap_user_idea {
+  color: white;
+
+}

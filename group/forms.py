@@ -14,9 +14,13 @@ class NonAdminInfoForm(forms.ModelForm):
         fields = ['group_ability']
 
 class GroupBaseForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        label = "비밀번호"
+    )
     class Meta:
         model = Group
-        fields = ['title', 'team_number', 'password', 'type']
+        fields = ['title', 'password']
 
 class GroupDetailForm(forms.ModelForm):
     class Meta:
@@ -27,7 +31,6 @@ class GroupDetailForm(forms.ModelForm):
             'ability_description3',
             'ability_description4',
             'ability_description5',
-            'choice',
         ]
 
 
@@ -40,7 +43,8 @@ class GroupDateForm(forms.ModelForm):
         time_attrs={
             'type':'time'
             },
-        )
+        ),
+        label = "결과 임시 발표일"
     )
 
     class Meta:
@@ -57,6 +61,10 @@ class IdeaForm(forms.ModelForm):
             'intro': '한 줄 소개',
             'file': '첨부파일', 
             'content': '내용',
+        
+        }
+        help_texts = {
+            'intro': '50자 미만으로 작성해주세요.',
         }
 
 
@@ -64,14 +72,17 @@ class VoteForm(forms.ModelForm):
     idea_vote1 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
         widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True,
     )
     idea_vote2 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
         widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True,
     )
     idea_vote3 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
         widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True,
     )
 
     class Meta:
@@ -99,5 +110,8 @@ class VoteForm(forms.ModelForm):
             raise ValidationError("중복 선택 불가능")
         if idea_vote1 and idea_vote3 and idea_vote1 == idea_vote3:
             raise ValidationError("중복 선택 불가능")
+        
+        if not idea_vote1 or not idea_vote2 or not idea_vote3:
+            raise ValidationError("모든 지망을 선택해야 합니다.")
         
         return cleaned_data

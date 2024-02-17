@@ -1,0 +1,22 @@
+body{
+    background-color: black;
+    width: 100%;
+}
+
+
+.idea_create_btns{
+    margin: var(--padding6) 0;
+    display: flex;
+    gap: 5px;
+}
+
+.idea_create_btns > .primary_button{
+    border-radius: 1rem;
+    width: 19rem;
+}
+
+.idea_create_btns > .secondary_button{
+    border-radius: 1rem;
+    width: 11rem;
+}
+
