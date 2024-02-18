@@ -12,13 +12,13 @@
         <!-- 미완료 -->
         {% if group_instance.first_end_date|date:"Y-m-d H:i:s" > current_time %}
         <div>1차 투표 마감까지 남은 시간</div>
-        <div class='group_endtime' data-group-time='{{group_instance.first_end_date.isoformat}}'></div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.first_end_date.isoformat}}'></div>
         {% elif group_instance.second_end_date|date:"Y-m-d H:i:s" > current_time %}
         <div>2차 투표 마감까지 남은 시간</div>
-        <div class='group_endtime' data-group-time='{{group_instance.second_end_date.isoformat}}'></div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.second_end_date.isoformat}}'></div>
         {% else %}
         <div>3차 투표 마감까지 남은 시간</div>
-        <div class='group_endtime' data-group-time='{{group_instance.third_end_date.isoformat}}'></div>                                 
+        <div class='admin_endtime' data-admin-time='{{group_instance.third_end_date.isoformat}}'></div>                                 
         {% endif %}
         <!-- 미완료여기까지 -->
 
