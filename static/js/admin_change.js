@@ -9,7 +9,6 @@ document.addEventListener('click', (event)=> {
   if (clickedBadge.classList.contains('cta_blue_badge')){
       const userId = clickedBadge.dataset.userId;
       const jsonData = { user_id: userId, group_id: groupId  };
-
       axios.post(`/group/${groupId}/admin/admin_add`, jsonData)
         .then(()=> {
           clickedBadge.classList.remove('cta_blue_badge');

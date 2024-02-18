@@ -23,8 +23,10 @@ class State(Enum):
     WITH_HISTORY = 1
     ADMIN = 2
 
+
 class TeamNumber(Enum):
     THIRD_TEAM = 5
+
 
 # Create your views here.
 @login_required(login_url="common:login")
@@ -87,6 +89,7 @@ def check_admin(request, group_id):
     ctx = {"group": group, "is_wrong": wrong_flag, "form": form}
     return render(request, "group/group_admin_certification.html", ctx)
 
+
 @login_required(login_url="common:login")
 def info_nonadmin(request, group_id):
     group = get_object_or_404(Group, id=group_id)
@@ -97,14 +100,14 @@ def info_nonadmin(request, group_id):
 
     if state == State.ADMIN:  # 운영진인 경우
         return redirect(f"/group/{group_id}/admin/")
-    
+
     if request.method == "POST":
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
             print("valid!")
             form.save()
             return redirect(f"/group/{group_id}/")
-    
+
     ctx = {"group": group, "form": form}
     # print(form.group_ability.errors)
     return render(request, "group/group_member_info.html", ctx)
@@ -119,7 +122,7 @@ def redirect_by_auth(user, group_id):
 
     if admin_state:
         return State.ADMIN
-    
+
     if user_state:
         if user_state.group_ability is None:
             return State.NO_HISTORY
@@ -250,6 +253,7 @@ def save_group_data(prev_req, user):
     AdminState.objects.create(group=group, user=user)
     return group
 
+
 # 팀빌딩 마지막부분에 추가
 @login_required(login_url="common:login")
 def group_share(request, group_id):
@@ -259,6 +263,7 @@ def group_share(request, group_id):
     ####
     ctx = {"group": group}
     return render(request, "setting/setting_sharing.html", context=ctx)
+
 
 @login_required(login_url="common:login")
 def preresult(request, group_id):
@@ -274,12 +279,16 @@ def preresult(request, group_id):
     if current_time >= group.end_date:
         if state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
-            return render(request, "preresult/preresult_admin.html", context=ctx)
+            return render(request,
+                          "preresult/preresult_admin.html",
+                          context=ctx)
         else:
-            return redirect('/')
+            return redirect("/")
     else:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
+
 
 @login_required(login_url="common:login")
 def admin_page(request, group_id):
@@ -303,10 +312,11 @@ def admin_page(request, group_id):
         }
         return render(request, "admin/group_admin.html", ctx)
     elif state == State.WITH_HISTORY:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
-        return redirect('/')
+        return redirect("/")
 
 
 # 운영진&비운영진 멤버 리스트뽑는 함수
@@ -318,6 +328,7 @@ def group_people(group_instance, state):
 
     users = User.objects.filter(id__in=users_ids)
     return users
+
 
 @login_required(login_url="common:login")
 def group_user_delete(request, group_id, user_id):
@@ -365,9 +376,7 @@ def group_user_update(request, group_id, user_id):
             "user": user,
             "idea": idea,
         }
-        for my_idea in idea: 
-            print(my_idea.title)
-        
+
         return render(request, "admin/group_admin_modify.html", ctx)
     elif request.method == "POST":
         user_state = MemberState.objects.get(user_id=user_id, group=group)
@@ -400,6 +409,7 @@ def admin_delete(request, group_id):
     bye_admin = get_object_or_404(AdminState, user=user, group=group)
     bye_admin.delete()
     return JsonResponse({"message": "AdminState deleted successfully"})
+
 
 @login_required(login_url="common:login")
 def preresult_modify(request, group_id):
@@ -445,28 +455,33 @@ def preresult_modify(request, group_id):
                     "idea_list": idea_list,
                     "group": group,
                 }
-                return render(request, "preresult/preresult_modify.html", context=ctx)
+                return render(request,
+                              "preresult/preresult_modify.html",
+                              context=ctx)
         else:
-            return redirect('/')
+            return redirect("/")
     else:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
+
 
 @login_required(login_url="common:login")
 def group_detail(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     author_ideas = Idea.objects.filter(group=group, author=request.user)
     other_ideas = Idea.objects.filter(group=group).exclude(author=request.user)
-    user_state = MemberState.objects.filter(user=request.user, group=group).first()
-    
+    user_state = MemberState.objects.filter(user=request.user,
+                                            group=group).first()
+
     ideas_votes = {}
     if user_state:
-        
         ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
         ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
         ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
 
-        has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
+        has_voted = user_state and (user_state.idea_vote1
+                                    or user_state.idea_vote2
                                     or user_state.idea_vote3)
 
         ctx = {
@@ -475,11 +490,12 @@ def group_detail(request, group_id):
             "other_ideas": other_ideas,
             "ideas_votes": ideas_votes,
             "has_voted": has_voted,
-            "user_state": user_state
+            "user_state": user_state,
         }
         return render(request, "group/group_detail.html", ctx)
     else:
-        return redirect('/')
+        return redirect("/")
+
 
 @login_required(login_url="common:login")
 def idea_create(request, group_id):
@@ -507,10 +523,12 @@ def idea_create(request, group_id):
         }
         return render(request, "group/group_idea_create.html", ctx)
     elif state == State.ADMIN:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
-        return redirect('/')
+        return redirect("/")
+
 
 @login_required(login_url="common:login")
 def idea_modify(request, group_id, idea_id):
@@ -539,10 +557,12 @@ def idea_modify(request, group_id, idea_id):
         }
         return render(request, "group/group_idea_modify.html", ctx)
     elif state == State.ADMIN and idea == None:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
-        return redirect('/')
+        return redirect("/")
+
 
 @login_required(login_url="common:login")
 def idea_delete(request, group_id, idea_id):
@@ -558,33 +578,37 @@ def idea_delete(request, group_id, idea_id):
             idea.delete()
             return redirect("group:group_detail", group_id=group.id)
     elif state == State.ADMIN:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
-        return redirect('/')
+        return redirect("/")
+
 
 @login_required(login_url="common:login")
 def idea_detail(request, group_id, idea_id):
     group = get_object_or_404(Group, id=group_id)
     idea = get_object_or_404(Idea, id=idea_id, group=group)
-    user_state = MemberState.objects.filter(user=request.user, group=group).first()
-    
+    user_state = MemberState.objects.filter(user=request.user,
+                                            group=group).first()
+
     ideas_votes = {}
     if user_state:
-        
         ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
         ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
         ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
 
-    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2 or user_state.idea_vote3)
+    has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
+                                or user_state.idea_vote3)
 
     ctx = {
         "group": group,
-        "idea" : idea,
+        "idea": idea,
         "ideas_votes": ideas_votes,
         "has_voted": has_voted,
     }
-    return render(request, 'group/group_idea_detail.html', ctx)
+    return render(request, "group/group_idea_detail.html", ctx)
+
 
 @login_required(login_url="common:login")
 def idea_download(request, group_id, idea_id):
@@ -602,6 +626,7 @@ def idea_download(request, group_id, idea_id):
         "Content-Disposition"] = f'attachment; filename="{file_path.split("/")[-1]}"'
     return response
 
+
 @login_required(login_url="common:login")
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
@@ -610,8 +635,8 @@ def vote_create(request, group_id):
 
     if state == State.WITH_HISTORY:
         try:
-            user_state, created = MemberState.objects.get_or_create(user=user,
-                                                                    group=group)
+            user_state, created = MemberState.objects.get_or_create(
+                user=user, group=group)
 
             if request.method == "POST":
                 form = VoteForm(request.POST, group_id=group.id)
@@ -620,12 +645,12 @@ def vote_create(request, group_id):
                     vote.user = user
                     vote.group = group
 
-                    idea_vote1_id = (form.cleaned_data["idea_vote1"].id
-                                    if form.cleaned_data["idea_vote1"] else None)
-                    idea_vote2_id = (form.cleaned_data["idea_vote2"].id
-                                    if form.cleaned_data["idea_vote2"] else None)
-                    idea_vote3_id = (form.cleaned_data["idea_vote3"].id
-                                    if form.cleaned_data["idea_vote3"] else None)
+                    idea_vote1_id = (form.cleaned_data["idea_vote1"].id if
+                                     form.cleaned_data["idea_vote1"] else None)
+                    idea_vote2_id = (form.cleaned_data["idea_vote2"].id if
+                                     form.cleaned_data["idea_vote2"] else None)
+                    idea_vote3_id = (form.cleaned_data["idea_vote3"].id if
+                                     form.cleaned_data["idea_vote3"] else None)
 
                     idea_vote1 = Idea.objects.get(id=idea_vote1_id)
                     idea_vote2 = Idea.objects.get(id=idea_vote2_id)
@@ -656,7 +681,9 @@ def vote_create(request, group_id):
             return redirect("group_detail", group_id=group_id)
 
         voted_ideas = [
-            user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3
+            user_state.idea_vote1,
+            user_state.idea_vote2,
+            user_state.idea_vote3,
         ]
         ideas_for_voting = (Idea.objects.filter(group=group).exclude(
             author=user).exclude(
@@ -672,10 +699,12 @@ def vote_create(request, group_id):
             },
         )
     elif state == State.ADMIN:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
     else:
-        return redirect('/')
+        return redirect("/")
+
 
 @login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
@@ -687,16 +716,17 @@ def result(request, group_id):  # 최종 결과 페이지
 
     group.is_end = True
     group.save()
-    
+
     current_time = timezone.now()
     if current_time >= group.end_date:
-        if (state == State.WITH_HISTORY or state == State.ADMIN):
+        if state == State.WITH_HISTORY or state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request, "group/result.html", context=ctx)
         else:
-            return redirect('/')
+            return redirect("/")
     else:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
 
 
@@ -711,15 +741,18 @@ def member_preresult(request, group_id):
 
     current_time = timezone.now()
     if current_time >= group.end_date:
-        if (state == State.WITH_HISTORY or state == State.ADMIN):
+        if state == State.WITH_HISTORY or state == State.ADMIN:
             ideas_votes = {}
             if user_state:
                 ideas_votes["idea_vote1_id"] = (user_state.idea_vote1.id
-                                                if user_state.idea_vote1 else None)
+                                                if user_state.idea_vote1 else
+                                                None)
                 ideas_votes["idea_vote2_id"] = (user_state.idea_vote2.id
-                                                if user_state.idea_vote2 else None)
+                                                if user_state.idea_vote2 else
+                                                None)
                 ideas_votes["idea_vote3_id"] = (user_state.idea_vote3.id
-                                                if user_state.idea_vote3 else None)
+                                                if user_state.idea_vote3 else
+                                                None)
             ctx = {
                 "group": group,
                 "idea_list": idea_list,
@@ -728,9 +761,10 @@ def member_preresult(request, group_id):
 
             return render(request, "preresult/preresult_member.html", ctx)
         else:
-            return redirect('/')
+            return redirect("/")
     else:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
 
 
@@ -860,6 +894,7 @@ def members_change(members_name):
             MemberState.objects.filter(user__username=member).first())
     return members
 
+
 def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
@@ -867,8 +902,9 @@ def start_team_building(group_id):
     selected_idea_leader(idea_list, group)
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     selected_idea_leader(idea_list, group)
-    members = MemberState.objects.filter(group=group, group_ability__isnull=False).exclude(
-        my_team_idea__isnull=False)
+    members = MemberState.objects.filter(
+        group=group,
+        group_ability__isnull=False).exclude(my_team_idea__isnull=False)
 
     if len(members) == 0:
         pass
@@ -930,6 +966,7 @@ def team_building_cycle(group_id, members):
 
         return idea_list, members, project_fitness
 
+
 def make_team(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
     # 사본 만들기
@@ -968,10 +1005,6 @@ def make_team(idea_list, members, project_fitness, group_id):
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
 
 
-""" ##팀빌딩 
-def MakeMate(group_id):
-    group=Group.objects.get(id=group_id) """
-
 def admin_idea_delete(request, group_id, user_id):
     group = get_object_or_404(Group, pk=group_id)
     author = get_object_or_404(User, pk=user_id)
@@ -979,8 +1012,34 @@ def admin_idea_delete(request, group_id, user_id):
 
     if request.method == "POST":
         idea.delete()
-    
+
     return redirect("group:user_update", group_id=group_id, user_id=user_id)
+
+
+def vote1_preresult(request, group_id):
+    group = Group.objects.get(id=group_id)
+    idea_list = Idea.objects.filter(group=group)
+    ctx = {"group": group, "idea_list": idea_list}
+    return render(request, "preresult/vote1_preresult.html", ctx)
+
+
+@csrf_exempt
+def vote1_select(request, group_id):
+    idea_data = json.loads(request.body)
+    idea = Idea.objects.get(id=idea_data["idea_id"])
+    idea.is_selected = True
+    idea.save()
+    return JsonResponse({"message": "good"})
+
+
+@csrf_exempt
+def vote1_unselect(request, group_id):
+    idea_data = json.loads(request.body)
+    idea = Idea.objects.get(id=idea_data["idea_id"])
+    idea.is_selected = False
+    idea.save()
+    return JsonResponse({"message": "good"})
+
 
 # ##스케줄러 시작##
 # make_auto(start_team_building)
