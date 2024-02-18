@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, HttpResponseRedirect 
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from apps.group.models import Group, MemberState, Idea
@@ -12,10 +13,11 @@ from .forms import IdeaForm
 # Create your views here.
 @login_required(login_url="common:login")
 def idea_create(request, group_id):
+    current_time = timezone.now()
     group = get_object_or_404(Group, id=group_id)
     state = redirect_by_auth(request.user, group_id)
 
-    if state == State.WITH_HISTORY:
+    if state == State.WITH_HISTORY and current_time < group.first_end_date:
         if Idea.objects.filter(group=group, author=request.user).exists():
             messages.error(request, "이미 이 그룹에 대한 아이디어를 제출했습니다.")
             return redirect("group:group_detail", group_id=group.id)

@@ -187,7 +187,7 @@ def vote_modify(request, group_id):
     
 def first_vote(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
-    idea_list = Idea.objects.filter(group=group)
+    idea_list = Idea.objects.filter(group=group).exclude(author=request.user)
     msg = ""
 
     if request.method == 'POST':

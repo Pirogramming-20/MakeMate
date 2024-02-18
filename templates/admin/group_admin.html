@@ -20,14 +20,14 @@
       <div class="admin_inner_url_info">
         <span>참여자 링크</span>
         <div class="group_member_url">
-          <span>{% url 'group_setting:check_nonadmin' group_instance.id %}</span>
+          <span>https://www.piromakemate.shop{% url 'group_setting:check_nonadmin' group_instance.id %}</span>
         </div>
         <span class="group_admin_password">비밀번호 : {{group_instance.password}}</span>
       </div>
       <div class="admin_inner_url_info">
         <span>운영진 링크</span>
         <div class="group_member_url">
-          <span>{% url 'group_setting:check_admin' group_instance.id %}</span>
+          <span>https://www.piromakemate.shop{% url 'group_setting:check_admin' group_instance.id %}</span>
         </div>
         <span class="group_admin_password">비밀번호 : {{group_instance.password}}</span>
       </div>

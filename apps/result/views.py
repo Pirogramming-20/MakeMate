@@ -1,21 +1,13 @@
-import json
-import mimetypes
-from enum import Enum
 import numpy as np
-from urllib.parse import parse_qs
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, FileResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
-from django.contrib import messages
-from django.core.files.storage import FileSystemStorage
-from apps.common.models import User
-from apps.group.models import Group, MemberState, AdminState, Idea, Vote
+from apps.group.models import Group, MemberState, Idea
 from apps.group.views import State, TeamNumber, redirect_by_auth
-from apps.groupSetting.forms import NonAdminInfoForm
-from .tasks import team_building_auto, start_scheduler, make_auto
+from apps.preresult.views import calculate_first_idea_scores, calculate_second_idea_scores, calculate_third_idea_scores
+from apps.preresult.tasks import make_first_auto, make_second_auto
+from .tasks import start_scheduler, make_third_auto
 
 
 # Create your views here.
@@ -129,6 +121,9 @@ def members_change(members_name):
 
 def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
+
+    # 뽑힐 idea 계산
+    calculate_third_idea_scores(group.id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
 
@@ -236,8 +231,9 @@ def make_team(idea_list, members, project_fitness, group_id):
                 group_id, members)
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
 
-
-""" ###스케줄러 시작##
-make_auto(start_team_building)
+###스케줄러 시작##
+make_first_auto(calculate_first_idea_scores)
+make_second_auto(calculate_second_idea_scores)
+make_third_auto(start_team_building)
 start_scheduler()
-"""
+
