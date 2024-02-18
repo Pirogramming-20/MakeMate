@@ -3,15 +3,6 @@ body{
     width: 100%;
 }
 
-.preresult_member_container{
-    display: flex;
-    flex-direction: column;
-    width: calc(39.3rem - 9.2rem);
-    margin: var(--padding6) var(--padding4);
-    padding: 0 var(--padding4);
-    color: white;
-}
-
 .preresult_member_description{
     display: flex;
     flex-direction: column;
@@ -42,10 +33,17 @@ body{
 }
 
 .preresult_member_idea{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
     gap: var(--padding4);
     margin-bottom: var(--padding6);
+}
+
+@media screen and (min-width: 850px) {
+    .preresult_member_idea{
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .preresult_member_idea > h2{
@@ -92,4 +90,8 @@ body{
     background-color: var(--color_blue_highlight);
     border-radius: 0.5rem;
     padding: 0.5rem;
+}
+
+.preresult_member_header_container {
+    width: 100%;
 }

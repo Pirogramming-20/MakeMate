@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
       <div class="inner_title">
@@ -51,7 +50,7 @@
       
       <div>
         <div class="wrap_title">3지망 아이디어 선택</div>
-        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
+        <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()" class="wrap_form">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
           <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote3.id %}selected{% endif %}>{{ idea.title }}</option>
@@ -70,10 +69,7 @@
       <div id="vote_modify_btns" >
         <button type="submit" class="primary_button_fill" >수정완료</button>
       </div>
-    </form>
-
-  </div>
-  
+    </form> 
 </section>
 
 <script src="{% static 'js/group_dropdowns.js' %}"></script>

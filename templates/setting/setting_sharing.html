@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="setting_section_group_share"> 
+<section> 
     <div class="wrap_title">
         <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
         <div class="inner_title">
@@ -17,12 +17,12 @@
         </div>
         <div class="group_member_url">
             <div>참여자 링크</div>
-            <div>{% url 'group:check_nonadmin' group.id %}</div>
+            <span>{% url 'group_setting:check_nonadmin' group.id %}</span>
             <div>비밀번호 : {{group.password}}</div>
         </div>
         <div class="group_admin_url">
             <div>운영자 링크 </div>
-            <div>{% url 'group:check_admin' group.id %}</div>
+            <span>{% url 'group_setting:check_admin' group.id %}</span>
             <div>비밀번호 : {{group.password}}</div>
         </div>
     </div>

@@ -2,17 +2,15 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="group_detail_header_container">
-      <div class="group_detail_description">
         <div class="wrap_title">
           <a href="{% url 'common:main_page' %}" class="home_btn">Home</a>
           <div class="inner_title">
             <h3 class="title_content">{{group.title}}</h3>
           </div>
         </div>
-  
+        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
         {% if group.end_date.isoformat < current_time %}
         <span class="group_detail_end_date">투표 종료</span>
         {% else %}
@@ -21,31 +19,28 @@
         <div class='group_endtime' data-group-time='{{group.end_date.isoformat}}'></div>                                  
         {% endif %}
   
-        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
-      </div>
-  
       <div class="group_detail_btns">
         {% if has_voted %}
-          <button class="secondary_button"><a href="{% url 'group:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
+          <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
         {% else %}
-          <button class="secondary_button"><a href="{% url 'group:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
+          <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
         {% endif %}
     
         {% if not author_ideas %}
-          <button class="primary_button"><a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
+          <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
         {% else %} {% for idea in author_ideas %}
-          <button class="primary_button"><a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
+          <button class="primary_button"><a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
         {% endfor %} {% endif %}
       </div>
     </div>
   
     {% if author_ideas %}
-    <div class="group_detail_idea">
-      <h2>나의 아이디어</h2>
+    <h2>나의 아이디어</h2>
+    <div class="group_detail_my_idea">
       {% for idea in author_ideas %}
       <div class="wrap_card">
         <div class="group_detail_idea_desc">
-          <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+          <h3><a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
           <p>{{ idea.intro }}</p>
           <span>{{idea.author}}</span>
         </div>
@@ -55,35 +50,31 @@
     {% endif %} 
     
     {% if other_ideas %}
+    <h2>투표</h2>
     <div class="group_detail_idea">
-      <h2>투표</h2>
       {% for idea in other_ideas %}
-      <div class="wrap_card">
-        <div class="group_detail_idea_desc">
-          <h3>
-            <a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}" class="card_title"> {{ idea.title }} </a>
-          </h3>
+      <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+          <h3 class="card_title">{{ idea.title }}</h3>
           <!-- 투표 순위 표시 로직 -->
-          {% if ideas_votes %} {% if idea.id == ideas_votes.idea_vote1_id %}
-          <p class="group_detail_vote_badge">1지망</p>
-          {% elif idea.id == ideas_votes.idea_vote2_id %}
-          <p class="group_detail_vote_badge">2지망</p>
-          {% elif idea.id == ideas_votes.idea_vote3_id %}
-          <p class="group_detail_vote_badge">3지망</p>
-          {% endif %} {% endif %}
-          <p class="inner_card_contents">{{ idea.intro }}</p>
+          {% if ideas_votes %}
+          
+            {% if idea.id == ideas_votes.idea_vote1_id %}
+            <div><span class="cta_blue_badge">1지망</span></div>  
+            {% elif idea.id == ideas_votes.idea_vote2_id %}
+            <div><span class="cta_blue_badge">2지망</span></div>  
+            {% elif idea.id == ideas_votes.idea_vote3_id %}
+            <div><span class="cta_blue_badge">3지망</span></div>  
+            {% endif %}
+          
+          {% endif %}
+          <span class="inner_card_contents">{{ idea.intro }}</span>
           <span>{{idea.author}}</span>
-        </div>
-      </div>
+      </a>
       {% endfor %}
 
       </div>
       
     {% endif %}
-  
-  </div>
-  
-
 </section>
 
 <script src={% static "js/main_page_time.js" %}  ></script>

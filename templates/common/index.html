@@ -6,8 +6,8 @@
     <div class="wrap_main_img_auth">
         <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
     </div>
-    <section class='common_section_main_page'>
-        <div class="common_wrap_login_info">
+    <section class="wrap_common_index">
+        <div class="common_wrap_info">
             <div class='common_inner_title'>
                 <div>효율적인 팀빌딩의 시작,</div>
                 <div class='common_name'>MakeMate</div>
@@ -15,7 +15,7 @@
             <div class='common_title_txt'>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀활동을 지원합니다.</div>
             <div class="common_inner_btn">
                 <button class='secondary_button' ><a href="{% url 'common:logout' %}">로그아웃</a> </button>
-                <button class='primary_button' ><a href="{% url 'group:base_set' %}">모임개설</a></button>
+                <button class='primary_button' ><a href="{% url 'group_setting:base_set' %}">모임개설</a></button>
             </div>
         </div>
             <div class='common_section_group_list'>
@@ -26,7 +26,7 @@
                 {% for group in admin_groups %}
                     {% if group.end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_end == True  %}
-                            <a href="{%url 'group:result' group.id %}">
+                            <a href="{%url 'result:result' group.id %}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div class='inner_card_badge'>
@@ -44,7 +44,7 @@
                                     </div>
                             </a>
                         {% else %}
-                            <a href="{%url 'group:preresult' group.id%}">
+                            <a href="{%url 'preresult:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div class='inner_card_badge'>
@@ -63,7 +63,7 @@
                             </a>
                         {% endif %}
                     {%else%}
-                        <a href="{%url 'group:admin_page' group.id%}">
+                        <a href="{%url 'group_admin:admin_page' group.id%}">
                             <div class="wrap_card">
                                 <div class='card_title'>{{group.title}}</div>
                                 <div><button class='primary_badge'>운영진</button></div>
@@ -84,7 +84,7 @@
                 {% for group in member_groups %}
                     {% if group.end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_end == True  %}
-                            <a href="{%url 'group:result' group.id %}">
+                            <a href="{%url 'result:result' group.id %}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='cta_blue_badge' >종료</button></div>
@@ -99,7 +99,7 @@
                                 </div>
                             </a>
                         {% else %}
-                            <a href="{%url 'group:member_preresult' group.id%}">
+                            <a href="{%url 'preresult:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='cta_red_badge'>임시종료</button></div>
@@ -141,7 +141,7 @@
         <div class="wrap_main_img">
             <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
         </div>
-        <section class='common_section_main_page'>
+        <section class="wrap_common_index">
             {% comment %} <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div> {% endcomment %}
             <div class='common_wrap_info'>
                 <div class='common_info_title'>효율적인 팀빌딩의 시작,</div>

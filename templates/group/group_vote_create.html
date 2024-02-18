@@ -1,8 +1,7 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
+<section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
       <div class="inner_title">
@@ -11,12 +10,12 @@
       </div>
     </div>
     
-    <form method="post">
+    <form method="post" class="wrap_form" novalidate>
       <div id="vote_create_form_container">
         {% csrf_token %}
       
         <div>
-          <div class="wrap_title">1지망 아이디어 선택</div>
+          <span>1지망 아이디어 선택</span>
           <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
             <option value="" selected disabled >아이디어 선택</option>
             <option value="">선택 취소</option>
@@ -36,7 +35,7 @@
         </div>
   
         <div>
-          <div class="wrap_title">2지망 아이디어 선택</div>
+          <span>2지망 아이디어 선택</span>
           <select id="idea_vote2" name="idea_vote2" onchange="updateDropdowns()">
           <option value="" selected disabled>아이디어 선택</option>
           <option value="">선택 취소</option>
@@ -56,7 +55,7 @@
         </div>
   
         <div>
-          <div class="wrap_title">3지망 아이디어 선택</div>
+          <span>3지망 아이디어 선택</span>
           <select id="idea_vote3" name="idea_vote3" onchange="updateDropdowns()">
             <option value="" selected disabled>아이디어 선택</option>
             <option value="">선택 취소</option>
@@ -80,9 +79,6 @@
         <button type="submit" class="primary_button_fill">투표하기</button>
       </div>
     </form>
-
-  </div>
-  
 </section>
 
 

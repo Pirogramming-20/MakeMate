@@ -1,51 +1,62 @@
-{% extends 'base.html' %} {% load static %} {% block head %} {{ block.super }}
-<title>group_idea_modify</title>
-{% endblock %} {% block content %}
-<section class="container">
-  <div class="preresult_admin_container">
-    <div class="wrap_title">
-      <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn"> < back</a>
-      <div class="inner_title">
-        <h3 class="title_content">아이디어 수정하기</h3>
-
-        <p class="subtitle_content">{{ group.title }}</p>
-      </div>
-    </div>
-
-    <form
-      action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
-      method="post"
-      enctype="multipart/form-data"
-      style="display: inline">
-      {%csrf_token%}
-      <div id="vote_modify_form_container">
-        <!-- 논필드 에러 표시 -->
-        {% if form.non_field_errors %}
-        <div class="wrap_error">{% for error in form.non_field_errors %} {{ error }} {% endfor %}</div>
-        {% endif %} {% for field in form %}
-        <div>
-          {{ field.label_tag }} {{ field }} {% if field.help_text %}
-          <div class="wrap_error">{{ field.help_text }}</div>
-          {% endif %}
-        </div>
-        {% if field.errors %} {% for error in field.errors %}
-        <div class="wrap_error">{{ error }}</div>
-        {% endfor %} {% endif %} {% endfor %}
-      </div>
-    </form>
-
-    <div class="idea_modify_btns">
-      <!-- 아이디어 삭제 버튼 -->
-
-      <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="post" style="display: inline">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="delete" />
-        <button type="submit" class="cta_del_button">삭제</button>
-      </form>
-
-      <button type="'submit" class="primary_button">수정 완료</button>
+{% extends 'base.html' %} {% block content %}
+<section>
+  <div class="wrap_title">
+    <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
+    <div class="inner_title">
+      <h3 class="title_content">아이디어 수정하기</h3>
+      <p class="subtitle_content">{{ group.title }}</p>
     </div>
   </div>
+
+  <form
+  action="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}"
+  method="post"
+  enctype="multipart/form-data"
+  class="wrap_idea_modify_form"
+  novalidate>
+  <div id="vote_modify_form_container">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+    <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    <div id="vote_modify_form_container">제목 <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" /></div>
+
+    <div id="vote_modify_form_container">
+      한 줄 소개 <input type="text" name="intro" value="{{idea.intro}}" maxlength="50" required="" id="id_intro" />
+      <div class="wrap_error">50자 미만으로 작성해주세요.</div>
+    </div>
+
+    <div id="vote_modify_form_container">
+      <div class="wrap_download">
+        <span class="download_content">첨부파일</span>
+        {% if idea.file %}
+        <span>
+          <span class="idea_file">{{ idea.file }}</span> 
+        </span>
+        {% else %}
+        <span>첨부파일이 없습니다.</span>
+        {% endif %}
+        <br />
+        변경
+        <input type="file" name="file" id="id_file" />
+      </div>
+    </div>
+    
+
+    <div id="vote_modify_form_container">
+      내용 <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{idea.content}}</textarea>
+    </div>
+  </div>
+
+  <div class="vote_create_btns">
+    <button type="submit" class="primary_button_fill">저장하기</button>
+  </div>
+</form>
+
 </section>
+
+
 
 {% endblock %}
