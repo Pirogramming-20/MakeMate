@@ -162,14 +162,76 @@ def preresult_modify(request, group_id):
                                kwargs={"group_id": group_id})
         return redirect(redirect_url)
 
-
-def calculate_idea_scores(group_id):
+def calculate_first_idea_scores(group_id):
+    print("계산 시작!")
     ideas = Idea.objects.filter(group_id=group_id)
 
     for idea in ideas:
-        votes_count = (Vote.objects.filter(group_id=group_id).filter(
-            Q(idea_vote1=idea) | Q(idea_vote2=idea)
-            | Q(idea_vote3=idea)).count())
+        votes_count = (MemberState.objects.filter(group_id=group_id).filter(
+            Q(idea_vote1=idea)
+            | Q(idea_vote2=idea)
+            | Q(idea_vote3=idea)
+            | Q(idea_vote4=idea)
+            | Q(idea_vote5=idea)
+            | Q(idea_vote6=idea)
+            | Q(idea_vote7=idea)
+            | Q(idea_vote8=idea)
+            | Q(idea_vote9=idea)
+            | Q(idea_vote10=idea)
+            ).count())
+
+        idea.votes = votes_count
+        idea.save()
+
+        # 투표 초기화
+        idea.idea_vote1_set.clear()
+        idea.idea_vote2_set.clear()
+        idea.idea_vote3_set.clear()
+        idea.idea_vote4_set.clear()
+        idea.idea_vote5_set.clear()
+        idea.idea_vote6_set.clear()
+        idea.idea_vote7_set.clear()
+        idea.idea_vote8_set.clear()
+        idea.idea_vote9_set.clear()
+        idea.idea_vote10_set.clear()
+
+    user_state_list = MemberState.objects.filter(group_id=group_id)
+    
+    for idea in ideas:
+        print("삭제!")
+
+
+def calculate_second_idea_scores(group_id):
+    ideas = Idea.objects.filter(group_id=group_id)
+
+    for idea in ideas:
+        votes_count = (MemberState.objects.filter(group_id=group_id).filter(
+            Q(idea_vote1=idea)
+            | Q(idea_vote2=idea)
+            | Q(idea_vote3=idea)
+            | Q(idea_vote4=idea)
+            | Q(idea_vote5=idea)
+            ).count())
+
+        idea.votes = votes_count
+        idea.save()
+
+        # 투표 초기화
+        idea.idea_vote1_set.clear()
+        idea.idea_vote2_set.clear()
+        idea.idea_vote3_set.clear()
+        idea.idea_vote4_set.clear()
+        idea.idea_vote5_set.clear()
+
+def calculate_third_idea_scores(group_id):
+    ideas = Idea.objects.filter(group_id=group_id)
+
+    for idea in ideas:
+        votes_count = (MemberState.objects.filter(group_id=group_id).filter(
+            Q(idea_vote1=idea)
+            | Q(idea_vote2=idea)
+            | Q(idea_vote3=idea)
+            ).count())
 
         idea.votes = votes_count
         idea.save()

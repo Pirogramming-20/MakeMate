@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from apps.group.views import State, redirect_by_auth
 from apps.group.models import Group, MemberState, AdminState
-from apps.result.views import team_building_auto, start_team_building
+from apps.result.views import start_team_building
+from apps.preresult.tasks import first_scoring_auto, second_scoring_auto, team_building_auto
+from apps.preresult.views import calculate_first_idea_scores, calculate_second_idea_scores
 from .forms import (
     NonAdminInfoForm,
     GroupPasswordForm,
@@ -229,6 +231,8 @@ def info_nonadmin(request, group_id):
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
     ##팀빙딩 함수 예약
+    first_scoring_auto(calculate_first_idea_scores, group)
+    second_scoring_auto(calculate_second_idea_scores, group)
     team_building_auto(start_team_building, group)
     ####
     ctx = {"group": group}

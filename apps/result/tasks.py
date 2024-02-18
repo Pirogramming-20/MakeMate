@@ -10,7 +10,7 @@ current_datetime = timezone.now()
 
 ##원하는 작업
 ####팀빌딩 함수 추가 하는 부분
-def make_auto(function):
+def make_third_auto(function):
     groups = Group.objects.filter(third_end_date__gt=current_datetime)
     for group in groups:
         scheduler.add_job(function,
