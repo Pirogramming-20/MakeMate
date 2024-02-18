@@ -81,7 +81,7 @@ def member_preresult(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date:
         if state == State.WITH_HISTORY or state == State.ADMIN:
             ideas_votes = {}
             if user_state:

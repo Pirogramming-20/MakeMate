@@ -225,7 +225,7 @@
                                             </div>
                                             <div class="common_group_info">
                                                 <div>팀 빌딩 완료</div>
-                                                {% for member in admin_group_count %}
+                                                {% for member in member_group_count %}
                                                     {% if member.group_name == group.title %}
                                                         <div>참여자수:{{member.count}}명</div>
                                                     {% endif %}
@@ -242,7 +242,7 @@
                                             </div>
                                             <div class="common_group_info">
                                                 <div>팀 빌딩 완료</div>
-                                                {% for member in admin_group_count %}
+                                                {% for member in member_group_count %}
                                                     {% if member.group_name == group.title %}
                                                         <div>참여자수:{{member.count}}명</div>
                                                     {% endif %}
@@ -260,7 +260,7 @@
                                         </div>
                                         <div class="common_group_info">
                                             <div>팀 빌딩 완료</div>
-                                            {% for member in admin_group_count %}
+                                            {% for member in member_group_count %}
                                                 {% if member.group_name == group.title %}
                                                     <div>참여자수:{{member.count}}명</div>
                                                 {% endif %}
@@ -276,7 +276,7 @@
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
                                         <div>1차 투표 완료</div>
-                                        {% for member in admin_group_count %}
+                                        {% for member in member_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
                                             {%endif%}
@@ -297,7 +297,7 @@
                                         <div class="common_group_info">
                                             <div>3차 투표 종료까지 남은 시간</div>
                                             <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
-                                            {% for member in admin_group_count %}
+                                            {% for member in member_group_count %}
                                                 {% if member.group_name == group.title %}
                                                     <div>참여자수:{{member.count}}명</div>
                                                 {% endif %}
@@ -314,7 +314,7 @@
                                         </div>
                                         <div class="common_group_info">
                                             <div>팀 빌딩 완료</div>
-                                            {% for member in admin_group_count %}
+                                            {% for member in member_group_count %}
                                                 {% if member.group_name == group.title %}
                                                     <div>참여자수:{{member.count}}명</div>
                                                 {% endif %}
@@ -330,7 +330,7 @@
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
                                         <div>1차 투표 완료</div>
-                                        {% for member in admin_group_count %}
+                                        {% for member in member_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
                                             {%endif%}
@@ -348,7 +348,7 @@
                                     <div class="common_group_info">
                                         <div>2차 투표 종료까지 남은 시간</div>
                                         <div class='group_endtime' data-group-time='{{group.second_end_date.isoformat}}'></div>
-                                        {% for member in admin_group_count %}
+                                        {% for member in member_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
                                             {%endif%}
@@ -363,7 +363,7 @@
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
                                         <div>1차 투표 완료</div>
-                                        {% for member in admin_group_count %}
+                                        {% for member in member_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
                                             {%endif%}
@@ -380,7 +380,7 @@
                                 <div class="common_group_info">
                                     <div>1차 투표 종료까지 남은 시간</div>
                                     <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>
-                                    {% for member in admin_group_count %}
+                                    {% for member in member_group_count %}
                                         {% if member.group_name == group.title %}
                                             <div>참여자수:{{member.count}}명</div>
                                         {%endif%}
