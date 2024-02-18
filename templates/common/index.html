@@ -20,77 +20,133 @@
                 {% comment %} admin_groups {% endcomment %}
                 {% for group in admin_groups %}
                     {% if group.third_end_date|date:"Y-m-d H:i:s" < current_time %}
-                        {% if group.is_third_end  %}
-                            <a href="{%url 'group:result' group.id %}">
-                                <div class="wrap_card">
-                                    <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='primary_badge'>운영진</button>
-                                        <button class='cta_blue_badge'>최종 종료</button>
+                        {% if group.is_first_end %}
+                            {% if group.is_second_end %}
+                                {% if group.is_third_end %}
+                                    <a href="{%url 'group:result' group.id %}">
+                                        <div class="wrap_card">
+                                            <div class='card_title'>{{group.title}}</div>
+                                            <div class='inner_card_badge'>
+                                                <button class='primary_badge'>운영진</button>
+                                                <button class='cta_blue_badge'>최종 종료</button>
+                                            </div>
+                                            <div class="common_group_info">
+                                                <div>팀 빌딩 완료</div>
+                                                {% for member in admin_group_count %}
+                                                    {% if member.group_name == group.title %}
+                                                        <div>참여자수:{{member.count}}명</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </a> 
+                                {% else %}
+                                    <a href="{%url 'group:preresult' group.id%}">
+                                        <div class="wrap_card">
+                                            <div class='card_title'>{{group.title}}</div>
+                                            <div class='inner_card_badge'>
+                                                <button class='primary_badge'>운영진</button>
+                                                <button class='cta_red_badge'>3차 임시종료</button>
+                                            </div>
+                                            <div class="common_group_info">
+                                                <div>팀 빌딩 완료</div>
+                                                {% for member in admin_group_count %}
+                                                    {% if member.group_name == group.title %}
+                                                        <div>참여자수:{{member.count}}명</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                                                </div>
+                                            </div>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{%url 'group:preresult' group.id%}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='primary_badge'>운영진</button>
+                                            <button class='cta_red_badge'>2차 임시종료</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>팀 빌딩 완료</div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                    <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
-                                        {% for member in admin_group_count %}
-                                            {% if member.group_name == group.title %}
-                                                <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
-                                        {% endfor %}
-                                                                        </div>
-                                    </div>
-                            </a> 
+                                </a>
+                            {% endif %}
                         {% else %}
                             <a href="{%url 'group:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='primary_badge'>운영진</button>
-                                        <button class='cta_red_badge'>3차 임시종료</button>
-                                    </div>
+                                    <div><button class='primary_badge'>운영진</button></div>
+                                    <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
+                                        <div>1차 투표 종료</div>
                                         {% for member in admin_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
-                                        {% endfor %}
-                                                                        </div>
-                                    </div>
-                            </a>
-                        {% endif %}
-                    {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
-                        {% if group.is_second_end %}
-                            <a href="{%url 'group:admin_page' group.id %}">
-                                <div class="wrap_card">
-                                    <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='primary_badge'>운영진</button>
-                                        <button class='cta_blue_badge'>3차 투표</button>
-                                    </div>
-                                    <div class="common_group_info">
-                                        <div>3차 투표 종료까지 남은 시간</div>
-                                        <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
-                                        {% for member in admin_group_count %}
-                                            {% if member.group_name == group.title %}
-                                                <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
+                                            {%endif%}
                                         {% endfor %}
                                     </div>
                                 </div>
-                            </a> 
+                            </a>
+                        {% endif %}
+                    {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
+                        {% if group.is_first_end %}
+                            {% if group.is_second_end %}
+                                <a href="{%url 'group:admin_page' group.id %}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='primary_badge'>운영진</button>
+                                            <button class='cta_blue_badge'>3차 투표</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>3차 투표 종료까지 남은 시간</div>
+                                            <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </a> 
+                            {% else %}
+                                <a href="{%url 'group:preresult' group.id%}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='primary_badge'>운영진</button>
+                                            <button class='cta_red_badge'>2차 임시종료</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>팀 빌딩 완료</div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
                         {% else %}
                             <a href="{%url 'group:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='primary_badge'>운영진</button>
-                                        <button class='cta_red_badge'>2차 임시종료</button>
-                                    </div>
+                                    <div><button class='primary_badge'>운영진</button></div>
+                                    <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
+                                        <div>1차 투표 종료</div>
                                         {% for member in admin_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
+                                            {%endif%}
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -153,79 +209,132 @@
                 {% comment %} member_groups {% endcomment %}
                 {% for group in member_groups %}
                     {% if group.third_end_date|date:"Y-m-d H:i:s" < current_time %}
-                        {% if group.is_third_end  %}
-                            <a href="{%url 'group:result' group.id %}">
-                                <div class="wrap_card">
-                                    <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='cta_blue_badge'>최종 종료</button>
+                        {% if group.is_first_end %}
+                            {% if group.is_second_end %}
+                                {% if group.is_third_end %}
+                                    <a href="{%url 'group:result' group.id %}">
+                                        <div class="wrap_card">
+                                            <div class='card_title'>{{group.title}}</div>
+                                            <div class='inner_card_badge'>
+                                                <button class='cta_blue_badge'>최종 종료</button>
+                                            </div>
+                                            <div class="common_group_info">
+                                                <div>팀 빌딩 완료</div>
+                                                {% for member in admin_group_count %}
+                                                    {% if member.group_name == group.title %}
+                                                        <div>참여자수:{{member.count}}명</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                                                </div>
+                                            </div>
+                                    </a> 
+                                {% else %}
+                                    <a href="{%url 'group:member_preresult' group.id%}">
+                                        <div class="wrap_card">
+                                            <div class='card_title'>{{group.title}}</div>
+                                            <div class='inner_card_badge'>
+                                                <button class='cta_red_badge'>3차 임시종료</button>
+                                            </div>
+                                            <div class="common_group_info">
+                                                <div>팀 빌딩 완료</div>
+                                                {% for member in admin_group_count %}
+                                                    {% if member.group_name == group.title %}
+                                                        <div>참여자수:{{member.count}}명</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                                                </div>
+                                            </div>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{%url 'group:member_preresult' group.id%}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='cta_red_badge'>2차 임시종료</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>팀 빌딩 완료</div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                    <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
-                                        {% for member in admin_group_count %}
-                                            {% if member.group_name == group.title %}
-                                                <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
-                                        {% endfor %}
-                                                                        </div>
-                                    </div>
-                            </a> 
+                                </a>
+                            {% endif %}
                         {% else %}
                             <a href="{%url 'group:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='cta_red_badge'>3차 임시종료</button>
-                                    </div>
+                                    <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
+                                        <div>1차 투표 완료</div>
                                         {% for member in admin_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
+                                            {%endif%}
                                         {% endfor %}
-                                                                        </div>
                                     </div>
-                            </a>
+                                </div>
+                            </a> 
                         {% endif %}
                     {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
-                        {% if group.is_second_end %}
-                            <a href="{%url 'group:group_detail' group.id %}">
-                                <div class="wrap_card">
-                                    <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='cta_blue_badge'>3차 투표</button>
+                        {% if group.is_first_end %}
+                            {% if group.is_second_end %}
+                                <a href="{%url 'group:group_detail' group.id %}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='cta_blue_badge'>3차 투표</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>3차 투표 종료까지 남은 시간</div>
+                                            <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                    <div class="common_group_info">
-                                        <div>3차 투표 종료까지 남은 시간</div>
-                                        <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
-                                        {% for member in admin_group_count %}
-                                            {% if member.group_name == group.title %}
-                                                <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
-                                        {% endfor %}
+                                </a> 
+                            {% else %}
+                                <a href="{%url 'group:member_preresult' group.id%}">
+                                    <div class="wrap_card">
+                                        <div class='card_title'>{{group.title}}</div>
+                                        <div class='inner_card_badge'>
+                                            <button class='cta_red_badge'>2차 임시종료</button>
+                                        </div>
+                                        <div class="common_group_info">
+                                            <div>팀 빌딩 완료</div>
+                                            {% for member in admin_group_count %}
+                                                {% if member.group_name == group.title %}
+                                                    <div>참여자수:{{member.count}}명</div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
-                            </a> 
+                                </a>
+                            {% endif %}
                         {% else %}
                             <a href="{%url 'group:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
-                                    <div class='inner_card_badge'>
-                                        <button class='cta_red_badge'>2차 임시종료</button>
-                                    </div>
+                                    <button class='cta_blue_badge'>1차 투표 임시 종료</button>
                                     <div class="common_group_info">
-                                        <div>팀 빌딩 완료</div>
+                                        <div>1차 투표 완료</div>
                                         {% for member in admin_group_count %}
                                             {% if member.group_name == group.title %}
                                                 <div>참여자수:{{member.count}}명</div>
-                                            {% endif %}
+                                            {%endif%}
                                         {% endfor %}
                                     </div>
                                 </div>
                             </a>
                         {% endif %}
-                    {% elif elif group.first_end_date|date:"Y-m-d H:i:s" < current_time%}
+                    {% elif group.first_end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_first_end %}
                             <a href="{%url 'group:group_detail' group.id%}">
                                 <div class="wrap_card">

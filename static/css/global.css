@@ -205,7 +205,7 @@ section {
     gap: var(--padding1);
 }
 
-.form_highlight_content, .wrap_error {
+.form_highlight_content, .wrap_error, .wrap_non_field_errors{
     color: var(--color_main);
     font-size: var(--font_small);
 }

@@ -224,7 +224,9 @@ def get_prev_data(form, prev_req, req, state):
                 f"ability_description{idx}", "")
 
     if state == 2:
-        prev_req["end_date"] = form.cleaned_data["end_date"]
+        prev_req["first_end_date"] = form.cleaned_data["first_end_date"]
+        prev_req["second_end_date"] = form.cleaned_data["second_end_date"]
+        prev_req["third_end_date"] = form.cleaned_data["third_end_date"]
 
     return prev_req
 
@@ -240,7 +242,9 @@ def save_group_data(prev_req, user):
         ability_description3=prev_req.get("group_ability3", ""),
         ability_description4=prev_req.get("group_ability4", ""),
         ability_description5=prev_req.get("group_ability5", ""),
-        end_date=prev_req["end_date"],
+        first_end_date=prev_req["first_end_date"],
+        second_end_date=prev_req["second_end_date"],
+        third_end_date=prev_req["third_end_date"],
     )
 
     AdminState.objects.create(group=group, user=user)
@@ -258,22 +262,33 @@ def preresult(request, group_id):
     # 그룹에 있는 아이디어를 모두 가져오고, 이를 투표점수 순서로 정렬
     # 그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+    all_idea_list = Idea.objects.filter(group=group)
+    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if (current_time >= group.third_end_date and group.is_second_end == True):
         if state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request, "preresult/preresult_admin.html", context=ctx)
         else:
             return redirect('/')
+    elif (current_time >= group.second_end_date and group.is_first_end == True):
+        if state == State.ADMIN:
+            ctx = {"idea_list": idea_list, "members": members, "group": group}
+            return render(request, "preresult/preresult_admin.html", context=ctx)
+        else:
+            return redirect('/')
+    elif current_time >= group.first_end_date:
+        if state == State.ADMIN:
+            ctx = {"idea_list": all_idea_list, "members": members, "group": group}
+            return render(request, "preresult/preresult_is_first.html", context=ctx)
+        else:
+            return redirect('/')
     else:
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
-
 
 def admin_page(request, group_id):
     group_instance = get_object_or_404(Group, id=group_id)
@@ -397,7 +412,7 @@ def preresult_modify(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date:
         if state == State.ADMIN:
             if request.method == "POST":
                 selected_values = request.POST.get("team_modify").split(",")
@@ -587,70 +602,131 @@ def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
     state = redirect_by_auth(user, group_id)
+    current_time = timezone.now()
 
     if state == State.WITH_HISTORY:
-        try:
-            user_state, created = MemberState.objects.get_or_create(user=user,
-                                                                    group=group)
+        if current_time <= group.first_end_date:
+            try:
+                user_state, created = MemberState.objects.get_or_create(user=user,
+                                                                        group=group)
 
-            if request.method == "POST":
-                form = VoteForm(request.POST, group_id=group.id)
-                if form.is_valid():
-                    vote = form.save(commit=False)
-                    vote.user = user
-                    vote.group = group
+                if request.method == "POST":
+                    form = FirstVoteForm(request.POST, group_id=group.id)
+                    if form.is_valid():
+                        vote = form.save(commit=False)
+                        vote.user = user
+                        vote.group = group
 
-                    idea_vote1_id = (form.cleaned_data["idea_vote1"].id
-                                    if form.cleaned_data["idea_vote1"] else None)
-                    idea_vote2_id = (form.cleaned_data["idea_vote2"].id
-                                    if form.cleaned_data["idea_vote2"] else None)
-                    idea_vote3_id = (form.cleaned_data["idea_vote3"].id
-                                    if form.cleaned_data["idea_vote3"] else None)
+                        idea_votes = [form.cleaned_data[f"idea_vote{i}"] for i in range(1, 11)]
+                        for idea_vote in idea_votes:
+                            if idea_vote:
+                                idea_vote.votes += 1
+                                idea_vote.save()
 
-                    idea_vote1 = Idea.objects.get(id=idea_vote1_id)
-                    idea_vote2 = Idea.objects.get(id=idea_vote2_id)
-                    idea_vote3 = Idea.objects.get(id=idea_vote3_id)
+                        user_state.idea_vote1 = form.cleaned_data["idea_vote1"]
+                        user_state.idea_vote2 = form.cleaned_data["idea_vote2"]
+                        user_state.idea_vote3 = form.cleaned_data["idea_vote3"]
+                        user_state.idea_vote4 = form.cleaned_data["idea_vote4"]
+                        user_state.idea_vote5 = form.cleaned_data["idea_vote5"]
+                        user_state.idea_vote6 = form.cleaned_data["idea_vote6"]
+                        user_state.idea_vote7 = form.cleaned_data["idea_vote7"]
+                        user_state.idea_vote8 = form.cleaned_data["idea_vote8"]
+                        user_state.idea_vote9 = form.cleaned_data["idea_vote9"]
+                        user_state.idea_vote10 = form.cleaned_data["idea_vote10"]
 
-                    idea_vote1.votes += 1
-                    idea_vote2.votes += 1
-                    idea_vote3.votes += 1
+                        user_state.save()
+                        vote.save()
 
-                    idea_vote1.save()
-                    idea_vote2.save()
-                    idea_vote3.save()
+                        messages.success(request, "투표가 성공적으로 저장되었습니다.")
+                        return redirect("group:group_detail", group_id=group_id)
+                else:
+                    messages.error(request, "중복 선택은 불가능합니다.")
+                    form = VoteForm(group_id=group_id)
 
-                    user_state.idea_vote1 = idea_vote1
-                    user_state.idea_vote2 = idea_vote2
-                    user_state.idea_vote3 = idea_vote3
-                    user_state.save()
+            except MemberState.DoesNotExist:
+                messages.error(request, "MemberState가 존재하지 않습니다.")
+                return redirect("group_detail", group_id=group_id)
 
-                    vote.save()
-                    messages.success(request, "투표가 성공적으로 저장되었습니다.")
-                    return redirect("group:group_detail", group_id=group_id)
-            else:
-                messages.error(request, "중복 선택은 불가능합니다.")
-                form = VoteForm(group_id=group_id)
+            voted_ideas = [
+                user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3,
+                user_state.idea_vote4, user_state.idea_vote5, user_state.idea_vote6,
+                user_state.idea_vote7, user_state.idea_vote8, user_state.idea_vote9, user_state.idea_vote10,
+            ]
+            ideas_for_voting = Idea.objects.filter(group=group).exclude(author=user).exclude(id__in=[idea.id for idea in voted_ideas if idea is not None])
+            
+            return render(
+                request,
+                "group/group_first_vote_create.html",
+                {
+                    "group": group,
+                    "ideas_for_voting": ideas_for_voting,
+                    "form": form,
+                    "range": range(10)
+                },
+            )
+        else:
+            try:
+                user_state, created = MemberState.objects.get_or_create(user=user,
+                                                                        group=group)
 
-        except MemberState.DoesNotExist:
-            messages.error(request, "MemberState가 존재하지 않습니다.")
-            return redirect("group_detail", group_id=group_id)
+                if request.method == "POST":
+                    form = VoteForm(request.POST, group_id=group.id)
+                    if form.is_valid():
+                        vote = form.save(commit=False)
+                        vote.user = user
+                        vote.group = group
 
-        voted_ideas = [
-            user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3
-        ]
-        ideas_for_voting = (Idea.objects.filter(group=group).exclude(
-            author=user).exclude(
-                id__in=[idea.id for idea in voted_ideas if idea is not None]))
+                        idea_vote1_id = (form.cleaned_data["idea_vote1"].id
+                                        if form.cleaned_data["idea_vote1"] else None)
+                        idea_vote2_id = (form.cleaned_data["idea_vote2"].id
+                                        if form.cleaned_data["idea_vote2"] else None)
+                        idea_vote3_id = (form.cleaned_data["idea_vote3"].id
+                                        if form.cleaned_data["idea_vote3"] else None)
 
-        return render(
-            request,
-            "group/group_vote_create.html",
-            {
-                "group": group,
-                "ideas_for_voting": ideas_for_voting,
-                "form": form
-            },
-        )
+                        idea_vote1 = Idea.objects.get(id=idea_vote1_id)
+                        idea_vote2 = Idea.objects.get(id=idea_vote2_id)
+                        idea_vote3 = Idea.objects.get(id=idea_vote3_id)
+
+                        idea_vote1.votes += 1
+                        idea_vote2.votes += 1
+                        idea_vote3.votes += 1
+
+                        idea_vote1.save()
+                        idea_vote2.save()
+                        idea_vote3.save()
+
+                        user_state.idea_vote1 = idea_vote1
+                        user_state.idea_vote2 = idea_vote2
+                        user_state.idea_vote3 = idea_vote3
+                        user_state.save()
+
+                        vote.save()
+                        messages.success(request, "투표가 성공적으로 저장되었습니다.")
+                        return redirect("group:group_detail", group_id=group_id)
+                else:
+                    messages.error(request, "중복 선택은 불가능합니다.")
+                    form = VoteForm(group_id=group_id)
+
+            except MemberState.DoesNotExist:
+                messages.error(request, "MemberState가 존재하지 않습니다.")
+                return redirect("group_detail", group_id=group_id)
+
+            voted_ideas = [
+                user_state.idea_vote1, user_state.idea_vote2, user_state.idea_vote3
+            ]
+            ideas_for_voting = (Idea.objects.filter(group=group).exclude(
+                author=user).exclude(
+                    id__in=[idea.id for idea in voted_ideas if idea is not None]))
+
+            return render(
+                request,
+                "group/group_vote_create.html",
+                {
+                    "group": group,
+                    "ideas_for_voting": ideas_for_voting,
+                    "form": form
+                },
+            )
     elif state == State.ADMIN:
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
@@ -661,7 +737,7 @@ def vote_create(request, group_id):
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -669,7 +745,7 @@ def result(request, group_id):  # 최종 결과 페이지
     group.save()
     
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date and group.is_third_end:
         if (state == State.WITH_HISTORY or state == State.ADMIN):
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request, "group/result.html", context=ctx)
@@ -684,13 +760,13 @@ def result(request, group_id):  # 최종 결과 페이지
 def member_preresult(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:group.team_number]
+        group=group).order_by("-score")[:5]
     user_state = MemberState.objects.filter(user=request.user,
                                             group=group).first()
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date and group.is_second_end == True:
         if (state == State.WITH_HISTORY or state == State.ADMIN):
             ideas_votes = {}
             if user_state:
@@ -709,10 +785,35 @@ def member_preresult(request, group_id):
             return render(request, "preresult/preresult_member.html", ctx)
         else:
             return redirect('/')
+    elif current_time >= group.second_end_date and group.is_first_end == True:
+        if (state == State.WITH_HISTORY or state == State.ADMIN):
+            ideas_votes = {}
+
+            ctx = {
+                "group": group,
+                "idea_list": idea_list,
+                "ideas_votes": ideas_votes,
+            }
+
+            return render(request, "preresult/preresult_member.html", ctx)
+        else:
+            return redirect('/')
+    elif current_time >= group.first_end_date:
+        if (state == State.WITH_HISTORY or state == State.ADMIN):
+            ideas_votes = {}
+            
+            ctx = {
+                "group": group,
+                "idea_list": idea_list,
+                "ideas_votes": ideas_votes,
+            }
+
+            return render(request, "preresult/preresult_member.html", ctx)
+        else:
+            return redirect('/')
     else:
         redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
         return redirect(redirect_url)
-
 
 @login_required
 def vote_modify(request, group_id):

@@ -4,6 +4,7 @@ let prev_data_query = new URLSearchParams(prev_data).toString();
 
 document.getElementById('base_set_submit_btn').addEventListener('click', async ()=>{
     prev_data_query = await changeStage(state, prev_data);
+    console.log(prev_data_query)
 })
 
 async function changeStage(local_state, prev_data) {
@@ -67,7 +68,9 @@ async function changeStage(local_state, prev_data) {
         <label>결과 임시 발표일 <i class="form_highlight_content">*</i></label>
         <span class="form_highlight_content">운영진에게 임시 결과가 발표되는 날짜를 설정합니다. 운영진은 결과를 수정할 수 있습니다.</span>
         <span class="form_highlight_content">투표는 임시 발표일까지 운영되며, 이후에는 투표가 불가능합니다.</span>
-        <input type="date" name="end_date_0" required id="id_end_date_0"><input type="time" name="end_date_1" required id="id_end_date_1">    
+        <input type="date" name="first_end_date_0" required id="id_first_end_date_0"><input type="time" name="first_end_date_1" required id="id_first_end_date_1">    
+        <input type="date" name="second_end_date_0" required id="id_second_end_date_0"><input type="time" name="second_end_date_1" required id="id_second_end_date_1">    
+        <input type="date" name="third_end_date_0" required id="id_third_end_date_0"><input type="time" name="third_end_date_1" required id="id_third_end_date_1">    
     </p>
     `
         ]
@@ -121,12 +124,13 @@ function showErrors(response) {
 }
 
 function showDateErrors(response){
+    console.log(response)
     const container = document.querySelector('form');
 
     clearErrorMessages();
 
     // 필드 에러 메세지 띄우기
-    const target_input = document.getElementById(`id_end_date_1`);
+    const target_input = document.getElementById(`id_third_end_date_1`);
     const error_msg = response.errors[`end_date`];
     
     target_input.insertAdjacentHTML('afterend', `
