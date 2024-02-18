@@ -65,7 +65,7 @@ def preresult_modify(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
-    members = MemberState.objects.filter(group=group)
+    members = MemberState.objects.filter(group=group, group_ability__isnull=False)
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()

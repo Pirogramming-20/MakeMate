@@ -128,7 +128,7 @@ def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
-    selected_idea_leader(idea_list, group)
+    
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     selected_idea_leader(idea_list, group)
     members = MemberState.objects.filter(group=group, group_ability__isnull=False).exclude(
