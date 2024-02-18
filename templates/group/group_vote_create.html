@@ -20,7 +20,7 @@
             <option value="" selected disabled >아이디어 선택</option>
             <option value="">선택 취소</option>
             
-            {% for idea in ideas_for_voting %}
+            {% for idea in third_idea_list %}
             <option value="{{ idea.id }}">{{ idea.title }}</option>
             {% endfor %}
           </select>
@@ -40,7 +40,7 @@
           <option value="" selected disabled>아이디어 선택</option>
           <option value="">선택 취소</option>
           
-          {% for idea in ideas_for_voting %}
+          {% for idea in third_idea_list %}
           <option value="{{ idea.id }}">{{ idea.title }}</option>
           {% endfor %}
           </select>
@@ -60,7 +60,7 @@
             <option value="" selected disabled>아이디어 선택</option>
             <option value="">선택 취소</option>
         
-            {% for idea in ideas_for_voting %}
+            {% for idea in third_idea_list %}
             <option value="{{ idea.id }}">{{ idea.title }}</option>
             {% endfor %}
           </select>

@@ -20,7 +20,7 @@
         {% endif %}
   
       <div class="group_detail_btns">
-        {% if has_voted %}
+        {% if has_voted and group.second_end_date <= current_time <= group.third_end_date %}
           <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
         {% else %}
           <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
@@ -28,9 +28,11 @@
     
         {% if not author_ideas %}
           <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
-        {% else %} {% for idea in author_ideas %}
-          <button class="primary_button"><a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
-        {% endfor %} {% endif %}
+        {% else %} 
+          {% for idea in author_ideas %}
+            <button class="primary_button"><a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
+          {% endfor %} 
+        {% endif %}
       </div>
     </div>
   

@@ -22,7 +22,7 @@ def preresult(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.third_end_date and group.is_second_end == True:
+    if current_time >= group.third_end_date and group.is_second_end == True: #세번째 임시결과 페이지
         if state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request,
@@ -30,7 +30,15 @@ def preresult(request, group_id):
                           context=ctx)
         else:
             return redirect("/")
-    elif current_time >= group.second_end_date and group.is_first_end == True:
+    elif current_time >= group.second_end_date and group.is_first_end == True: #두번째 임시결과 페이지
+        if state == State.ADMIN:
+            ctx = {"idea_list": idea_list, "members": members, "group": group}
+            return render(request,
+                          "preresult/preresult_admin.html",
+                          context=ctx)
+        else:
+            return redirect("/")
+    elif current_time >= group.first_end_date: #첫번째 임시결과 페이지
         if state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request,
@@ -53,7 +61,7 @@ def member_preresult(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date:
         if state == State.WITH_HISTORY or state == State.ADMIN:
             ideas_votes = {}
             if user_state:
@@ -177,10 +185,6 @@ def calculate_idea_scores(group_id):
 
 # preresult부분에서 calculate_idea_scores 함수를 호출하여
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
-<<<<<<< HEAD
-# 아래는 예시
-
-=======
 
 
 def vote1_preresult(request, group_id):
@@ -206,4 +210,3 @@ def vote1_unselect(request, group_id):
     idea.is_selected = False
     idea.save()
     return JsonResponse({"message": "good"})
->>>>>>> b32c93ae837d4907d07624ea4bf9ec45a642af54
