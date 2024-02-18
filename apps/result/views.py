@@ -236,8 +236,15 @@ def make_team(idea_list, members, project_fitness, group_id):
                 group_id, members)
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
 
+<<<<<<< HEAD
 
 """ # ##스케줄러 시작##
 make_auto(start_team_building)
 start_scheduler()
 # #### """
+=======
+# ##스케줄러 시작##
+# make_auto(start_team_building)
+# start_scheduler()
+# ####
+>>>>>>> 13d276bb242986e6b339eb25a9a6564204ec2942
