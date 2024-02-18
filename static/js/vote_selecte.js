@@ -1,6 +1,6 @@
 //groupId 정의 부분
 const currentUrl=window.location.href;
-const parts = currentUrl.split('/group/');
+const parts = currentUrl.split('/preresult/');
 groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
 
 
@@ -10,7 +10,7 @@ document.addEventListener('click',(event)=> {
   if (clickedBadge.classList.contains('secondary_badge')){
     const ideaId=clickedBadge.dataset.ideaId;
     const jsonData={ idea_id:ideaId,  group_id:groupId };
-    axios.post(`/group/${groupId}/admin/vote1/preresult/select`, jsonData)
+    axios.post(`/preresult/${groupId}/admin/vote1/preresult/select`, jsonData)
       .then(()=>{
         clickedBadge.classList.remove('secondary_badge');
         clickedBadge.classList.add('primary_badge');
@@ -18,7 +18,7 @@ document.addEventListener('click',(event)=> {
   }else if (clickedBadge.classList.contains('primary_badge')){
     const ideaId=clickedBadge.dataset.ideaId;
     const jsonData={idea_id:ideaId, group_id:groupId};
-    axios.post(`/group/${groupId}/admin/vote1/preresult/unselect`,jsonData)
+    axios.post(`/preresult/${groupId}/admin/vote1/preresult/unselect`,jsonData)
     .then(() => {
       clickedBadge.classList.remove('primary_badge');
       clickedBadge.classList.add('secondary_badge');
