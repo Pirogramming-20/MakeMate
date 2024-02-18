@@ -122,3 +122,4 @@ def vote_modify(request, group_id):
         )
     else:
         return redirect("/")
+
