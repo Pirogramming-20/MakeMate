@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% now "Y-m-d H:i:s" as current_time %}
 
   <section>
     <div class="admin_wrap_head">
@@ -8,25 +9,18 @@
       <div class="admin_inner_page_info">
         <div class='admin_group_title'>{{group_instance.title}}</div>
         <!-- <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div> -->
-        
-        {% if now < group_instance.first_end_date %}
-        <div class='admin_endtime' data-admin-time='{{ group_instance.first_end_date.isoformat }}'>
-          투표 종료 날짜: {{ group_instance.first_end_date }}
-        </div>
+        <!-- 미완료 -->
+        {% if group_instance.first_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <div>1차 투표 마감까지 남은 시간</div>
+        <div class='group_endtime' data-group-time='{{group_instance.first_end_date.isoformat}}'></div>
+        {% elif group_instance.second_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <div>2차 투표 마감까지 남은 시간</div>
+        <div class='group_endtime' data-group-time='{{group_instance.second_end_date.isoformat}}'></div>
+        {% else %}
+        <div>3차 투표 마감까지 남은 시간</div>
+        <div class='group_endtime' data-group-time='{{group_instance.third_end_date.isoformat}}'></div>                                 
         {% endif %}
-
-        {% if group_instance.first_end_date < now < group_instance.second_end_date %}
-        <div class='admin_endtime' data-admin-time='{{ group_instance.second_end_date.isoformat }}'>
-          투표 종료 날짜: {{ group_instance.second_end_date }}
-        </div>
-        {% endif %}
-
-        {% if group_instance.second_end_date < now < group_instance.third_end_date %}
-        <div class='admin_endtime' data-admin-time='{{ group_instance.third_end_date.isoformat }}'>
-          투표 종료 날짜: {{ group_instance.third_end_date }}
-        </div>
-        {% endif %}
-      
+        <!-- 미완료여기까지 -->
 
       </div>
       <div class="admin_desc_content">회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
