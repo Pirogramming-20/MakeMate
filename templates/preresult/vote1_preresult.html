@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <sectuon>
+    <h1>1차 투표 임시 결과 페이지</h1>
+    {% for idea in idea_list  %}
+      <div>
+        <div>{{idea.title}}</div>
+        {% if idea.is_selected %}
+          <button class='primary_badge' data-idea-id="{{idea.id}}">선택</button>
+        {% else %}
+        <button class='secondary_badge' data-idea-id="{{idea.id}}">선택</button>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </sectuon>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static "js/vote_selecte.js" %}"></script>
+{% endblock content %}

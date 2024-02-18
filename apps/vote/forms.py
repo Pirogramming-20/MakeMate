@@ -5,31 +5,34 @@ from apps.group.models import Idea, Vote
 class VoteForm(forms.ModelForm):
     idea_vote1 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={"class": "form-control"}),
         required=True,
     )
     idea_vote2 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={"class": "form-control"}),
         required=True,
     )
     idea_vote3 = forms.ModelChoiceField(
         queryset=Idea.objects.none(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={"class": "form-control"}),
         required=True,
     )
 
     class Meta:
         model = Vote
-        fields = ['idea_vote1', 'idea_vote2', 'idea_vote3']
-    
+        fields = ["idea_vote1", "idea_vote2", "idea_vote3"]
+
     def __init__(self, *args, **kwargs):
-        group_id = kwargs.pop('group_id', None)
+        group_id = kwargs.pop("group_id", None)
         super(VoteForm, self).__init__(*args, **kwargs)
         if group_id:
-            self.fields['idea_vote1'].queryset = Idea.objects.filter(group_id=group_id)
-            self.fields['idea_vote2'].queryset = Idea.objects.filter(group_id=group_id)
-            self.fields['idea_vote3'].queryset = Idea.objects.filter(group_id=group_id)
+            self.fields["idea_vote1"].queryset = Idea.objects.filter(
+                group_id=group_id)
+            self.fields["idea_vote2"].queryset = Idea.objects.filter(
+                group_id=group_id)
+            self.fields["idea_vote3"].queryset = Idea.objects.filter(
+                group_id=group_id)
 
     def clean(self):
         cleaned_data = super().clean()

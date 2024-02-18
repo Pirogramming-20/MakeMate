@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.files.storage import FileSystemStorage
 from apps.common.models import User
 
+
 class Group(models.Model):
     title = models.CharField("그룹 이름", max_length=30)
     password = models.CharField("그룹 비밀번호", max_length=15)
@@ -31,14 +32,15 @@ class Group(models.Model):
     is_second_end = models.BooleanField(default=False)
     is_third_end = models.BooleanField(default=False)
     first_end_date = models.DateTimeField(default=timezone.now().date() +
-                                    timezone.timedelta(days=1))
+                                          timezone.timedelta(days=1))
     second_end_date = models.DateTimeField(default=timezone.now().date() +
-                                    timezone.timedelta(days=2))
+                                           timezone.timedelta(days=2))
     third_end_date = models.DateTimeField(default=timezone.now().date() +
-                                    timezone.timedelta(days=3))    
+                                          timezone.timedelta(days=3))
 
     def __str__(self):
         return self.title
+
 
 class Idea(models.Model):
     group = models.ForeignKey(Group,
@@ -59,9 +61,13 @@ class Idea(models.Model):
                                     blank=True)
     votes = models.IntegerField(default=0)
 
+    ##선택된거 추가
+    is_selected = models.BooleanField(default=False)
+
     def __str__(self):
         return self.title
-    
+
+
 class MemberState(models.Model):
     group = models.ForeignKey(Group,
                               on_delete=models.CASCADE,
@@ -72,7 +78,7 @@ class MemberState(models.Model):
         validators=[MaxValueValidator(5),
                     MinValueValidator(1)],
         null=True)
-    
+
     idea_vote1 = models.ForeignKey(Idea,
                                    on_delete=models.CASCADE,
                                    related_name="idea_vote1_set",
@@ -110,15 +116,20 @@ class MemberState(models.Model):
                                    related_name="idea_vote9_set",
                                    null=True)
     idea_vote10 = models.ForeignKey(Idea,
-                                   on_delete=models.CASCADE,
-                                   related_name="idea_vote10_set",
-                                   null=True)
-    my_team_idea = models.ForeignKey(Idea,
-                                     on_delete=models.CASCADE,
-                                     related_name="my_team_idea_set",
-                                     null=True)
+                                    on_delete=models.CASCADE,
+                                    related_name="idea_vote10_set",
+                                    null=True)
+    my_team_idea = models.ForeignKey(
+        Idea,
+        on_delete=models.CASCADE,
+        related_name="my_team_idea_set",
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         return self.user.username
+
 
 class AdminState(models.Model):
     group = models.ForeignKey(Group,
