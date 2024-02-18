@@ -27,9 +27,6 @@ class Group(models.Model):
                                             max_length=100,
                                             null=True,
                                             blank=True)
-    # end_date 없으면 작동하지 않아 임의로 추가, 작동 확인 이후 삭제 하기
-    end_date = models.DateTimeField(default=timezone.now().date() +
-                                    timezone.timedelta(days=3))
     is_first_end = models.BooleanField(default=False)
     is_second_end = models.BooleanField(default=False)
     is_third_end = models.BooleanField(default=False)

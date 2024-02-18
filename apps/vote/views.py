@@ -138,7 +138,7 @@ def first_vote(request, group_id):
             for selected_pk in selected:
                 idea = Idea.objects.get(id=selected_pk)
                 idea_list.append(idea)
-                
+
             user_state.idea_vote1 = idea_list[0]
             user_state.idea_vote2 = idea_list[1]
             user_state.idea_vote3 = idea_list[2]
