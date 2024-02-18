@@ -12,15 +12,15 @@
         </div>
         <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
         
-        {% if group.third_end_date.isoformat > current_time %}
-        <div>3차 투표 마감까지 남은 시간</div>
-        <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>
-        {% elif group.second_end_date.isoformat > current_time %}
+        {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <div>1차 투표 마감까지 남은 시간</div>
+        <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>
+        {% elif group.second_end_date|date:"Y-m-d H:i:s" > current_time %}
         <div>2차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.second_end_date.isoformat}}'></div>
         {% else %}
-        <div>1차 투표 마감까지 남은 시간</div>
-        <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>                                 
+        <div>3차 투표 마감까지 남은 시간</div>
+        <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>                                 
         {% endif %}
 
       
