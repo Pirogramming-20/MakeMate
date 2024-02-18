@@ -239,6 +239,10 @@ def calculate_third_idea_scores(group_id):
 
 # preresult부분에서 calculate_idea_scores 함수를 호출하여
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
+<<<<<<< HEAD
+# 아래는 예시
+
+=======
 
 
 def vote1_preresult(request, group_id):
@@ -264,3 +268,4 @@ def vote1_unselect(request, group_id):
     idea.is_selected = False
     idea.save()
     return JsonResponse({"message": "good"})
+>>>>>>> b32c93ae837d4907d07624ea4bf9ec45a642af54
