@@ -11,6 +11,8 @@ class State(Enum):
 
 class TeamNumber(Enum):
     THIRD_TEAM = 5
+    SECOND_TEAM = 5
+    FIRST_TEAM = 10
 
 # Create your views here.
 def redirect_by_auth(user, group_id):

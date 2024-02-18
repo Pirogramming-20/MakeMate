@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from apps.group.models import Group, MemberState, Idea, Vote
-from apps.group.views import State, redirect_by_auth
+from apps.group.views import State, TeamNumber, redirect_by_auth
 from .forms import VoteForm
 
 # Create your views here.
@@ -122,4 +122,45 @@ def vote_modify(request, group_id):
         )
     else:
         return redirect("/")
+    
+def first_vote(request, group_id):
+    group = get_object_or_404(Group, pk=group_id)
+    idea_list = Idea.objects.filter(group=group)
+    msg = ""
+
+    if request.method == 'POST':
+        selected = request.POST.getlist('picked')
+        selected = list(map(int, selected)) # 선택된 아이디어의 pk를 리스트에 담음.
+
+        user_state = get_object_or_404(MemberState, group=group, user=request.user)
+        if len(selected) == TeamNumber.FIRST_TEAM.value:
+            idea_list = []
+            for selected_pk in selected:
+                idea = Idea.objects.get(id=selected_pk)
+                idea_list.append(idea)
+
+            user_state.idea_vote1 = idea_list[0]
+            user_state.idea_vote2 = idea_list[1]
+            user_state.idea_vote3 = idea_list[2]
+            user_state.idea_vote4 = idea_list[3]
+            user_state.idea_vote5 = idea_list[4]
+            user_state.idea_vote6 = idea_list[5]
+            user_state.idea_vote7 = idea_list[6]
+            user_state.idea_vote8 = idea_list[7]
+            user_state.idea_vote9 = idea_list[8]
+            user_state.idea_vote10 = idea_list[9]
+        
+            user_state.save()
+                
+            return redirect("group:group_detail", group_id=group.id)
+                
+        else:
+            msg = f'{TeamNumber.FIRST_TEAM.value}개의 팀을 골라주세요.'
+        
+    ctx = {
+        "group": group,
+        "idea_list": idea_list,
+        "error_msg": msg
+    }
+    return render(request, "vote_first.html", ctx)
 
