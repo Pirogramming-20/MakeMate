@@ -1,7 +1,7 @@
 from django.utils import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger
-from group.models import Group
+from apps.group.models import Group
 
 scheduler = BackgroundScheduler()
 

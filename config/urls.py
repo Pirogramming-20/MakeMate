@@ -4,5 +4,11 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("common.urls")),
-    path("group/", include("group.urls")),
+    path("group/", include("apps.group.urls")),
+    path("admin/", include("apps.groupAdmin.urls")),
+    path("setting/", include("apps.groupSetting.urls")),
+    path("preresult/", include("apps.preresult.urls")),
+    path("result/", include("apps.result.urls")),
+    path("idea/", include("apps.idea.urls")),
+    path("vote/", include("apps.vote.urls")),
 ]
