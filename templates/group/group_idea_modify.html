@@ -8,18 +8,19 @@
     </div>
   </div>
 
-
-
   <form
-  action="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}"
+  action="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}"
   method="post"
   enctype="multipart/form-data"
   class="wrap_idea_modify_form"
   novalidate>
   <div id="vote_modify_form_container">
-    {% csrf_token %} {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
     <div class="wrap_error">{{ error }}</div>
-    {% endfor %} {% endif %}
+      {% endfor %}
+    {% endif %}
     <div id="vote_modify_form_container">제목 <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" /></div>
 
     <div id="vote_modify_form_container">

@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data" class="wrap_form" novalidate>
+    <form action="{% url 'idea:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data" class="wrap_form" novalidate>
       <div id="vote_modify_form_container">
         {% csrf_token %}
           {% if form.non_field_errors %}

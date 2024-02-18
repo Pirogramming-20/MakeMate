@@ -7,7 +7,7 @@ document.getElementById('base_set_submit_btn').addEventListener('click', async (
 })
 
 async function changeStage(local_state, prev_data) {
-    const url = '/group/base_set/';
+    const url = '/setting/base_set/';
     const form_element = document.querySelector('form');
     const form_data = new FormData(form_element);
     const csrf_token = getCookie('csrftoken');
@@ -72,7 +72,7 @@ async function changeStage(local_state, prev_data) {
             state += 1;
         }
         else {
-            window.location.href = `/group/share/${response.group_id}`;
+            window.location.href = `/setting/share/${response.group_id}`;
         }
         
         return new URLSearchParams(response.prev_data).toString();
