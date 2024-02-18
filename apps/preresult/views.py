@@ -245,15 +245,29 @@ def calculate_third_idea_scores(group_id):
 =======
 
 
-def vote1_preresult(request, group_id):
+def first_vote_preresult(request, group_id):
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group)
-    ctx = {"group": group, "idea_list": idea_list}
-    return render(request, "preresult/vote1_preresult.html", ctx)
+    if request.method == "POST":
+        group.is_first_end = True
+        group.save()
+        return redirect("/")
+    else:
+        top_selected(group, 10)
+        idea_list = Idea.objects.filter(group=group).order_by("-votes")
+        ctx = {"group": group, "idea_list": idea_list}
+    return render(request, "preresult/preresult_first_vote_select.html", ctx)
+
+
+##상위 아이디어 selected로 바꾸는 함수
+def top_selected(group, num):
+    top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
+    for idea in top_ideas:
+        idea.is_selected = True
+        idea.save()
 
 
 @csrf_exempt
-def vote1_select(request, group_id):
+def first_vote_select(request, group_id):
     idea_data = json.loads(request.body)
     idea = Idea.objects.get(id=idea_data["idea_id"])
     idea.is_selected = True
@@ -262,7 +276,7 @@ def vote1_select(request, group_id):
 
 
 @csrf_exempt
-def vote1_unselect(request, group_id):
+def first_vote_unselect(request, group_id):
     idea_data = json.loads(request.body)
     idea = Idea.objects.get(id=idea_data["idea_id"])
     idea.is_selected = False
