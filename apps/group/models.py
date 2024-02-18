@@ -63,6 +63,8 @@ class Idea(models.Model):
 
     ##선택된거 추가
     is_selected = models.BooleanField(default=False)
+    ##2차선택
+    second_selected = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
