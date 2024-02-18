@@ -7,7 +7,27 @@
       <a href="{%url 'common:main_page'%}" class="home_btn">Home</a>
       <div class="admin_inner_page_info">
         <div class='admin_group_title'>{{group_instance.title}}</div>
-        <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
+        <!-- <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div> -->
+        
+        {% if now < group_instance.first_end_date %}
+        <div class='admin_endtime' data-admin-time='{{ group_instance.first_end_date.isoformat }}'>
+          투표 종료 날짜: {{ group_instance.first_end_date }}
+        </div>
+        {% endif %}
+
+        {% if group_instance.first_end_date < now < group_instance.second_end_date %}
+        <div class='admin_endtime' data-admin-time='{{ group_instance.second_end_date.isoformat }}'>
+          투표 종료 날짜: {{ group_instance.second_end_date }}
+        </div>
+        {% endif %}
+
+        {% if group_instance.second_end_date < now < group_instance.third_end_date %}
+        <div class='admin_endtime' data-admin-time='{{ group_instance.third_end_date.isoformat }}'>
+          투표 종료 날짜: {{ group_instance.third_end_date }}
+        </div>
+        {% endif %}
+      
+
       </div>
       <div class="admin_desc_content">회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
     </div>
