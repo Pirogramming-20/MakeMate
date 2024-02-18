@@ -267,6 +267,8 @@ def calculate_third_idea_scores(group_id):
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
 
 
+
+
 ##상위 아이디어 selected로 바꾸는 함수
 def top_selected(group, num):
     top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
@@ -300,7 +302,6 @@ def first_vote_unselect(request, group_id):
 
     return JsonResponse({"message": "good"})
 
-
 @csrf_exempt
 def second_vote_select(request, group_id):
     idea_data = json.loads(request.body)
@@ -324,3 +325,4 @@ def reset_vote(reset_idea):
     for idea in reset_idea:
         idea.votes = 0
         idea.save()
+
