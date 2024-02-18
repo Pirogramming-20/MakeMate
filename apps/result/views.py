@@ -6,40 +6,42 @@ from urllib.parse import parse_qs
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, FileResponse, HttpResponseRedirect 
+from django.http import JsonResponse, FileResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from apps.common.models import User
 from apps.group.models import Group, MemberState, AdminState, Idea, Vote
-from apps.group.views import State, TeamNumber, redirect_by_auth 
+from apps.group.views import State, TeamNumber, redirect_by_auth
 from apps.groupSetting.forms import NonAdminInfoForm
 from .tasks import team_building_auto, start_scheduler, make_auto
+
 
 # Create your views here.
 @login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:5]
+    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
     group.is_second_end = True
     group.save()
-    
+
     current_time = timezone.now()
     if current_time >= group.third_end_date and group.is_third_end:
-        if (state == State.WITH_HISTORY or state == State.ADMIN):
+        if state == State.WITH_HISTORY or state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request, "group/result.html", context=ctx)
         else:
-            return redirect('/')
+            return redirect("/")
     else:
-        redirect_url = reverse("group:group_detail", kwargs={"group_id": group_id})
+        redirect_url = reverse("group:group_detail",
+                               kwargs={"group_id": group_id})
         return redirect(redirect_url)
-    
+
+
 def calculate_members_ability(members):
     members_ability = []
 
@@ -124,15 +126,17 @@ def members_change(members_name):
             MemberState.objects.filter(user__username=member).first())
     return members
 
+
 def start_team_building(group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
         group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
-    
+
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     selected_idea_leader(idea_list, group)
-    members = MemberState.objects.filter(group=group, group_ability__isnull=False).exclude(
-        my_team_idea__isnull=False)
+    members = MemberState.objects.filter(
+        group=group,
+        group_ability__isnull=False).exclude(my_team_idea__isnull=False)
 
     if len(members) == 0:
         pass
@@ -194,6 +198,7 @@ def team_building_cycle(group_id, members):
 
         return idea_list, members, project_fitness
 
+
 def make_team(idea_list, members, project_fitness, group_id):
     group = Group.objects.get(id=group_id)
     # 사본 만들기
@@ -231,7 +236,8 @@ def make_team(idea_list, members, project_fitness, group_id):
                 group_id, members)
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
 
-# ##스케줄러 시작##
-# make_auto(start_team_building)
-# start_scheduler()
-# ####
+
+""" ###스케줄러 시작##
+make_auto(start_team_building)
+start_scheduler()
+"""

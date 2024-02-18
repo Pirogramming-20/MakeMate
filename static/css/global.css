@@ -221,16 +221,9 @@ section {
     gap: var(--padding1);
 }
 
-<<<<<<< HEAD
 .form_highlight_content, .wrap_error, .wrap_non_field_errors{
     color: var(--color_main);
     font-size: var(--font_small);
-=======
-.form_highlight_content,
-.wrap_error {
-  color: var(--color_main);
-  font-size: var(--font_small);
->>>>>>> 2dd49781a43f7fb9b680218e063dd96a938d532d
 }
 
 input {
