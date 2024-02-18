@@ -11,7 +11,7 @@
         </div>
     </div>
     <div>
-        <form action="{% url 'group:base_set' %}" method="post" autocomplete="off">
+        <form action="{% url 'group_setting:base_set' %}" method="post" autocomplete="off">
             {% csrf_token %}
             <div id="form_container">
             {% for field in form %}

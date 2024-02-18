@@ -17,12 +17,12 @@
         </div>
         <div class="group_member_url">
             <div>참여자 링크</div>
-            <span>{% url 'group:check_nonadmin' group.id %}</span>
+            <span>{% url 'group_setting:check_nonadmin' group.id %}</span>
             <div>비밀번호 : {{group.password}}</div>
         </div>
         <div class="group_admin_url">
             <div>운영자 링크 </div>
-            <span>{% url 'group:check_admin' group.id %}</span>
+            <span>{% url 'group_setting:check_admin' group.id %}</span>
             <div>비밀번호 : {{group.password}}</div>
         </div>
     </div>

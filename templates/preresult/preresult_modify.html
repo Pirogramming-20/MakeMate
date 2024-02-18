@@ -27,7 +27,7 @@
                             <p>3지망 : {{member.idea_vote3}}</p>
                         </div>
                         <h2>팀 변경</h2>
-                        <form action="{% url 'group:preresult_modify' group.pk %}" method="post">
+                        <form action="{% url 'preresult:preresult_modify' group.pk %}" method="post">
                             {% csrf_token %}
                             <select name="team_modify">
                                 <option value="{{member.id}},{{member.my_team_idea.id}}">{{member.my_team_idea.title}}</option>

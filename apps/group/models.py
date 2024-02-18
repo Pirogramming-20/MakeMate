@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.files.storage import FileSystemStorage
-from common.models import User
+from apps.common.models import User
 
 class Group(models.Model):
     title = models.CharField("그룹 이름", max_length=30)

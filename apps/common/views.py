@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.utils import timezone
 from .models import User
 from .forms import UserForm
-from group.models import Group, MemberState, AdminState, Vote
+from apps.group.models import Group, MemberState, AdminState, Vote
 
 
 # Create your views here.

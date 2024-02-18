@@ -60,7 +60,7 @@ def idea_modify(request, group_id, idea_id):
             if form.is_valid():
                 form.save()
                 idea = get_object_or_404(Idea, id=idea_id, group=group, author=request.user)  # 이 부분 추가
-                return redirect("group:idea_detail", group_id=group.id, idea_id=idea.id)
+                return redirect("idea:idea_detail", group_id=group.id, idea_id=idea.id)
 
         else:
             form = IdeaForm(instance=idea)

@@ -24,7 +24,7 @@
         {% if idea.file %}
           <div class="wrap_download">
             <span class="download_content">발표자료 다운로드</span>
-            <form action="{% url 'group:idea_download' group_id=group.id idea_id=idea.id %}" class="secondary_badge">
+            <form action="{% url 'idea:idea_download' group_id=group.id idea_id=idea.id %}" class="secondary_badge">
               {% csrf_token %}
               <button>다운로드</button>
             </form>
@@ -33,13 +33,13 @@
         </div>
         {% if idea.author == request.user %} 
         <div class="idea_detail_modify_btns">
-          <form action="{% url 'group:idea_delete' group_id=group.id idea_id=idea.id %}" method="POST">
+          <form action="{% url 'idea:idea_delete' group_id=group.id idea_id=idea.id %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="delete">
             <button type="submit" class='cta_del_button'>삭제</button>
           </form>
           
-          <a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>
+          <a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>
         </div>
         {% endif %}
     </div>
