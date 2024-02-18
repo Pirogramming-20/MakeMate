@@ -1,0 +1,67 @@
+.preresult_vote1_section{
+  margin: 80px auto auto auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.preresult_vote1_wrap{
+  padding: 0 var(--padding4);
+  display: flex;
+  flex-direction: column;
+  gap:var(--padding6);
+  width: 350px;
+}
+.preresult_vote1_inner_header{
+  margin-top: var(--padding5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding4);
+}
+.preresult_vote1_idea_title{
+  font-size: var(--font_xlarge);
+  color: var(--color_main);
+  font-weight: bold;
+}
+.preresult_vote1_inner_header>div:nth-child(2){
+  color: var(--color_main);
+}
+
+.preresult_wrap_idea1{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding4);
+}
+
+
+.preresult_vote1_select{
+  font-weight: bold;
+  font-size: var(--font_large);
+}
+
+.preresult_vote1_inner_idea{
+  background-color: var(--color_black_highlight);
+  padding: var(--padding4);
+  border-radius: var(--card_border_radius);
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding2);
+}
+.prereuslt_vote1_idea_title{
+  font-weight: bold;
+}
+.prerrsult_vote1_select_btn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.preresult_vote1_inner_idea>div:nth-child(2){
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
+
+}
+
+/* 반응형 구현 */
+@media screen and (min-width: 850px) {
+  
+}

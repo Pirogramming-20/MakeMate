@@ -11,15 +11,19 @@ urlpatterns = [
         preresult_modify,
         name="preresult_modify",
     ),
-    path("<int:group_id>/admin/vote1/preresult",
-         vote1_preresult,
-         name="vote1_preresult"),
-    path("<int:group_id>/admin/vote1/preresult/select",
-         vote1_select,
-         name="vote1_select"),
+    path(
+        "<int:group_id>/admin/vote1/preresult",
+        first_vote_preresult,
+        name="first_vote_preresult",
+    ),
+    path(
+        "<int:group_id>/admin/vote1/preresult/select",
+        first_vote_select,
+        name="first_vote_select",
+    ),
     path(
         "<int:group_id>/admin/vote1/preresult/unselect",
-        vote1_unselect,
-        name="vote1_unselect",
+        first_vote_unselect,
+        name="first_vote_unselect",
     ),
 ]
