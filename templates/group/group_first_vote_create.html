@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<h1>아이디어 투표하기</h1>
+
+<form method="post">
+  {% csrf_token %}
+    {% for i in range %}
+        <h2>{{ forloop.counter }}지망 아이디어 선택</h2>
+        <select id="idea_vote{{ forloop.counter }}" name="idea_vote{{ forloop.counter }}" onchange="updateDropdowns()">
+            <option value="" selected disabled>아이디어 선택</option>
+            <option value="">선택 취소</option>
+            {% for idea in ideas_for_voting %}
+                <option value="{{ idea.id }}">{{ idea.title }}</option>
+            {% endfor %}
+        </select>
+    {% endfor %}
+
+  <button type="submit">투표하기</button>
+</form>
+
+<a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">이전</a>
+
+<script src="{% static 'js/group_dropdowns.js' %}"></script>
+{% endblock %}
+
+

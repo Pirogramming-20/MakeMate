@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class='common_section_main_page'>
+    <div class="preresult_admin_container">
+        <div class="preresult_admin_header_container">
+            <div class="preresult_admin_description">
+                <span>< back</span>
+                <p class="preresult_title">피로그래밍 20기</p>
+                <span>결과가 임시발표되었습니다. 내용을 수정한 뒤 전체 구성원에게 공지할 수 있습니다.</span>
+            </div>
+            <div class="preresult_btns">
+                <button class="primary_button"><a href="{% url 'group:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
+                <button class="secondary_button"><a href="{% url 'group:result' group.pk %}">발표하기</a></button>
+            </div>
+        </div>
+        <div class="preresult_admin_body_container">
+            <h1>1차 선발 결과</h1>
+            <div class="preresult_admin_idea_container">
+            {% for member_user in member_states_users %}
+                <div class="admin_user_wrap">
+                    <div class='card_title'>
+                        <a href="{%url 'group:user_update' group_instance.id member_user.id %}">{{member_user.username}}</a>
+                    </div>
+                    <div class='inner_card_badge'>
+                        <button class='cta_blue_badge' data-user-id="{{ member_user.id }}">비운영진</button>
+                        <form action=" {%url 'group:user_delete' group_instance.id member_user.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class='cta_red_badge' type="submit">삭제하기</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

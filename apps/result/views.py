@@ -22,15 +22,15 @@ from .tasks import team_building_auto, start_scheduler, make_auto
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
+        group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
-    group.is_end = True
+    group.is_second_end = True
     group.save()
     
     current_time = timezone.now()
-    if current_time >= group.end_date:
+    if current_time >= group.third_end_date and group.is_third_end:
         if (state == State.WITH_HISTORY or state == State.ADMIN):
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request, "group/result.html", context=ctx)
