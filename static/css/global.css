@@ -284,7 +284,7 @@ select:disabled {
 
 option {
   color: white;
-  background-color: transparent;
+  background-color: black;
 }
 
 input:autofill {

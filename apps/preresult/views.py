@@ -22,8 +22,12 @@ def preresult(request, group_id):
     state = redirect_by_auth(request.user, group_id)
 
     current_time = timezone.now()
+<<<<<<< HEAD
+    if current_time >= group.third_end_date and group.is_second_end == True: #세번째 임시결과 페이지
+=======
     if (current_time >= group.third_end_date
             and group.is_second_end == True):  # 세번째 임시결과 페이지
+>>>>>>> develop
         if state == State.ADMIN:
             ctx = {"idea_list": idea_list, "members": members, "group": group}
             return render(request,
@@ -31,8 +35,20 @@ def preresult(request, group_id):
                           context=ctx)
         else:
             return redirect("/")
+<<<<<<< HEAD
+    elif current_time >= group.second_end_date and group.is_first_end == True: #두번째 임시결과 페이지
+        if state == State.ADMIN:
+            ctx = {"idea_list": idea_list, "members": members, "group": group}
+            return render(request,
+                          "preresult/preresult_admin.html",
+                          context=ctx)
+        else:
+            return redirect("/")
+    elif current_time >= group.first_end_date: #첫번째 임시결과 페이지
+=======
     elif (current_time >= group.second_end_date
           and group.is_first_end == True):  # 두번째 임시결과 페이지
+>>>>>>> develop
         if state == State.ADMIN:
             if request.method == "POST":
                 group.is_second_end = True
@@ -301,6 +317,8 @@ def first_vote_unselect(request, group_id):
     idea.save()
 
     return JsonResponse({"message": "good"})
+<<<<<<< HEAD
+=======
 
 @csrf_exempt
 def second_vote_select(request, group_id):
@@ -326,3 +344,4 @@ def reset_vote(reset_idea):
         idea.votes = 0
         idea.save()
 
+>>>>>>> develop
