@@ -169,4 +169,4 @@ def calculate_idea_scores(group_id):
 # preresult부분에서 calculate_idea_scores 함수를 호출하여 
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
 # 아래는 예시
-calculate_idea_scores(1) #group_id가 1인 그룹의 아이디어 점수를 계산하는 경우
+
