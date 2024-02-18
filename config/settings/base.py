@@ -31,8 +31,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "common.apps.CommonConfig",
-    "group.apps.GroupConfig",
+    "apps.common.apps.CommonConfig",
+    "apps.group.apps.GroupConfig",
+    "apps.groupAdmin.apps.GroupadminConfig",
+    "apps.groupSetting.apps.GroupsettingConfig",
+    "apps.preresult.apps.PreresultConfig",
+    "apps.result.apps.ResultConfig",
+    "apps.idea.apps.IdeaConfig",
+    "apps.vote.apps.VoteConfig",
     "django_apscheduler",
 ]
 ##이부분들 scheduler 관련 부분

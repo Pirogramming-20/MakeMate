@@ -15,7 +15,7 @@
         {{ error }}
     </div>
     {% endfor %}
-    <form method='post' action={% url 'group:info_nonadmin' group_id=group.id %} class="wrap_form" novalidate>
+    <form method='post' action={% url 'group_setting:info_nonadmin' group_id=group.id %} class="wrap_form" novalidate>
         {% csrf_token %}
         <div class="inner_form">
             <label>실력 <i class="form_highlight_content">*</i></label>

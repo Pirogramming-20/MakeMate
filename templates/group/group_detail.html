@@ -21,15 +21,15 @@
   
       <div class="group_detail_btns">
         {% if has_voted %}
-          <button class="secondary_button"><a href="{% url 'group:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
+          <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
         {% else %}
-          <button class="secondary_button"><a href="{% url 'group:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
+          <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
         {% endif %}
     
         {% if not author_ideas %}
-          <button class="primary_button"><a href="{% url 'group:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
+          <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
         {% else %} {% for idea in author_ideas %}
-          <button class="primary_button"><a href="{% url 'group:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
+          <button class="primary_button"><a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="btn">아이디어 수정</a></button>
         {% endfor %} {% endif %}
       </div>
     </div>
@@ -40,7 +40,7 @@
       {% for idea in author_ideas %}
       <div class="wrap_card">
         <div class="group_detail_idea_desc">
-          <h3><a href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
+          <h3><a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
           <p>{{ idea.intro }}</p>
           <span>{{idea.author}}</span>
         </div>
@@ -53,7 +53,7 @@
     <h2>투표</h2>
     <div class="group_detail_idea">
       {% for idea in other_ideas %}
-      <a class="wrap_card" href="{% url 'group:idea_detail' group_id=group.id idea_id=idea.id %}">
+      <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
           <h3 class="card_title">{{ idea.title }}</h3>
           <!-- 투표 순위 표시 로직 -->
           {% if ideas_votes %}
