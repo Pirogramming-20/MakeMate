@@ -8,7 +8,7 @@ document.getElementById('base_set_submit_btn').addEventListener('click', async (
 })
 
 async function changeStage(local_state, prev_data) {
-    const url = '/group/base_set/';
+    const url = '/setting/base_set/';
     const form_element = document.querySelector('form');
     const form_data = new FormData(form_element);
     const csrf_token = getCookie('csrftoken');
@@ -56,12 +56,6 @@ async function changeStage(local_state, prev_data) {
         <label for="id_ability_description5">실력5 설명:</label>
         <input type="text" name="ability_description5" maxlength="100" id="id_ability_description5">
     </p>
-    <p>
-        <label for="id_choice">그룹 최대 투표 개수 <i class="form_highlight_content">*</i></label>
-        <span class="form_highlight_content">1인당 최대 투표 개수를 설정해주세요. 기본값은 3입니다.</span>
-        <span class="form_highlight_content">1~10까지의 자연수를 입력해주세요.</span>
-        <input type="number" name="choice" value="3" required id="id_choice">
-    </p>
     `,
     `
     <p>
@@ -81,7 +75,7 @@ async function changeStage(local_state, prev_data) {
             state += 1;
         }
         else {
-            window.location.href = `/group/share/${response.group_id}`;
+            window.location.href = `/setting/share/${response.group_id}`;
         }
         
         return new URLSearchParams(response.prev_data).toString();

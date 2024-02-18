@@ -1,0 +1,44 @@
+.vote_modify_btns {
+  display: flex;
+  justify-content: center;
+}
+
+.wrap_title {
+  padding-top: var(--padding3);
+}
+
+#vote_modify_form_container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: var(--padding4);
+  justify-content: center;
+}
+
+#vote_modify_form_container > div,
+#vote_modify_form_container > p {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
+}
+
+#vote_modify_btns {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--padding6)
+}
+
+@media screen and (min-width: 850px){
+  #vote_modify_form_container {
+    width: 100%;
+  }
+}
+
+#id_file {
+  padding: 0;
+}
+
+#vote_modify_form_container > a {
+  font-size: var(--font_small);
+  color: var(--color_main);
+}

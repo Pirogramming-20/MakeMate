@@ -2,28 +2,33 @@
 {% load static %}
 {% block content %}
 {% now "Y-m-d H:i:s" as current_time %}
-    <section class='common_section_main_page'>
-        {% if user.is_authenticated %}
-        <div class="common_wrap_login_info">
+    {% if user.is_authenticated %}
+    <div class="wrap_main_img_auth">
+        <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
+    </div>
+    <section class="wrap_common_index">
+        <div class="common_wrap_info">
             <div class='common_inner_title'>
                 <div>효율적인 팀빌딩의 시작,</div>
                 <div class='common_name'>MakeMate</div>
             </div>
             <div class='common_title_txt'>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀활동을 지원합니다.</div>
             <div class="common_inner_btn">
-                <button class='secondary_button'><a href="{% url 'common:logout' %}">로그아웃</a> </button>
-                <button class='primary_button'><a href="{% url 'group:base_set' %}">모임개설</a></button>
+                <button class='secondary_button' ><a href="{% url 'common:logout' %}">로그아웃</a> </button>
+                <button class='primary_button' ><a href="{% url 'group_setting:base_set' %}">모임개설</a></button>
             </div>
         </div>
             <div class='common_section_group_list'>
                 <div class='common_groups'>참여중인 모임</div>
                 {% comment %} admin_groups {% endcomment %}
+                <div class="wrap_wrap_card">
+                {% if admin_groups or member_groups %}
                 {% for group in admin_groups %}
                     {% if group.third_end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_first_end %}
                             {% if group.is_second_end %}
                                 {% if group.is_third_end %}
-                                    <a href="{%url 'group:result' group.id %}">
+                                    <a href="{%url 'result:result' group.id %}">
                                         <div class="wrap_card">
                                             <div class='card_title'>{{group.title}}</div>
                                             <div class='inner_card_badge'>
@@ -41,7 +46,7 @@
                                         </div>
                                     </a> 
                                 {% else %}
-                                    <a href="{%url 'group:preresult' group.id%}">
+                                    <a href="{%url 'preresult:preresult' group.id%}">
                                         <div class="wrap_card">
                                             <div class='card_title'>{{group.title}}</div>
                                             <div class='inner_card_badge'>
@@ -60,7 +65,7 @@
                                     </a>
                                 {% endif %}
                             {% else %}
-                                <a href="{%url 'group:preresult' group.id%}">
+                                <a href="{%url 'preresult:preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div class='inner_card_badge'>
@@ -79,7 +84,7 @@
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a href="{%url 'group:preresult' group.id%}">
+                            <a href="{%url 'preresult:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='primary_badge'>운영진</button></div>
@@ -98,7 +103,7 @@
                     {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_first_end %}
                             {% if group.is_second_end %}
-                                <a href="{%url 'group:admin_page' group.id %}">
+                                <a href="{%url 'group_admin:admin_page' group.id %}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div class='inner_card_badge'>
@@ -117,7 +122,7 @@
                                     </div>
                                 </a> 
                             {% else %}
-                                <a href="{%url 'group:preresult' group.id%}">
+                                <a href="{%url 'preresult:preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div class='inner_card_badge'>
@@ -136,7 +141,7 @@
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a href="{%url 'group:preresult' group.id%}">
+                            <a href="{%url 'preresult:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='primary_badge'>운영진</button></div>
@@ -154,7 +159,7 @@
                         {% endif %}
                     {% elif group.first_end_date|date:"Y-m-d H:i:s" < current_time %}
                         {% if group.is_first_end %}
-                            <a href="{%url 'group:admin_page' group.id%}">
+                            <a href="{%url 'group_admin:admin_page' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='primary_badge'>운영진</button></div>
@@ -171,7 +176,7 @@
                                 </div>
                             </a>
                         {% else %}
-                            <a href="{%url 'group:preresult' group.id%}">
+                            <a href="{% url 'preresult:preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <div><button class='primary_badge'>운영진</button></div>
@@ -187,8 +192,8 @@
                                 </div>
                             </a>
                         {% endif %}
-                    {% else %}
-                        <a href="{%url 'group:admin_page' group.id%}">
+                    {%else%}
+                        <a href="{%url 'group_admin:admin_page' group.id%}">
                             <div class="wrap_card">
                                 <div class='card_title'>{{group.title}}</div>
                                 <div><button class='primary_badge'>운영진</button></div>
@@ -212,7 +217,7 @@
                         {% if group.is_first_end %}
                             {% if group.is_second_end %}
                                 {% if group.is_third_end %}
-                                    <a href="{%url 'group:result' group.id %}">
+                                    <a href="{%url 'result:result' group.id %}">
                                         <div class="wrap_card">
                                             <div class='card_title'>{{group.title}}</div>
                                             <div class='inner_card_badge'>
@@ -229,7 +234,7 @@
                                             </div>
                                     </a> 
                                 {% else %}
-                                    <a href="{%url 'group:member_preresult' group.id%}">
+                                    <a href="{%url 'preresult:member_preresult' group.id%}">
                                         <div class="wrap_card">
                                             <div class='card_title'>{{group.title}}</div>
                                             <div class='inner_card_badge'>
@@ -247,7 +252,7 @@
                                     </a>
                                 {% endif %}
                             {% else %}
-                                <a href="{%url 'group:member_preresult' group.id%}">
+                                <a href="{%url 'preresult:member_preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div class='inner_card_badge'>
@@ -265,7 +270,7 @@
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a href="{%url 'group:member_preresult' group.id%}">
+                            <a href="{%url 'preresult:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
@@ -301,7 +306,7 @@
                                     </div>
                                 </a> 
                             {% else %}
-                                <a href="{%url 'group:member_preresult' group.id%}">
+                                <a href="{%url 'preresult:member_preresult' group.id%}">
                                     <div class="wrap_card">
                                         <div class='card_title'>{{group.title}}</div>
                                         <div class='inner_card_badge'>
@@ -319,7 +324,7 @@
                                 </a>
                             {% endif %}
                         {% else %}
-                            <a href="{%url 'group:member_preresult' group.id%}">
+                            <a href="{%url 'preresult:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
@@ -352,7 +357,7 @@
                                 </div>
                             </a>
                         {% else %}
-                            <a href="{%url 'group:member_preresult' group.id%}">
+                            <a href="{%url 'preresult:member_preresult' group.id%}">
                                 <div class="wrap_card">
                                     <div class='card_title'>{{group.title}}</div>
                                     <button class='cta_blue_badge'>1차 투표 임시 종료</button>
@@ -385,9 +390,17 @@
                         </a>
                     {% endif %}
                 {% endfor %}
+                {% else %}
+                    <div>참여중인 모임이 없습니다.</div>
+                {% endif %}
             </div>
-        {% else %}
-            <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div>
+        </section>
+    {% else %}
+        <div class="wrap_main_img">
+            <img class="main_img" src="{% static 'images/MakeMate.png' %}"/>
+        </div>
+        <section class="wrap_common_index">
+            {% comment %} <div class='common_main_img'><img src="{% static "images/MakeMate.png" %}" alt="MakeMate_image"></div> {% endcomment %}
             <div class='common_wrap_info'>
                 <div class='common_info_title'>효율적인 팀빌딩의 시작,</div>
                 <div>다양한 팀빌딩을 자동화를 통해 동아리 운영진과 회원들의 효율적이고 다양한 팀 활동을 지원합니다 .</div>
@@ -395,8 +408,8 @@
                     <button class='secondary_button'><a href="{% url 'common:login' %}" >로그인</a></button>
                     <button class='primary_button'><a href="{% url 'common:signup' %}" >회원가입</a></button>
                 </div>
-        </div>
-        {% endif %}
-    <section>
+            </div>
+        </section>
+    {% endif %}
     <script src={% static "js/main_page_time.js" %}  ></script>
 {% endblock %}

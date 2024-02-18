@@ -14,7 +14,7 @@
         {{ error }}
     </div>
     {% endfor %}
-    <form method='post' action={% url 'group:check_nonadmin' group_id=group.id %} class="wrap_form" novalidate>
+    <form method='post' action={% url 'group_setting:check_nonadmin' group_id=group.id %} class="wrap_form" novalidate>
         {% csrf_token %}
         <div class="inner_form">
             <label>비밀번호를 입력해주세요.</label>
@@ -26,7 +26,9 @@
             </div>
             {% endif %}
         </div>
-        <button type='submit' class='primary_button_fill'>그룹 가입</button>
+        <div class="inner_form_button">
+            <button type='submit' class='primary_button_fill'>그룹 가입</button>
+        <div>
     </form>
  
 </section>

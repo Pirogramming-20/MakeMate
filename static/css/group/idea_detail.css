@@ -1,0 +1,68 @@
+body {
+  background-color: black;
+  width: 100%;
+}
+
+.idea_detail_btns {
+  margin: var(--padding6) 0;
+  display: flex;
+  gap: 5px;
+}
+
+.idea_create_btns > .primary_button {
+  border-radius: 1rem;
+  width: 19rem;
+}
+
+.group_detail_title {
+  color: var(--color_main);
+  line-height: var(--font_xlarge);
+  font-size: var(--font_xlarge);
+  font-weight: bold;
+}
+
+.idea_detail_title {
+  color: var(--color_main);
+  line-height: var(--font_xlarge);
+  font-size: var(--font_xlarge);
+  font-weight: bold;
+}
+
+.title_with_badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge_idea_detail {
+  padding: 5px;
+  border-radius: var(--badge_border_radius);
+  font-size: var(--font_small);
+  background-color: var(--color_blue_highlight);
+  color: white;
+  margin: 10px;
+}
+
+.wrap_download {
+  display: flex;
+  gap: var(--padding2);
+  vertical-align: center;
+}
+
+.download_content {
+  font-weight: bold;
+  height: 100%;
+  padding-top: 3px;
+}
+
+.inner_idea_intro {
+  display: flex;
+  width: 100%;
+}
+
+.idea_detail_modify_btns {
+  display: flex;
+  justify-content: center;
+  gap: var(--padding1);
+}

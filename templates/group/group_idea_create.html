@@ -1,20 +1,68 @@
-{% block head %}
+{% extends 'base.html' %} {% block head %}
 <title>idea_create</title>
-{% endblock %}
+{% endblock %} {% block content %}
+<section>
+    <div class="wrap_title">
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
+      <div class="inner_title">
+        <h3 class="title_content">아이디어 추가하기</h3>
+        <p class="subtitle_content">{{ group.title }}</p>
+      </div>
+    </div>
 
-<!-- {% if messages %}
-  {% for message in messages %}
-    <p><strong>{{ message }}</strong></p>
-  {% endfor %}
-{% endif %} -->
+    <form action="{% url 'idea:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data" class="wrap_form" novalidate>
+      <div id="vote_modify_form_container">
+        {% csrf_token %}
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <div class="wrap_error">
+                {{ error }}
+              </div>
+              {% endfor %}
+          {% endif %}
+            <div id="vote_modify_form_container">
+              <span>제목 <i class="form_highlight_content">*</i></span>
+              {{ form.title }}
+            </div>
+            {% if form.title.errors %}
+              {% for error in form.title.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+            <div id="vote_modify_form_container">
+              <span>한 줄 소개 <i class="form_highlight_content">*</i></span>
+              {{ form.intro }}
+              <div class="wrap_error">50자 미만으로 작성해주세요.</div>         
+            </div>
+            {% if form.intro.errors %}
+              {% for error in form.intro.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+            <div id="vote_modify_form_container">
+              <span>첨부파일</span>
+              {{ form.file }}        
+            </div>
+            {% if form.file.errors %}
+              {% for error in form.file.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+            <div id="vote_modify_form_container">
+              <span>내용</span>
+              {{ form.content }}        
+            </div>
+            {% if form.content.errors %}
+              {% for error in form.content.errors %}
+              <div class="wrap_error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+      </div>
 
-{% block content %}
-<form action="{% url 'group:idea_create' group_id=group.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn">저장하기</button>
-    <!-- 홈으로 버튼에 URL 추가 필요 -->
-    <a href="{% url 'group:group_detail' group_id=group.id %}" class="btn">홈으로</a>
-    
-</form>
+      <div class="vote_create_btns">
+        <button type="submit" class="primary_button_fill">저장하기</button>
+        <!-- 홈으로 버튼에 URL 추가 필요 -->
+      </div>
+    </form>
+</section>
 {% endblock %}
