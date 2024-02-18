@@ -8,11 +8,13 @@ from apps.common.models import User
 from apps.group.models import Group, MemberState, AdminState, Idea
 from apps.group.views import State, redirect_by_auth
 from apps.groupSetting.forms import NonAdminInfoForm
+from datetime import datetime
 
 # Create your views here.
 @login_required(login_url="common:login")
 def admin_page(request, group_id):
     group_instance = get_object_or_404(Group, id=group_id)
+    now = datetime.now()
     # 운영진 인원
     admin_states_users = list(group_people(group_instance, "admin"))
     # 멤버 인원
@@ -29,6 +31,7 @@ def admin_page(request, group_id):
             "group_instance": group_instance,
             "admin_states_users": admin_states_users,
             "member_states_users": member_states_users,
+            "now": now,
         }
         return render(request, "admin/group_admin.html", ctx)
     elif state == State.WITH_HISTORY:

@@ -1,13 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% now "Y-m-d H:i:s" as current_time %}
 
   <section>
     <div class="admin_wrap_head">
       <a href="{%url 'common:main_page'%}" class="home_btn">Home</a>
       <div class="admin_inner_page_info">
         <div class='admin_group_title'>{{group_instance.title}}</div>
-        <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div>
+        <!-- <div class='admin_endtime' data-admin-time='{{group_instance.end_date.isoformat}}'></div> -->
+        <!-- 미완료 -->
+        {% if group_instance.first_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <div>1차 투표 마감까지 남은 시간</div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.first_end_date.isoformat}}'></div>
+        {% elif group_instance.second_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <div>2차 투표 마감까지 남은 시간</div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.second_end_date.isoformat}}'></div>
+        {% else %}
+        <div>3차 투표 마감까지 남은 시간</div>
+        <div class='admin_endtime' data-admin-time='{{group_instance.third_end_date.isoformat}}'></div>                                 
+        {% endif %}
+        <!-- 미완료여기까지 -->
+
       </div>
       <div class="admin_desc_content">회원 정보를 수정할수 있는 운영진 페이지 입니다.</div>
     </div>
