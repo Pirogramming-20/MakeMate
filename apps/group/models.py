@@ -130,7 +130,11 @@ class MemberState(models.Model):
                                     on_delete=models.CASCADE,
                                     related_name="idea_vote10_set",
                                     null=True,
+<<<<<<< HEAD
+                                   blank=True)
+=======
                                     blank=True)
+>>>>>>> a150764435c2497e7dd17c8339649c5411695771
     my_team_idea = models.ForeignKey(
         Idea,
         on_delete=models.CASCADE,
