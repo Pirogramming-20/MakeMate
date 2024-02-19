@@ -137,7 +137,6 @@ def idea_detail(request, group_id, idea_id):
 
     has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
                                 or user_state.idea_vote3)
-    print(ideas_votes)
     ctx = {
         "group": group,
         "idea": idea,
