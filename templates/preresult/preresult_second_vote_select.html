@@ -1,23 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <section class='preresult_vote1_section'>
-    <div class='preresult_vote1_wrap'>
-      <div class='preresilt_wrap_header'>
-        <div class='home_btn'><a href="{%url 'common:main_page'%}">Home</a></div>
-        <div class='preresult_vote1_inner_header'>
-          <div class='preresult_vote1_idea_title'>{{group.title}}</div>
-          <div>2차 투표 임시 결과</div>
-          <div>투표 결과가 발표되었습니다. 최종 아이디어 선정을 수정한뒤 전체 구성원에게 공지 할수있습니다</div>
+  <section>
+      <div class='home_btn'><a href="{%url 'common:main_page'%}">Home</a></div>
+      <div class='wrap_title'>
+        <div class='inner_title'>
+          <span class='title_content'>{{group.title}}</div>
+          <span class="subtitle_content">2차 투표 임시 결과</div>
         </div>
+        <span>투표 결과가 발표되었습니다. 최종 아이디어 선정을 수정한뒤 전체 구성원에게 공지 할수있습니다</span>
       </div>
-      <div class="preresult_wrap_idea1">
-        <div class='preresult_vote1_select'>최종 아이디어 선정</div>
+      <div class='preresult_vote1_select'>최종 아이디어 선정</div>
+      <div class="wrap_wrap_card">
         {% for idea in idea_list  %}
-          <div class='preresult_vote1_inner_idea'>
+          <div class='wrap_card'>
             <div class='prereuslt_vote1_idea_title'><a href={% url "idea:idea_detail" group.id idea.id%}>{{idea.title}}</a></div>
             <div>
-              <div>{{idea.intro}}</div>
+              <span>{{idea.intro}}</span>
               <div class='card_contents_green'>{{idea.author}}</div>
             </div>
             <div class='prerrsult_vote1_select_btn'>
