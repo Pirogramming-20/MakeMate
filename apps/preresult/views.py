@@ -285,8 +285,7 @@ def top_selected(group, num):
 
 
 def second_top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group,
-                                    is_selected=True).order_by("-votes")[:num]
+    top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()

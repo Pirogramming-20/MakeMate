@@ -30,13 +30,6 @@ body{
     justify-content: center;
   }
   
-  #vote_create_form_container > div,
-  #vote_create_form_container > p {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding1);
-  }
-  
   #vote_create_btns {
     display: flex;
     justify-content: center;
@@ -56,3 +49,9 @@ body{
   #id_file{
     border: none;
   }
+
+.idea_checkbox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}

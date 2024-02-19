@@ -171,23 +171,31 @@ def vote_modify(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     user = request.user
 
-    vote, _ = Vote.objects.get_or_create(user=user, group=group)
+    vote = Vote.objects.get(user=user, group=group)
     own_ideas = Idea.objects.filter(group=group, author=user)
     ideas_for_voting = Idea.objects.filter(
         group=group, second_selected=True).exclude(author=user)
     state = redirect_by_auth(user, group_id)
+    
 
     if state == State.WITH_HISTORY:
         if request.method == "POST":
             form = VoteForm(request.POST, instance=vote, group_id=group.id)
+
             if form.is_valid():
                 vote_instance = form.save(commit=False)
 
                 user_state = MemberState.objects.get(user=user, group=group)
+
+                vote.idea_vote1 = vote_instance.idea_vote1
+                vote.idea_vote2 = vote_instance.idea_vote2
+                vote.idea_vote3 = vote_instance.idea_vote3
+
                 user_state.idea_vote1 = vote_instance.idea_vote1
                 user_state.idea_vote2 = vote_instance.idea_vote2
                 user_state.idea_vote3 = vote_instance.idea_vote3
                 user_state.save()
+                vote.save()
 
                 messages.success(request, "투표가 수정되었습니다.")
                 return redirect("group:group_detail", group_id=group.id)
