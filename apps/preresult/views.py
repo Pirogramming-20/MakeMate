@@ -27,11 +27,16 @@ def preresult(request, group_id):
                 group.save()
                 return redirect("result:result", group_id=group.id)
             else:
-                idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-score")
-                ctx = {"idea_list": idea_list, "members": members, "group": group}
+                idea_list = Idea.objects.filter(
+                    group=group, second_selected=True).order_by("-votes")
+                ctx = {
+                    "idea_list": idea_list,
+                    "members": members,
+                    "group": group
+                }
                 return render(request,
-                            "preresult/preresult_admin.html",
-                            context=ctx)
+                              "preresult/preresult_admin.html",
+                              context=ctx)
         else:
             return redirect("/")
     elif (current_time >= group.second_end_date
@@ -270,12 +275,14 @@ def calculate_third_idea_scores(group_id):
 # preresult부분에서 calculate_idea_scores 함수를 호출하여
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
 
+
 ##상위 아이디어 selected로 바꾸는 함수
 def top_selected(group, num):
     top_ideas = Idea.objects.filter(group=group).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.is_selected = True
         idea.save()
+
 
 def second_top_selected(group, num):
     top_ideas = Idea.objects.filter(group=group,
@@ -327,4 +334,3 @@ def reset_vote(reset_idea):
     for idea in reset_idea:
         idea.votes = 0
         idea.save()
-
