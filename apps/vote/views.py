@@ -22,7 +22,7 @@ def leaders(idea_list):
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
-    member = MemberState.objects.get(user=user)
+    member = MemberState.objects.get(user=user, group=group)
     idea_list = Idea.objects.filter(group=group).exclude(author=user)
     second_idea_list = (Idea.objects.filter(
         group=group, is_selected=True).exclude(author=user).order_by("-votes"))
@@ -32,7 +32,7 @@ def vote_create(request, group_id):
     state = redirect_by_auth(user, group_id)
     current_time = timezone.now()
     msg = ""
-    
+
     if state == State.WITH_HISTORY:
         if current_time <= group.first_end_date:
             if request.method == "POST":
@@ -66,7 +66,12 @@ def vote_create(request, group_id):
                 else:
                     msg = f"{TeamNumber.FIRST_TEAM.value}개의 팀을 골라주세요."
 
-            ctx = {"group": group, "idea_list": idea_list, "error_msg": msg, 'member': member}
+            ctx = {
+                "group": group,
+                "idea_list": idea_list,
+                "error_msg": msg,
+                "member": member,
+            }
             return render(request, "vote_first.html", ctx)
         elif current_time <= group.second_end_date:
             if request.method == "POST":
@@ -99,7 +104,7 @@ def vote_create(request, group_id):
                 "group": group,
                 "second_idea_list": second_idea_list,
                 "error_msg": msg,
-                "member": member
+                "member": member,
             }
             return render(request, "vote_second.html", ctx)
         ##3차 투표 부분
