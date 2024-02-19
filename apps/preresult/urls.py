@@ -22,7 +22,7 @@ urlpatterns = [
         name="first_vote_unselect",
     ),
     path(
-        "<int:group_id>/admin/vote2preresult/select",
+        "<int:group_id>/admin/vote2/preresult/select",
         second_vote_select,
         name="second_vote_select",
     ),

@@ -4,7 +4,6 @@ let prev_data_query = new URLSearchParams(prev_data).toString();
 
 document.getElementById('base_set_submit_btn').addEventListener('click', async ()=>{
     prev_data_query = await changeStage(state, prev_data);
-    console.log(prev_data_query)
 })
 
 async function changeStage(local_state, prev_data) {
@@ -125,7 +124,6 @@ function showErrors(response) {
 }
 
 function showDateErrors(response){
-    console.log(response)
     const container = document.querySelector('form');
 
     clearErrorMessages();

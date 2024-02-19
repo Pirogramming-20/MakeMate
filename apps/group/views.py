@@ -46,9 +46,18 @@ def group_detail(request, group_id):
         ideas_votes["idea_vote1_id"] = user_state.idea_vote1_id
         ideas_votes["idea_vote2_id"] = user_state.idea_vote2_id
         ideas_votes["idea_vote3_id"] = user_state.idea_vote3_id
+        ideas_votes["idea_vote4_id"] = user_state.idea_vote4_id
+        ideas_votes["idea_vote5_id"] = user_state.idea_vote5_id
+        ideas_votes["idea_vote6_id"] = user_state.idea_vote6_id
+        ideas_votes["idea_vote7_id"] = user_state.idea_vote7_id
+        ideas_votes["idea_vote8_id"] = user_state.idea_vote8_id
+        ideas_votes["idea_vote9_id"] = user_state.idea_vote9_id
+        ideas_votes["idea_vote10_id"] = user_state.idea_vote10_id
 
-        has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
-                                    or user_state.idea_vote3)
+        if user_state.idea_vote1 is not None:
+            has_voted = True
+        else:
+            has_voted = False
 
         # idea를 지망 순서로 정렬
         def sort_by_vote_rank(idea):
@@ -58,8 +67,22 @@ def group_detail(request, group_id):
                 return 2
             elif idea.id == ideas_votes["idea_vote3_id"]:
                 return 3
+            elif idea.id == ideas_votes["idea_vote4_id"]:
+                return 4
+            elif idea.id == ideas_votes["idea_vote5_id"]:
+                return 5
+            elif idea.id == ideas_votes["idea_vote6_id"]:
+                return 6
+            elif idea.id == ideas_votes["idea_vote7_id"]:
+                return 7
+            elif idea.id == ideas_votes["idea_vote8_id"]:
+                return 8
+            elif idea.id == ideas_votes["idea_vote9_id"]:
+                return 9
+            elif idea.id == ideas_votes["idea_vote10_id"]:
+                return 10
             else:
-                return 4  # 1, 2, 3지망이 아닌 아이디어는 4순위로
+                return 11  # 1, 2, 3지망이 아닌 아이디어는 4순위로
             
         if has_voted:
             other_ideas = sorted(other_ideas, key=sort_by_vote_rank)
