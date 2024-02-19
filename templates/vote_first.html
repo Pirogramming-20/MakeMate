@@ -11,21 +11,21 @@
     </div>
     
     <form method="post" class="wrap_form" novalidate>
-        <div id="vote_create_form_container">
+        <div id="vote_create_form_container" class="wrap_wrap_card">
             {% csrf_token %}
-            <div>
-                <span>1차 투표</span>
+            <div class="wrap_title">
+                <span class="subtitle_content">1차 투표</span>
                 <span>원하는 아이디어를 10개 투표해주세요.</span>
                 {%if error_msg %}
-                <span>{{error_msg}}</span>
+                <span class="form_highlight_content">{{error_msg}}</span>
                 {% endif %}
             </div>
             {% if idea_list %}
                 {% for idea in idea_list%}
-                <div>
-                    <input type="checkbox" name="picked" value={{ idea.id }}>
-                    <span>{{ idea.title }}</span>
-                    <span>{{ idea.author }}</span>
+                <div class="wrap_card">
+                    <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
+                    <span class="subtitle_content">{{ idea.title }}</span>
+                    <span class="form_highlight_content">{{ idea.author }}</span>
                 </div>
                 {% endfor %}
             {% endif %}
