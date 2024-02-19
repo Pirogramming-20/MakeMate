@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% block content %}
+{% now "Y-m-d H:i:s" as current_time %}
 <section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
@@ -8,6 +9,7 @@
       <div class="inner_title">
         <div class="title_with_badge">
           <div class="subtitle_content">{{ idea.title }}</div>
+        {% if group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
           {% if ideas_votes %} 
             {% if idea.id == ideas_votes.idea_vote1_id %}
               <span class="badge_idea_detail">1지망</span>
@@ -17,6 +19,11 @@
               <span class="badge_idea_detail">3지망</span>
             {% endif %} 
           {% endif %}
+        {% else %}
+        {% if idea.id == ideas_votes.idea_vote1_id or idea.id == ideas_votes.idea_vote2_id or idea.id == ideas_votes.idea_vote3_id or idea.id == ideas_votes.idea_vote4_id or idea.id == ideas_votes.idea_vote5_id or idea.id == ideas_votes.idea_vote6_id or idea.id == ideas_votes.idea_vote7_id or idea.id == ideas_votes.idea_vote8_id or idea.id == ideas_votes.idea_vote9_id or idea.id == ideas_votes.idea_vote10_id %}
+          <span class="cta_blue_badge">선택</span>
+        {% endif %}
+        {% endif %}
         </div>
         <div class="inner_idea_intro">
           <span>{{ idea.intro }}</span>
