@@ -115,11 +115,11 @@ def idea_change(idea_titles, group):
 
 
 # 원본데이터로 변환 함수
-def members_change(members_name):
+def members_change(members_name, group):
     members = []
     for member in members_name:
         members.append(
-            MemberState.objects.filter(user__username=member).first())
+            MemberState.objects.filter(user__username=member, group=group))
     return members
 
 
@@ -228,7 +228,7 @@ def make_team(idea_list, members, project_fitness, group_id):
             return redirect("/")
         else:
             idea_list = idea_change(idea_titles, group)
-            members = members_change(members_name)
+            members = members_change(members_name, group)
             make_team(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:
