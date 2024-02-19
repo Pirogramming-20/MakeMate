@@ -45,12 +45,8 @@ def preresult(request, group_id):
                 return redirect("/")
             else:
                 second_top_selected(group, 5)
-<<<<<<< HEAD
-                idea_list = Idea.objects.filter(group=group, is_selected=True).order_by('-votes')
-=======
                 idea_list = Idea.objects.filter(
                     group=group, is_selected=True).order_by("-votes")
->>>>>>> 8740ae61b610b9455e16eed894d7e4b85ef98d34
                 ctx = {"idea_list": idea_list, "group": group}
                 return render(request,
                               "preresult/preresult_second_vote_select.html",
@@ -282,12 +278,7 @@ def top_selected(group, num):
         idea.save()
 
 def second_top_selected(group, num):
-<<<<<<< HEAD
     top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
-=======
-    top_ideas = Idea.objects.filter(group=group,
-                                    is_selected=True).order_by("-votes")[:num]
->>>>>>> 8740ae61b610b9455e16eed894d7e4b85ef98d34
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()
