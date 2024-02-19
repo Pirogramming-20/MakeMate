@@ -120,6 +120,7 @@ section {
 .wrap_card {
   display: flex;
   flex-direction: column;
+  position: relative;
   justify-content: center;
   padding: var(--padding3);
   gap: var(--padding2);
