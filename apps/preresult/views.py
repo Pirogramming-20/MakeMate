@@ -169,7 +169,7 @@ def preresult_modify(request, group_id):
                 # (전제)팀장은 수정 페이지에서 팀 변경되면 안됨. 함수 실행X 바로 리디렉션
                 for idea in idea_list:
                     if idea.author == mod_mem.user:
-                        url = reverse("group:preresult", args=[group.id])
+                        url = reverse("preresult:preresult", args=[group.id])
                         return redirect(url)
 
                 # (수정과정1)전에 있던 아이디어의 멤버에서 해당 멤버스테이트의 유저를 지움(수정한 아이디어의 멤버를 추가하기 위해서)
@@ -183,7 +183,7 @@ def preresult_modify(request, group_id):
                 mod_idea.member.add(mod_mem.user)
                 mod_idea.save()
 
-                url = reverse("group:preresult", args=[group.id])
+                url = reverse("preresult:preresult", args=[group.id])
                 return redirect(url)
             else:
                 ctx = {
@@ -285,7 +285,8 @@ def top_selected(group, num):
 
 
 def second_top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
+    top_ideas = Idea.objects.filter(group=group,
+                                    is_selected=True).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()
