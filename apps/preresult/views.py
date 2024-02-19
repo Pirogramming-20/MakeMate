@@ -64,6 +64,7 @@ def preresult(request, group_id):
             else:
                 top_selected(group, 10)
                 idea_list = Idea.objects.filter(group=group).order_by("-votes")
+                print(idea_list)
                 ctx = {"group": group, "idea_list": idea_list}
                 return render(
                     request,
@@ -198,6 +199,7 @@ def preresult_modify(request, group_id):
 
 
 def calculate_first_idea_scores(group_id):
+    print("첫번째 계산 시작!")
     ideas = Idea.objects.filter(group_id=group_id)
 
     for idea in ideas:
@@ -233,6 +235,7 @@ def calculate_first_idea_scores(group_id):
 
 
 def calculate_second_idea_scores(group_id):
+    print("두번째 계산 시작!")
     ideas = Idea.objects.filter(group_id=group_id)
 
     for idea in ideas:
@@ -256,6 +259,7 @@ def calculate_second_idea_scores(group_id):
 
 
 def calculate_third_idea_scores(group_id):
+    print("세번째 계산 시작!")
     ideas = Idea.objects.filter(group_id=group_id)
 
     for idea in ideas:
