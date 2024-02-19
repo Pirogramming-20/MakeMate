@@ -22,9 +22,6 @@ def main_page(request):
             "admin_groups": admin_groups,
             "member_groups": member_groups,
         }
-
-        print(member_groups)
-        print(admin_groups)
         # 운영진인 그룹내 멤버수
         admin_group_count = member_count(admin_groups)
         ctx["admin_group_count"] = admin_group_count
