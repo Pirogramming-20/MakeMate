@@ -28,7 +28,7 @@
         <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>                                 
         {% endif %}
 
-      
+
       <div class="group_detail_btns">
         {% if has_voted %}
           <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
