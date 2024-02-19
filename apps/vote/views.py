@@ -8,6 +8,7 @@ from apps.group.views import State, TeamNumber, redirect_by_auth
 from .forms import VoteForm
 
 
+
 # Create your views here.
 @login_required(login_url="common:login")
 def vote_create(request, group_id):
@@ -20,7 +21,7 @@ def vote_create(request, group_id):
     current_time = timezone.now()
     msg = ""
 
-    print(third_filtered_ideas)
+    # print(third_filtered_ideas)
 
     if state == State.WITH_HISTORY:
         if current_time <= group.first_end_date:

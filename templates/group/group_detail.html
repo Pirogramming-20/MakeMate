@@ -10,15 +10,21 @@
             <h3 class="title_content">{{group.title}}</h3>
           </div>
         </div>
-        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
+        <!-- <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 수정할 수도 있습니다.</span> -->
         
         {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <span class="subtitle_content">원하는 아이디어 10개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
+        
         <div>1차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>
         {% elif group.second_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <span class="subtitle_content">원하는 아이디어 5개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
+        
         <div>2차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.second_end_date.isoformat}}'></div>
         {% else %}
+        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 팀 배정에 지망 순위도 반영됩니다.</span>
+        
         <div>3차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>                                 
         {% endif %}
@@ -32,7 +38,7 @@
         {% endif %}
     
         {% if not author_ideas %}
-          {% if group.first_end_date.isoformat < current_time %}
+          {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
           <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
           {% endif %}
         {% else %}
@@ -65,7 +71,7 @@
       <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
           <h3 class="card_title">{{ idea.title }}</h3>
           <!-- 투표 순위 표시 로직 -->
-          {% if ideas_votes %}
+          {% if ideas_votes  %}
           
             {% if idea.id == ideas_votes.idea_vote1_id %}
             <div><span class="cta_blue_badge">1지망</span></div>  
