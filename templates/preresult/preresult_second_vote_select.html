@@ -22,7 +22,7 @@
             </div>
             <div class='prerrsult_vote1_select_btn'>
               <div>score: {{idea.votes}}</div>
-              {% if idea.is_selected %}
+              {% if idea.second_selected %}
                 <button class='primary_badge' data-idea-id="{{idea.id}}">선택</button>
               {% else %}
               <button class='secondary_badge' data-idea-id="{{idea.id}}">선택</button>
