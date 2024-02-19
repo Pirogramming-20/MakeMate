@@ -325,3 +325,4 @@ def reset_vote(reset_idea):
     for idea in reset_idea:
         idea.votes = 0
         idea.save()
+
