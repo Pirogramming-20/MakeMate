@@ -16,11 +16,8 @@ def preresult(request, group_id):
     # 그룹에 있는 아이디어를 모두 가져오고, 이를 투표점수 순서로 정렬
     # 그리고 동점자 처리도 해야하는데 그건 추후 다같이 결정
     group = Group.objects.get(id=group_id)
-    all_idea_list = Idea.objects.filter(group=group)
-    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
-
     current_time = timezone.now()
     if (current_time >= group.third_end_date
             and group.is_second_end == True):  # 세번째 임시결과 페이지
@@ -30,7 +27,7 @@ def preresult(request, group_id):
                 group.save()
                 return redirect("result:result", group_id=group.id)
             else:
-                idea_list = Idea.objects.filter(group=group, second_selected=True)
+                idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-score")
                 ctx = {"idea_list": idea_list, "members": members, "group": group}
                 return render(request,
                             "preresult/preresult_admin.html",
@@ -48,7 +45,8 @@ def preresult(request, group_id):
                 return redirect("/")
             else:
                 second_top_selected(group, 5)
-                idea_list = Idea.objects.filter(group=group, is_selected=True)
+                idea_list = Idea.objects.filter(
+                    group=group, is_selected=True).order_by("-votes")
                 ctx = {"idea_list": idea_list, "group": group}
                 return render(request,
                               "preresult/preresult_second_vote_select.html",
@@ -280,7 +278,8 @@ def top_selected(group, num):
         idea.save()
 
 def second_top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
+    top_ideas = Idea.objects.filter(group=group,
+                                    is_selected=True).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()
@@ -303,6 +302,7 @@ def first_vote_unselect(request, group_id):
     idea.save()
 
     return JsonResponse({"message": "good"})
+
 
 @csrf_exempt
 def second_vote_select(request, group_id):
