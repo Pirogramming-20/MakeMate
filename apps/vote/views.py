@@ -31,12 +31,6 @@ def vote_create(request, group_id):
     state = redirect_by_auth(user, group_id)
     current_time = timezone.now()
     msg = ""
-<<<<<<< HEAD
-
-    print(third_idea_list)
-
-=======
->>>>>>> a150764435c2497e7dd17c8339649c5411695771
     if state == State.WITH_HISTORY:
         if current_time <= group.first_end_date:
             if request.method == "POST":
@@ -179,12 +173,8 @@ def vote_modify(request, group_id):
 
     vote = Vote.objects.get(user=user, group=group)
     own_ideas = Idea.objects.filter(group=group, author=user)
-<<<<<<< HEAD
-    ideas_for_voting = Idea.objects.filter(group=group, second_selected=True).order_by("-votes")
-=======
     ideas_for_voting = Idea.objects.filter(
         group=group, second_selected=True).exclude(author=user)
->>>>>>> a150764435c2497e7dd17c8339649c5411695771
     state = redirect_by_auth(user, group_id)
     
 
