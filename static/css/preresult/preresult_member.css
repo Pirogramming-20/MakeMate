@@ -1,0 +1,97 @@
+body{
+    background-color: black;
+    width: 100%;
+}
+
+.preresult_member_description{
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding4);
+    margin-bottom: var(--padding6);
+}
+
+.preresult_member_description > span:nth-of-type(1){
+    color: white;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    font-size: var(--font_medium);
+    font-weight: bold;
+}
+
+.preresult_member_description > span:nth-of-type(2){
+    color: white;
+    line-height: var(--font_large);
+    font-size: var(--font_medium);
+}
+
+.preresult_member_title{
+    color: var(--color_main);
+    line-height: var(--font_xlarge);
+    font-size: var(--font_xlarge);
+    font-weight: bold;
+}
+
+.preresult_member_idea{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: var(--padding4);
+    margin-bottom: var(--padding6);
+}
+
+@media screen and (min-width: 850px) {
+    .preresult_member_idea{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.preresult_member_idea > h2{
+    font-size: var(--font_large);
+    line-height: var(--font_large);
+}
+
+.preresult_member_idea_desc{
+    border-radius: 0.9rem;
+    background-color: var(--color_bg_gray);
+    padding: var(--padding4);
+}
+
+.preresult_member_idea_desc > h3{
+    cursor: pointer;
+    line-height: var(--font_medium);
+    font-size: var(--font_medium);
+    font-weight: bold;
+    margin-bottom: var(--padding2);
+}
+
+.preresult_member_idea_desc > h3 > a{
+    color: white;
+}
+
+.preresult_member_idea_desc > p{
+    line-height: var(--font_medium);
+    font-size: var(--font_medium);
+    font-weight: 100;
+    margin-bottom: var(--padding2);
+}
+
+.preresult_member_idea_desc > .idea_desc_content{
+    margin-bottom: var(--padding1);
+}
+
+.preresult_member_idea_desc > span{
+    line-height: var(--font_medium);
+    color: var(--color_main);
+}
+
+.preresult_member_vote_badge{
+    display: inline-block;
+    background-color: var(--color_blue_highlight);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.preresult_member_header_container {
+    width: 100%;
+}

@@ -1,0 +1,145 @@
+/* 비 로그인 css */
+.wrap_main_img {
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+.wrap_main_img > img, .wrap_main_img_auth > img{
+  width: 100%;
+}
+
+.wrap_main_img_auth {
+  display: none;
+}
+
+@media screen and (min-width: 850px){
+  .wrap_main_img, .wrap_main_img_auth {
+    display: block;
+    width: 50vw;
+    height: calc(100vh - 80px);
+    position: absolute;
+    right: 0;
+    top: 80px;
+  }
+}
+
+@media screen and (min-width: 850px){
+  .wrap_main_img > img {
+      height: calc(100vh - 80px);
+  }
+}
+
+@media screen and (min-width: 850px){
+  .common_section_main_page {
+    display: flex;
+    width: calc(100% - 240px);
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+}
+
+.common_wrap_info{
+  width: 100%;
+  position: relative;
+}
+@media screen and (min-width: 850px){
+  .common_wrap_info {
+      display: flex;
+      width: 50%;
+      height: calc(100vh - 80px);
+      flex-direction: column;
+      justify-content: center;
+  }
+}
+.common_wrap_info>div{
+  padding-bottom: var(--padding4) ;
+}
+.common_info_title{
+  font-size: var(--font_large);
+  font-weight: bold;
+}
+.common_inner_btn{
+  display: flex;
+  gap: 1rem;
+}
+.common_inner_btn >.secondary_button{
+  flex: 110;
+}
+.common_inner_btn>.primary_button{
+  flex: 190;
+}
+/* 로그인시 css */
+@media screen and (min-width: 850px){
+  .wrap_common_index {
+    display: flex;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+}
+.common_name{
+  padding-top: var(--padding3);
+  color: var(--color_main);
+  font-size: var(--font_xlarge);
+  font-weight: bold;
+}
+.common_inner_title{
+  padding-bottom: var(--padding5);
+}
+.common_inner_title div:first-child{
+  font-weight: bold;
+}
+.common_title_txt{
+  padding-bottom: var(--padding5);
+}
+/* 그룹 리스트 css */
+.common_section_group_list{
+  box-sizing: border-box;
+  margin:0 auto;
+  width: 300px;
+  padding: var(--padding7) 0 var(--padding4);
+  border-top: 5px solid var(--color_black_highlight);
+  /* 화면 가득 채우는것 보다 group 부분이랑 맞춰서 하는게 좋을 거 같습니다 */
+}
+
+@media screen and (min-width: 850px){
+  .common_section_group_list {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: var(--padding7) var(--padding4);
+  }
+}
+
+.common_groups{
+  font-size: var(--font_large);
+  font-weight: bold;
+  padding-bottom: var(--padding4);
+  margin-bottom: var(--padding4);
+
+}
+/* 카드 틀 */
+.wrap_wrap_card {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  gap: var(--padding4);
+}
+
+@media screen and (min-width: 850px){
+  .wrap_wrap_card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.re_card_title{
+  font-weight: bold ;
+}
+
+.group_endtime{
+  color: var(--color_main);
+}
+.common_group_info{
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding1);
+}

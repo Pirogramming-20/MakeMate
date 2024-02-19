@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+        <div class="preresult_admin_header_container">
+            <div class="preresult_admin_description">
+                <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
+                <p class="preresult_title">피로그래밍 20기</p>
+                <span>결과가 최종 발표되었습니다.</span>
+            </div>
+            <button id="result_home_button" class="primary_button"><a href="/">홈으로</a></button>
+        </div>
+        <div class="preresult_admin_body_container">
+            <h1>팀빌딩 최종 결과</h1>
+            <div class="wrap_wrap_card">
+            {% for idea in idea_list %}
+                <div class="wrap_card">
+                    <h2 class="choice_idea_title">{{idea.title}}</h2>
+                    <p class="choice_intro_title">{{idea.intro}}</p>
+
+                        <div class="inner_card_badge">
+                            <span>팀장</span>
+                            <span class="primary_badge">{{idea.author.username}}</span>
+                        </div>
+                        <p>전체 팀원</p>
+                        <div class="preresult_admin_member_list">
+                            {% for member in idea.member.all %}
+                                <div class="cta_blue_badge">{{member.username}}</div>
+                            {% endfor %}
+                        </div>
+
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+</section>
+{% endblock %}

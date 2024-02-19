@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% now "Y-m-d H:i:s" as current_time %}
+<section>
+        <div class="preresult_member_header_container">
+            <div class="preresult_member_description">
+                <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
+                <p class="preresult_member_title">피로그래밍 20기</p>
+                {% if group.third_end_date|date:"Y-m-d H:i:s" < current_time %}
+                <span>3차 투표가 종료되었습니다. 운영진이 결과를 발표할 때까지 기다려주세요.</span>
+                {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
+                <span>2차 투표가 종료되었습니다. 운영진이 결과를 발표할 때까지 기다려주세요.</span>
+                {% else %}
+                <span>1차 투표가 종료되었습니다. 운영진이 결과를 발표할 때까지 기다려주세요.</span>                               
+                {% endif %}
+            </div>
+        </div>
+
+        {% if idea_list %}
+        <h2>투표</h2>
+        <div class="preresult_member_idea">
+            {% for idea in idea_list %}
+            <div class="preresult_member_idea_desc">
+                <h3>
+                <a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+                    {{ idea.title }}
+                </a>
+                </h3>
+                <!-- 투표 순위 표시 로직 -->
+                {% if ideas_votes %}
+                    {% if idea.id == ideas_votes.idea_vote1_id %} 
+                    <p class="preresult_member_vote_badge">1지망</p>
+                    {% elif idea.id == ideas_votes.idea_vote2_id %} 
+                    <p class="preresult_member_vote_badge">2지망</p>
+                    {% elif idea.id == ideas_votes.idea_vote3_id %} 
+                    <p class="preresult_member_vote_badge">3지망</p>
+                    {% endif %}
+                {% endif %}
+                <p class="idea_desc_content">{{ idea.content }}</p>
+                <span>{{idea.author}}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+</section>
+{% endblock content %} 

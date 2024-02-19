@@ -1,0 +1,54 @@
+body {
+  background-color: black;
+  width: 100%;
+}
+
+.idea_modify_wrap_info {
+  padding: 0 1rem;
+  width: 300px;
+  margin: 80px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.idea_modify_wrap_info > div {
+  padding-bottom: var(--padding4);
+}
+
+.idea_modify_info_title {
+  font-size: var(--font_large);
+  font-weight: bold;
+}
+
+.idea_modify_btns {
+    margin: var(--padding6) 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+
+}
+
+.idea_modify_btns form {
+    margin-right: 5px; 
+}
+
+
+.idea_modify_btns > .primary_button{
+    border-radius: 1rem;
+    width: 200px;
+}
+
+.idea_modify_btns > .cta_del_button{
+    border-radius: 1rem;
+    
+}
+
+p{
+    margin-bottom: 2rem; 
+}
+
+.idea_file{
+  color: var(--color_main);
+  font-size: var(--font_small);
+}

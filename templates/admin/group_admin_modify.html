@@ -1,42 +1,77 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div>{{group.title}}</div>
-  <div>{{user}}</div>
   <section>
-  <form method='post' action={% url 'group:user_update' group.id user_state.user.id %}>
-      {% csrf_token %}
-      <div>
-          <label>실력<i>*</i></label>
-          <div>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
-          <div>{{form.group_ability}}</div>
-          <!-- 필드 오류 -->
-          {% if form.group_ability.errors %}
+    <a href="{%url 'group_admin:admin_page' group.id%}" class='home_btn'>back</a>
+    <div class='wrap_title'>
+      <div class="inner_title">
+      <span class='title_content'>{{group.title}}</span>
+      <span class='subtitle_content'>{{user}}</span>
+      </div>
+    </div>
+      <form method='post' action={% url 'group_admin:user_update' group.id user_state.user.id %} class="wrap_form">
+          {% csrf_token %}
+              <label>실력</label>
+              <div class='card_contents_green'>실력은 1(낮은실력부터) 5(높은 실력)까지 입력가능합니다.</div>
+              <div class='card_contents_green'>
+                {% if group.ability_description1 %}
+                <div>실력1: {{group.ability_description1}}</div>
+                {% endif %}
+                {% if group.ability_description2 %}
+                <div>실력2: {{group.ability_description2}}</div>
+                {% endif %}
+                {% if group.ability_description3 %}
+                <div>실력3: {{group.ability_description3}}</div>
+                {% endif %}
+                {% if group.ability_description4 %}
+                <div>실력4: {{group.ability_description4}}</div>
+                {% endif %}
+                {% if group.ability_description5 %}
+                <div>실력5: {{group.ability_description5}}</div>
+                {% endif %}
+              </div>
+              <div>{{form.group_ability}}</div>
+              <!-- 필드 오류 -->
+              {% if form.group_ability.errors %}
+              <div>
+                  {{ form.group_ability.errors }}
+              </div>
+              {% endif %}
           <div>
-              {{ form.group_ability.errors }}
-          </div>
-          {% endif %}
-      <div>
-      <div>
-          <label>기술 스택<i>*</i></label>
-          <div>자신의 기술스택을 선택해 주세요. 하나만 선택할수 있습니다</div>
-          <div>{{form.group_tech_stack}}</div>
-          <!-- 필드 오류 -->
-          {% if form.group_tech_stack.errors %}
-          <div>
-              {{ form.group_tech_stack.errors }}
-          </div>
-          {% endif %}
-      <div>
-      <button type='submit' class='primary_button'>회원 정보 수정하기</button>
-      <a href="{% url 'common:main_page'%}" class='secondary_button'>홈으로</a>
-  </form>
-  <form action=" {%url 'group:user_delete' group.id user_state.user.id %}" method="POST">
-    {% csrf_token %}
-    <button class='cta_button' type="submit">삭제하기</button>
-  </form>
+      </form>
+      <div class="group_detail_btns">
+        <form action=" {%url 'group_admin:user_delete' group.id user_state.user.id %}" method="POST">
+          {% csrf_token %}
+          <button class='cta_del_button' type="submit">회원 삭제</button>
+        </form>
+        <button type='submit' class='primary_button'>회원 정보 수정</button>
+      </div>
+    {% if idea %}
+      {% for my_idea in idea%}
+      <div class='admin_warp_user_idea'>
 
+          <div class='admin_written_idea'>
+            <span>작성한 아이디어</span>
+            <form action="{% url 'group_admin:admin_idea_delete' group_id=group.id user_id=user.id %}" method="POST">
+              {% csrf_token %}
+              <button class='cta_red_badge' type="submit">삭제</button>
+            </form>
+          </div>
+        
+        <div class="wrap_title">
+          <span class="title_content_left">{{ my_idea.title }}</span>
+          <span class="subtitle_content_left">{{ my_idea.intro }}</span>
+        </div>
+        {% if my_idea.file %}
+            <p><strong>첨부파일:</strong></p>
+            <form action="{% url 'idea:idea_download' group_id=group.id idea_id=my_idea.id %}">
+                {% csrf_token %}
+                <button>다운로드</button>
+            </form>
+            <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
+        {% endif %}
+        <div>{{my_idea.content}}</div>
+      </div>
+      {% endfor %}
+    {% endif %}
   </section>
-
-
-
 {% endblock %}

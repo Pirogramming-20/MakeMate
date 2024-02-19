@@ -1,38 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="preresult_admin_container">
-    <div class="preresult_admin_header_container">
-        피로그래밍 20기
-        <span>팀 정보 수정 페이지 입니다. 저장하기를 누르지 않으면 저장 안되용</span>
-        <div class="btns">
-            <button class="secondary_button"><a href="/">이전</a></button>
-        </div>
-    </div>
-    <div class="preresult_admin_body_container">
-        <h1>회원</h1>
-        {% for member in members %}
-            <div class="group_preresult_modify_container">
-                <h2>{{member.user.username}}</h2>
-                <p>{{member.tech_stack}}</p>
-                <!-- 생각해보니 여기도 동적으로 만들어야 하는데 3지망 고정값으로 만들면 안되네요;; -->
-                <!-- 근데 db모델부터 3개 하드코딩으로 박혀있네....? 일단 패스-->
-                <p>1지망 : {{member.idea_vote1}}</p>
-                <p>2지망 : {{member.idea_vote2}}</p>
-                <p>3지망 : {{member.idea_vote3}}</p>
-                <h2>팀 변경</h2>
-                <form action="{% url 'group:preresult_modify' group.pk %}" method="post">
-                    {% csrf_token %}
-                    <select name="team_modify">
-                        <option value="{{member.id}},{{member.my_team_idea.id}}">{{member.my_team_idea.title}}</option>
-                        {% for idea in idea_list %}
-                            <option value="{{member.id}},{{idea.id}}">{{idea.title}}</option>
-                        {% endfor %}
-                    </select>
-                    <button class="primary_button">저장하기</button>
-                </form>
+<section>
+        <div class="preresult_admin_header_container">
+            <div class="preresult_admin_description">
+                <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
+                <p class="preresult_title">피로그래밍 20기</p>
+                <span>팀 정보를 수정할 수 있는 페이지입니다. 저장하기를 누르지 않으면 변경 사항이 저장되지 않습니다.</span>
             </div>
-        {% endfor %}
-    </div>
-</div>
+            <button id="result_home_button" class="primary_button"><a href="/">홈으로</a></button>
+        </div>
+        <div class="preresult_admin_body_container">
+            <h1>회원</h1>
+            <div class="preresult_modify_container">
+                {% for member in members %}
+                    <div class="group_preresult_modify_container">
+                        <div class="preresult_modify_member_title">
+                            <h2>{{member.user.username}}</h2>
+                            <span class="secondary_badge">{{member.my_team_idea}}</span>
+                        </div>
+                        <!-- 생각해보니 여기도 동적으로 만들어야 하는데 3지망 고정값으로 만들면 안되네요;; -->
+                        <!-- 근데 db모델부터 3개 하드코딩으로 박혀있네....? 일단 패스-->
+                        <div class="preresult_modify_choice_team">
+                            <p>1지망 : {{member.idea_vote1}}</p>
+                            <p>2지망 : {{member.idea_vote2}}</p>
+                            <p>3지망 : {{member.idea_vote3}}</p>
+                        </div>
+                        <h2>팀 변경</h2>
+                        <form action="{% url 'preresult:preresult_modify' group.pk %}" method="post">
+                            {% csrf_token %}
+                            <select name="team_modify">
+                                <option value="{{member.id}},{{member.my_team_idea.id}}">{{member.my_team_idea.title}}</option>
+                                {% for idea in idea_list %}
+                                    <option value="{{member.id}},{{idea.id}}">{{idea.title}}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="primary_button">저장하기</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
 {% endblock %}
