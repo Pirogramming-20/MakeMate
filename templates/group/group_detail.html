@@ -10,22 +10,25 @@
             <h3 class="title_content">{{group.title}}</h3>
           </div>
         </div>
-        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
+
         
         {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <span class="subtitle_content">원하는 아이디어 10개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
         <div>1차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>
         {% elif group.second_end_date|date:"Y-m-d H:i:s" > current_time %}
+        <span class="subtitle_content">원하는 아이디어 5개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
         <div>2차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.second_end_date.isoformat}}'></div>
         {% else %}
+        <span class="subtitle_content">원하는 아이디어 3개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
         <div>3차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.third_end_date.isoformat}}'></div>                                 
         {% endif %}
 
       
       <div class="group_detail_btns">
-        {% if has_voted and group.second_end_date <= current_time <= group.third_end_date %}
+        {% if has_voted %}
           <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
         {% else %}
           <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
@@ -62,23 +65,36 @@
     <h2>투표</h2>
     <div class="group_detail_idea">
       {% for idea in other_ideas %}
-      <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
-          <h3 class="card_title">{{ idea.title }}</h3>
-          <!-- 투표 순위 표시 로직 -->
-          {% if ideas_votes %}
-          
-            {% if idea.id == ideas_votes.idea_vote1_id %}
-            <div><span class="cta_blue_badge">1지망</span></div>  
-            {% elif idea.id == ideas_votes.idea_vote2_id %}
-            <div><span class="cta_blue_badge">2지망</span></div>  
-            {% elif idea.id == ideas_votes.idea_vote3_id %}
-            <div><span class="cta_blue_badge">3지망</span></div>  
+      {% if group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
+        <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+            <h3 class="card_title">{{ idea.title }}</h3>
+            <!-- 투표 순위 표시 로직 -->
+            {% if ideas_votes %}
+            
+              {% if idea.id == ideas_votes.idea_vote1_id %}
+              <div><span class="cta_blue_badge">1지망</span></div>  
+              {% elif idea.id == ideas_votes.idea_vote2_id %}
+              <div><span class="cta_blue_badge">2지망</span></div>  
+              {% elif idea.id == ideas_votes.idea_vote3_id %}
+              <div><span class="cta_blue_badge">3지망</span></div>  
+              {% endif %}
+            
             {% endif %}
-          
+            <span class="inner_card_contents">{{ idea.intro }}</span>
+            <span>{{idea.author}}</span>
+        </a>
+      {% else %}
+        <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+          <h3 class="card_title">{{ idea.title }}</h3>
+          <!-- 투표 표시 로직 -->
+          {% if idea.id == ideas_votes.idea_vote1_id or idea.id == ideas_votes.idea_vote2_id or idea.id == ideas_votes.idea_vote3_id or idea.id == ideas_votes.idea_vote4_id or idea.id == ideas_votes.idea_vote5_id or idea.id == ideas_votes.idea_vote6_id or idea.id == ideas_votes.idea_vote7_id or idea.id == ideas_votes.idea_vote8_id or idea.id == ideas_votes.idea_vote9_id or idea.id == ideas_votes.idea_vote10_id %}
+            <div><span class="cta_blue_badge">선택</span></div>   
           {% endif %}
+          
           <span class="inner_card_contents">{{ idea.intro }}</span>
           <span>{{idea.author}}</span>
-      </a>
+        </a>
+      {% endif %}
       {% endfor %}
 
       </div>

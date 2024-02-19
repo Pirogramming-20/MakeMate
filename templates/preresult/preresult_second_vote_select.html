@@ -23,9 +23,13 @@
             <div class='prerrsult_vote1_select_btn'>
               <div>score: {{idea.votes}}</div>
               {% if idea.second_selected %}
+<<<<<<< HEAD
                 <button class='primary_badge' data-idea-id="{{idea.id}}">선택</button>
+=======
+                <button class='cta_blue_badge' data-idea-id="{{idea.id}}">선택</button>
+>>>>>>> 8740ae61b610b9455e16eed894d7e4b85ef98d34
               {% else %}
-              <button class='secondary_badge' data-idea-id="{{idea.id}}">선택</button>
+              <button class='cta_red_badge' data-idea-id="{{idea.id}}">선택</button>
               {% endif %}
             </div>
           </div>
