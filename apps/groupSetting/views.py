@@ -4,8 +4,16 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from apps.group.views import State, redirect_by_auth
 from apps.group.models import Group, MemberState, AdminState
-from apps.result.views import team_building_auto, start_team_building
-from .forms import NonAdminInfoForm, GroupPasswordForm, GroupBaseForm, GroupDateForm, GroupDetailForm
+from apps.result.views import start_team_building
+from apps.preresult.tasks import first_scoring_auto, second_scoring_auto, team_building_auto
+from apps.preresult.views import calculate_first_idea_scores, calculate_second_idea_scores
+from .forms import (
+    NonAdminInfoForm,
+    GroupPasswordForm,
+    GroupBaseForm,
+    GroupDateForm,
+    GroupDetailForm,
+)
 
 # Create your views here.
 # 모임 개설 메인 함수
@@ -106,7 +114,9 @@ def get_prev_data(form, prev_req, req, state):
                 f"ability_description{idx}", "")
 
     if state == 2:
-        prev_req["end_date"] = form.cleaned_data["end_date"]
+        prev_req["first_end_date"] = form.cleaned_data["first_end_date"]
+        prev_req["second_end_date"] = form.cleaned_data["second_end_date"]
+        prev_req["third_end_date"] = form.cleaned_data["third_end_date"]
 
     return prev_req
 
@@ -122,12 +132,15 @@ def save_group_data(prev_req, user):
         ability_description3=prev_req.get("group_ability3", ""),
         ability_description4=prev_req.get("group_ability4", ""),
         ability_description5=prev_req.get("group_ability5", ""),
-        end_date=prev_req["end_date"],
+        first_end_date=prev_req["first_end_date"],
+        second_end_date=prev_req["second_end_date"],
+        third_end_date=prev_req["third_end_date"],
     )
 
-    MemberState.objects.create(group=group, user=user)
     AdminState.objects.create(group=group, user=user)
+
     return group
+
 
 @login_required(login_url="common:login")
 def check_nonadmin(request, group_id):
@@ -151,7 +164,8 @@ def check_nonadmin(request, group_id):
                 new_state.group = group
                 new_state.user = request.user
                 new_state.save()
-                return redirect("group_setting:info_nonadmin", group_id=group.id)
+                return redirect("group_setting:info_nonadmin",
+                                group_id=group.id)
             else:
                 wrong_flag = True
 
@@ -189,6 +203,7 @@ def check_admin(request, group_id):
     ctx = {"group": group, "is_wrong": wrong_flag, "form": form}
     return render(request, "group/group_admin_certification.html", ctx)
 
+
 @login_required(login_url="common:login")
 def info_nonadmin(request, group_id):
     group = get_object_or_404(Group, id=group_id)
@@ -199,22 +214,27 @@ def info_nonadmin(request, group_id):
 
     if state == State.ADMIN:  # 운영진인 경우
         return redirect("group_admin:admin_page", group_id=group.id)
-    
+
     if request.method == "POST":
         form = NonAdminInfoForm(request.POST, instance=user_state)
         if form.is_valid():
             form.save()
             return redirect("common:main_page")
-    
+
     ctx = {"group": group, "form": form}
     return render(request, "group/group_member_info.html", ctx)
+
 
 # 팀빌딩 마지막부분에 추가
 @login_required(login_url="common:login")
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
+
     ##팀빙딩 함수 예약
+    first_scoring_auto(calculate_first_idea_scores, group)
+    second_scoring_auto(calculate_second_idea_scores, group)
     team_building_auto(start_team_building, group)
     ####
+
     ctx = {"group": group}
     return render(request, "setting/setting_sharing.html", context=ctx)

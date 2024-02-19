@@ -120,6 +120,7 @@ section {
 .wrap_card {
   display: flex;
   flex-direction: column;
+  position: relative;
   justify-content: center;
   padding: var(--padding3);
   gap: var(--padding2);
@@ -221,10 +222,9 @@ section {
     gap: var(--padding1);
 }
 
-.form_highlight_content,
-.wrap_error {
-  color: var(--color_main);
-  font-size: var(--font_small);
+.form_highlight_content, .wrap_error, .wrap_non_field_errors{
+    color: var(--color_main);
+    font-size: var(--font_small);
 }
 
 input {
@@ -285,7 +285,7 @@ select:disabled {
 
 option {
   color: white;
-  background-color: transparent;
+  background-color: black;
 }
 
 input:autofill {
@@ -324,3 +324,14 @@ textarea {
   color: white;
 }
 
+input[type="checkbox"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  vertical-align: top;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--color_main);
+}

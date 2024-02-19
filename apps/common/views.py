@@ -18,7 +18,6 @@ def main_page(request):
         admin_set = set(admin_groups)
         member_groups = list(member_set - admin_set)
     
-        # 시간비교하게 현재 시간도 view에서 보내기
         ctx = {
             "admin_groups": admin_groups,
             "member_groups": member_groups,

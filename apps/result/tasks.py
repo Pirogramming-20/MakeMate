@@ -10,11 +10,11 @@ current_datetime = timezone.now()
 
 ##원하는 작업
 ####팀빌딩 함수 추가 하는 부분
-def make_auto(function):
-    groups = Group.objects.filter(end_date__gt=current_datetime)
+def make_third_auto(function):
+    groups = Group.objects.filter(third_end_date__gt=current_datetime)
     for group in groups:
         scheduler.add_job(function,
-                          trigger=DateTrigger(group.end_date),
+                          trigger=DateTrigger(group.third_end_date),
                           args=[group.id])
 
 
@@ -26,7 +26,7 @@ def start_scheduler():
 
 ##view에서 팀빌딩 함수 실행
 def team_building_auto(function, group):
-    if group.end_date > current_datetime:
+    if group.third_end_date > current_datetime:
         scheduler.add_job(function,
-                          trigger=DateTrigger(group.end_date),
+                          trigger=DateTrigger(group.third_end_date),
                           args=[group.id])

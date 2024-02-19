@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <section>
+      <div class='home_btn'><a href="{%url 'common:main_page'%}">Home</a></div>
+      <div class='wrap_title'>
+          <div class="inner_title">
+            <span class='title_content'>{{group.title}}</span>
+            <span class="subtitle_content">1차 투표 임시 결과</span>
+          </div>
+          <div>투표 결과가 발표되었습니다. 1차 아이디어 선정을 수정한뒤 전체 구성원에게 공지 할 수 있습니다.</div>
+      </div>
+      <p class='preresult_vote1_select'>1차 아이디어 선정</p>
+      <div class="wrap_wrap_card">
+        {% for idea in idea_list  %}
+          <div class='preresult_vote1_inner_idea'>
+            <div class='prereuslt_vote1_idea_title'><a href={% url "idea:idea_detail" group.id idea.id%}>{{idea.title}}</a></div>
+            <div>
+              <div>{{idea.intro}}</div>
+              <div class='card_contents_green'>{{idea.author}}</div>
+            </div>
+            <div class='prerrsult_vote1_select_btn'>
+              <div>score: {{idea.votes}}</div>
+              {% if idea.is_selected %}
+                <button class='cta_blue_badge' data-idea-id="{{idea.id}}">선택</button>
+              {% else %}
+              <button class='cta_red_badge' data-idea-id="{{idea.id}}">선택</button>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <form method='post' action="{%url 'preresult:preresult' group.id%}">
+          {% csrf_token %}
+          <button class='primary_button_fill'>발표하기</button>
+      </form>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static "js/first_vote_selecte.js" %}"></script>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<section>
+    <div class="wrap_title">
+      <a href="{% url 'group:group_detail' group_id=group.id %}" class="back_btn">back</a>
+      <div class="inner_title">
+        <h3 class="title_content">{{ group.title }}</h3>
+        <h3 class="subtitle_content">아이디어 투표</h3>
+      </div>
+    </div>
+    
+    <form method="post" class="wrap_form" novalidate>
+        <div id="vote_create_form_container" class="wrap_wrap_card">
+            {% csrf_token %}
+            <div class="wrap_title">
+                <span class="subtitle_content">1차 투표</span>
+                <span>원하는 아이디어를 10개 투표해주세요.</span>
+                {%if error_msg %}
+                <span class="form_highlight_content">{{error_msg}}</span>
+                {% endif %}
+            </div>
+            {% if idea_list %}
+                {% for idea in idea_list%}
+                <div class="wrap_card">
+                    <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
+                    <span class="subtitle_content">{{ idea.title }}</span>
+                    <span class="form_highlight_content">{{ idea.author }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+        <div class="vote_create_btns">
+            <button class="primary_button_fill">투표하기</button>
+        </div>
+    </form>
+</section>
+
+
+  
+<script src="{% static 'js/group_first_vote.js' %}"></script>
+{% endblock %}
+
+

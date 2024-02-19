@@ -1,4 +1,6 @@
+
 function updateDropdowns() {
+
     const vote1 = document.getElementById("idea_vote1").value;
     const vote2 = document.getElementById("idea_vote2").value;
     const vote3 = document.getElementById("idea_vote3").value;
