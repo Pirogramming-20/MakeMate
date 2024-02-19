@@ -13,14 +13,12 @@ from .forms import VoteForm
 def vote_create(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
-    idea_list = Idea.objects.filter(group=group)
-    second_idea_list = Idea.objects.filter(group=group).order_by("-votes")[:10]
+    idea_list = Idea.objects.filter(group=group).exclude(author=request.user)
+    second_idea_list = Idea.objects.filter(group=group).exclude(author=request.user).order_by("-votes")[:10]
     third_idea_list = second_idea_list[:5]
     state = redirect_by_auth(user, group_id)
     current_time = timezone.now()
     msg = ""
-
-    print(third_filtered_ideas)
 
     if state == State.WITH_HISTORY:
         if current_time <= group.first_end_date:

@@ -32,7 +32,7 @@
         {% endif %}
     
         {% if not author_ideas %}
-          {% if group.first_end_date.isoformat < current_time %}
+          {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
           <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
           {% endif %}
         {% else %}

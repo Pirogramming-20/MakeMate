@@ -40,7 +40,7 @@ def preresult(request, group_id):
                 return redirect("/")
             else:
                 second_top_selected(group, 5)
-                idea_list = Idea.objects.filter(group=group, is_selected=True)
+                idea_list = Idea.objects.filter(group=group, is_selected=True).order_by('-votes')
                 ctx = {"idea_list": idea_list, "group": group}
                 return render(request,
                               "preresult/preresult_second_vote_select.html",
@@ -271,14 +271,14 @@ def calculate_third_idea_scores(group_id):
 
 ##상위 아이디어 selected로 바꾸는 함수
 def top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
+    top_ideas = Idea.objects.filter(group=group).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.is_selected = True
         idea.save()
 
 
 def second_top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
+    top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()
