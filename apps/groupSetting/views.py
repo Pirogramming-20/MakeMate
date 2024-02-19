@@ -15,7 +15,6 @@ from .forms import (
     GroupDetailForm,
 )
 
-
 # Create your views here.
 # 모임 개설 메인 함수
 @login_required(login_url="common:login")
@@ -230,10 +229,12 @@ def info_nonadmin(request, group_id):
 @login_required(login_url="common:login")
 def group_share(request, group_id):
     group = Group.objects.get(id=group_id)
+
     ##팀빙딩 함수 예약
     first_scoring_auto(calculate_first_idea_scores, group)
     second_scoring_auto(calculate_second_idea_scores, group)
     team_building_auto(start_team_building, group)
     ####
+
     ctx = {"group": group}
     return render(request, "setting/setting_sharing.html", context=ctx)
