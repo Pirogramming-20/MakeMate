@@ -18,7 +18,7 @@ from .tasks import start_scheduler, make_third_auto
 @login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
+    idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-votes")
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 

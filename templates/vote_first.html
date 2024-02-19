@@ -11,25 +11,25 @@
     </div>
     
     <form method="post" class="wrap_form" novalidate>
-        <div id="vote_create_form_container">
+        <div id="vote_create_form_container" class="wrap_wrap_card">
             {% csrf_token %}
-            <div>
-                <span>1차 투표</span>
+            <div class="wrap_title">
+                <span class="subtitle_content">1차 투표</span>
                 <span>원하는 아이디어를 10개 투표해주세요.</span>
                 {%if error_msg %}
-                <span>{{error_msg}}</span>
+                <span class="form_highlight_content">{{error_msg}}</span>
                 {% endif %}
             </div>
             {% if idea_list %}
                 {% for idea in idea_list%}
-                <div>
+                <div class="wrap_card">
                     {% if member.idea_vote1 == idea or member.idea_vote2 == idea or member.idea_vote3 == idea or member.idea_vote4 == idea or member.idea_vote5 == idea or member.idea_vote6 == idea or member.idea_vote7 == idea or member.idea_vote8 == idea or member.idea_vote9 == idea or member.idea_vote10 == idea%}
-                        <input type="checkbox" name="picked" value={{ idea.id }} checked>
+                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }} checked>
                     {% else %}
-                        <input type="checkbox" name="picked" value={{ idea.id }}>
+                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
                     {% endif %}
-                    <span>{{ idea.title }}</span>
-                    <span>{{ idea.author }}</span>
+                    <span class="subtitle_content">{{ idea.title }}</span>
+                    <span class="form_highlight_content">{{ idea.author }}</span>
                 </div>
                 {% endfor %}
             {% endif %}

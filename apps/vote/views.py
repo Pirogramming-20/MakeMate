@@ -32,7 +32,7 @@ def vote_create(request, group_id):
     state = redirect_by_auth(user, group_id)
     current_time = timezone.now()
     msg = ""
-
+    
     if state == State.WITH_HISTORY:
         if current_time <= group.first_end_date:
             if request.method == "POST":
