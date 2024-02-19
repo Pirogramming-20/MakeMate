@@ -10,7 +10,10 @@
             </div>
             <div class="preresult_btns">
                 <button class="primary_button"><a href="{% url 'preresult:preresult_modify' group.pk %}">팀 정보 수정하기</a></button>
-                <button class="secondary_button"><a href="{% url 'result:result' group.pk %}">발표하기</a></button>
+                <form method='post' action="{%url 'preresult:preresult' group.id%}">
+                    {% csrf_token %}
+                    <button class='primary_button_fill'>발표하기</button>
+                </form>
             </div>
         </div>
         <div class="preresult_admin_body_container">

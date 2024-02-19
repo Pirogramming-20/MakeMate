@@ -25,10 +25,16 @@ def preresult(request, group_id):
     if (current_time >= group.third_end_date
             and group.is_second_end == True):  # 세번째 임시결과 페이지
         if state == State.ADMIN:
-            ctx = {"idea_list": idea_list, "members": members, "group": group}
-            return render(request,
-                          "preresult/preresult_admin.html",
-                          context=ctx)
+            if request.method == "POST":
+                group.is_third_end = True
+                group.save()
+                return redirect("result:result", group_id=group.id)
+            else:
+                idea_list = Idea.objects.filter(group=group, second_selected=True)
+                ctx = {"idea_list": idea_list, "members": members, "group": group}
+                return render(request,
+                            "preresult/preresult_admin.html",
+                            context=ctx)
         else:
             return redirect("/")
     elif (current_time >= group.second_end_date
@@ -37,6 +43,7 @@ def preresult(request, group_id):
             if request.method == "POST":
                 group.is_second_end = True
                 group.save()
+                reset_vote(reset_idea)
                 return redirect("/")
             else:
                 second_top_selected(group, 5)
@@ -75,7 +82,7 @@ def preresult(request, group_id):
 @login_required(login_url="common:login")
 def member_preresult(request, group_id):
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
+    idea_list = Idea.objects.filter(group=group).order_by("-score")
     user_state = MemberState.objects.filter(user=request.user,
                                             group=group).first()
     state = redirect_by_auth(request.user, group_id)
@@ -192,7 +199,6 @@ def preresult_modify(request, group_id):
 
 
 def calculate_first_idea_scores(group_id):
-    print("계산 시작!")
     ideas = Idea.objects.filter(group_id=group_id)
 
     for idea in ideas:
@@ -209,7 +215,6 @@ def calculate_first_idea_scores(group_id):
             | Q(idea_vote10=idea)).count())
 
         idea.votes = votes_count
-        idea.save()
 
         # 투표 초기화
         idea.idea_vote1_set.clear()
@@ -223,10 +228,9 @@ def calculate_first_idea_scores(group_id):
         idea.idea_vote9_set.clear()
         idea.idea_vote10_set.clear()
 
-    user_state_list = MemberState.objects.filter(group_id=group_id)
+        idea.save()
 
-    for idea in ideas:
-        print("삭제!")
+    user_state_list = MemberState.objects.filter(group_id=group_id)
 
 
 def calculate_second_idea_scores(group_id):
@@ -241,7 +245,6 @@ def calculate_second_idea_scores(group_id):
             | Q(idea_vote5=idea)).count())
 
         idea.votes = votes_count
-        idea.save()
 
         # 투표 초기화
         idea.idea_vote1_set.clear()
@@ -249,6 +252,8 @@ def calculate_second_idea_scores(group_id):
         idea.idea_vote3_set.clear()
         idea.idea_vote4_set.clear()
         idea.idea_vote5_set.clear()
+
+        idea.save()
 
 
 def calculate_third_idea_scores(group_id):
@@ -266,19 +271,15 @@ def calculate_third_idea_scores(group_id):
 # preresult부분에서 calculate_idea_scores 함수를 호출하여
 # 특정 그룹의 모든 아이디어에 대한 점수를 계산하는 방식으로 생각했습니다.
 
-
-
-
 ##상위 아이디어 selected로 바꾸는 함수
 def top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
+    top_ideas = Idea.objects.filter(group=group).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.is_selected = True
         idea.save()
 
-
 def second_top_selected(group, num):
-    top_ideas = Idea.objects.filter(group=group).order_by("-score")[:num]
+    top_ideas = Idea.objects.filter(group=group, is_selected=True).order_by("-votes")[:num]
     for idea in top_ideas:
         idea.second_selected = True
         idea.save()

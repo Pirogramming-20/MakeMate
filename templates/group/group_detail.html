@@ -32,7 +32,7 @@
         {% endif %}
     
         {% if not author_ideas %}
-          {% if group.first_end_date.isoformat < current_time %}
+          {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
           <button class="primary_button"><a href="{% url 'idea:idea_create' group_id=group.id %}" class="btn">아이디어 추가</a></button>
           {% endif %}
         {% else %}
@@ -62,23 +62,36 @@
     <h2>투표</h2>
     <div class="group_detail_idea">
       {% for idea in other_ideas %}
-      <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
-          <h3 class="card_title">{{ idea.title }}</h3>
-          <!-- 투표 순위 표시 로직 -->
-          {% if ideas_votes %}
-          
-            {% if idea.id == ideas_votes.idea_vote1_id %}
-            <div><span class="cta_blue_badge">1지망</span></div>  
-            {% elif idea.id == ideas_votes.idea_vote2_id %}
-            <div><span class="cta_blue_badge">2지망</span></div>  
-            {% elif idea.id == ideas_votes.idea_vote3_id %}
-            <div><span class="cta_blue_badge">3지망</span></div>  
+      {% if group.second_end_date|date:"Y-m-d H:i:s" < current_time %}
+        <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+            <h3 class="card_title">{{ idea.title }}</h3>
+            <!-- 투표 순위 표시 로직 -->
+            {% if ideas_votes %}
+            
+              {% if idea.id == ideas_votes.idea_vote1_id %}
+              <div><span class="cta_blue_badge">1지망</span></div>  
+              {% elif idea.id == ideas_votes.idea_vote2_id %}
+              <div><span class="cta_blue_badge">2지망</span></div>  
+              {% elif idea.id == ideas_votes.idea_vote3_id %}
+              <div><span class="cta_blue_badge">3지망</span></div>  
+              {% endif %}
+            
             {% endif %}
-          
+            <span class="inner_card_contents">{{ idea.intro }}</span>
+            <span>{{idea.author}}</span>
+        </a>
+      {% else %}
+        <a class="wrap_card" href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+          <h3 class="card_title">{{ idea.title }}</h3>
+          <!-- 투표 표시 로직 -->
+          {% if idea.id == ideas_votes.idea_vote1_id or idea.id == ideas_votes.idea_vote2_id or idea.id == ideas_votes.idea_vote3_id or idea.id == ideas_votes.idea_vote4_id or idea.id == ideas_votes.idea_vote5_id or idea.id == ideas_votes.idea_vote6_id or idea.id == ideas_votes.idea_vote7_id or idea.id == ideas_votes.idea_vote8_id or idea.id == ideas_votes.idea_vote9_id or idea.id == ideas_votes.idea_vote10_id %}
+            <div><span class="cta_blue_badge">선택</span></div>   
           {% endif %}
+          
           <span class="inner_card_contents">{{ idea.intro }}</span>
           <span>{{idea.author}}</span>
-      </a>
+        </a>
+      {% endif %}
       {% endfor %}
 
       </div>
