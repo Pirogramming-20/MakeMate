@@ -54,8 +54,10 @@ def group_detail(request, group_id):
         ideas_votes["idea_vote9_id"] = user_state.idea_vote9_id
         ideas_votes["idea_vote10_id"] = user_state.idea_vote10_id
 
-        has_voted = user_state and (user_state.idea_vote1 or user_state.idea_vote2
-                                    or user_state.idea_vote3)
+        if user_state.idea_vote1 is not None:
+            has_voted = True
+        else:
+            has_voted = False
 
         # idea를 지망 순서로 정렬
         def sort_by_vote_rank(idea):

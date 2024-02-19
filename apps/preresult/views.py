@@ -43,6 +43,7 @@ def preresult(request, group_id):
             if request.method == "POST":
                 group.is_second_end = True
                 group.save()
+                reset_idea = Idea.objects.all()
                 reset_vote(reset_idea)
                 return redirect("/")
             else:
