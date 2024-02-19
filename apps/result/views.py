@@ -174,7 +174,7 @@ def team_building_cycle(group_id, members):
     else:
         group = Group.objects.get(id=group_id)
         idea_list = Idea.objects.filter(
-            group=group).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
+            group=group, second_selected=True).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
         project_average_ability = [
         ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         members_ability = (

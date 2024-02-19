@@ -23,7 +23,11 @@
             {% if second_idea_list %}
                 {% for idea in second_idea_list%}
                 <div>
-                    <input type="checkbox" name="picked" value={{ idea.id }}>
+                    {% if member.idea_vote1 == idea or member.idea_vote2 == idea or member.idea_vote3 == idea or member.idea_vote4 == idea or member.idea_vote5 == idea %}
+                        <input type="checkbox" name="picked" value={{ idea.id }} checked>
+                    {% else %}
+                        <input type="checkbox" name="picked" value={{ idea.id }}>
+                    {% endif %}
                     <span>{{ idea.title }}</span>
                     <span>{{ idea.author }}</span>
                 </div>
