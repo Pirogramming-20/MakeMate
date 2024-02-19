@@ -30,7 +30,11 @@
 
       <div class="group_detail_btns">
         {% if has_voted %}
+          {% if group.second_end_date|date:"Y-m-d H:i:s" <= current_time %}
           <button class="secondary_button"><a href="{% url 'vote:vote_modify' group_id=group.id %}" class="btn">투표 수정</a></button>
+          {% else %}
+          <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표 수정</a></button>
+          {% endif %}
         {% else %}
           <button class="secondary_button"><a href="{% url 'vote:vote_create' group_id=group.id %}" class="btn">투표하기</a></button>
         {% endif %}

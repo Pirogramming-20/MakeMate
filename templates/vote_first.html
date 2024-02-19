@@ -23,7 +23,11 @@
             {% if idea_list %}
                 {% for idea in idea_list%}
                 <div class="wrap_card">
-                    <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
+                    {% if member.idea_vote1 == idea or member.idea_vote2 == idea or member.idea_vote3 == idea or member.idea_vote4 == idea or member.idea_vote5 == idea or member.idea_vote6 == idea or member.idea_vote7 == idea or member.idea_vote8 == idea or member.idea_vote9 == idea or member.idea_vote10 == idea%}
+                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }} checked>
+                    {% else %}
+                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
+                    {% endif %}
                     <span class="subtitle_content">{{ idea.title }}</span>
                     <span class="form_highlight_content">{{ idea.author }}</span>
                 </div>
