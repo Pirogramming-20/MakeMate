@@ -18,7 +18,8 @@ from .tasks import start_scheduler, make_third_auto
 @login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-votes")
+    idea_list = Idea.objects.filter(group=group,
+                                    second_selected=True).order_by("-votes")
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -115,11 +116,11 @@ def idea_change(idea_titles, group):
 
 
 # 원본데이터로 변환 함수
-def members_change(members_name):
+def members_change(members_name, group):
     members = []
     for member in members_name:
         members.append(
-            MemberState.objects.filter(user__username=member).first())
+            MemberState.objects.get(user__username=member, group=group))
     return members
 
 
@@ -128,9 +129,8 @@ def start_team_building(group_id):
 
     # 뽑힐 idea 계산
     calculate_third_idea_scores(group.id)
-    idea_list = Idea.objects.filter(
-        group=group,
-        second_selected=True).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
+    idea_list = Idea.objects.filter(group=group,
+                                    second_selected=True).order_by("-votes")
 
     ##members에서 팀장들은 뺼필요가 있음(exclude로 빈값이 아닌것은 제외)
     selected_idea_leader(idea_list, group)
@@ -174,7 +174,7 @@ def team_building_cycle(group_id, members):
     else:
         group = Group.objects.get(id=group_id)
         idea_list = Idea.objects.filter(
-            group=group, second_selected=True).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
+            group=group, second_selected=True).order_by("-votes")
         project_average_ability = [
         ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         members_ability = (
@@ -228,13 +228,14 @@ def make_team(idea_list, members, project_fitness, group_id):
             return redirect("/")
         else:
             idea_list = idea_change(idea_titles, group)
-            members = members_change(members_name)
+            members = members_change(members_name, group)
             make_team(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:
             up_idea_list, up_members, up_project_fitness = team_building_cycle(
                 group_id, members)
             make_team(up_idea_list, up_members, up_project_fitness, group_id)
+
 
 make_first_auto(calculate_first_idea_scores)
 make_second_auto(calculate_second_idea_scores)
