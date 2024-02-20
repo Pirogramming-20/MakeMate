@@ -18,11 +18,7 @@
         <select id="idea_vote1" name="idea_vote1" onchange="updateDropdowns()">
           <option value="">선택 취소</option>
           {% for idea in ideas_for_voting %}
-            {% if idea.id == vote.idea_vote1.id %}
-              <option value="{{ idea.id }}" selected>{{ idea.title }}</option>
-            {% else %}
-              <option value="{{ idea.id }}">{{ idea.title }}</option>
-            {% endif %}
+          <option value="{{ idea.id }}" {% if idea.id == vote.idea_vote1.id %}selected{% endif %}>{{ idea.title }}</option>
           {% endfor %}
         </select>
         {% if form.idea_vote1.errors %}

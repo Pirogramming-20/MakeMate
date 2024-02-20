@@ -18,7 +18,7 @@ from .tasks import start_scheduler, make_third_auto
 @login_required(login_url="common:login")
 def result(request, group_id):  # 최종 결과 페이지
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-votes")
+    idea_list = Idea.objects.filter(group=group).order_by("-score")[:5]
     members = MemberState.objects.filter(group=group)
     state = redirect_by_auth(request.user, group_id)
 
@@ -115,11 +115,11 @@ def idea_change(idea_titles, group):
 
 
 # 원본데이터로 변환 함수
-def members_change(members_name, group):
+def members_change(members_name):
     members = []
     for member in members_name:
         members.append(
-            MemberState.objects.filter(user__username=member, group=group))
+            MemberState.objects.filter(user__username=member).first())
     return members
 
 
@@ -174,7 +174,7 @@ def team_building_cycle(group_id, members):
     else:
         group = Group.objects.get(id=group_id)
         idea_list = Idea.objects.filter(
-            group=group, second_selected=True).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
+            group=group).order_by("-votes")[:TeamNumber.THIRD_TEAM.value]
         project_average_ability = [
         ]  # 나중에 "project_pick"을 만들 때 필요함. 사이클 한번당 수정이 필요함.
         members_ability = (
@@ -228,7 +228,7 @@ def make_team(idea_list, members, project_fitness, group_id):
             return redirect("/")
         else:
             idea_list = idea_change(idea_titles, group)
-            members = members_change(members_name, group)
+            members = members_change(members_name)
             make_team(idea_list, members, project_fitness, group_id)
     else:
         if len(members) > 0:

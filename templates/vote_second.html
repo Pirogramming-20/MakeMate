@@ -24,11 +24,7 @@
                 <div class="wrap_wrap_card">
                 {% for idea in second_idea_list%}
                 <div class="wrap_card">
-                    {% if member.idea_vote1 == idea or member.idea_vote2 == idea or member.idea_vote3 == idea or member.idea_vote4 == idea or member.idea_vote5 == idea %}
-                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }} checked>
-                    {% else %}
-                        <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
-                    {% endif %}
+                    <input class="idea_checkbox" type="checkbox" name="picked" value={{ idea.id }}>
                     <span class="subtitle_content">{{ idea.title }}</span>
                     <span class="form_highlight_content">{{ idea.author }}</span>
                 </div>
