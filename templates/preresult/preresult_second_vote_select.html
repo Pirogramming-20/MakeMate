@@ -29,11 +29,11 @@
             </div>
           </div>
         {% endfor %}
-        <form method='post' action="{%url 'preresult:preresult' group.id%}">
-          {% csrf_token %}
-          <button class='primary_button_fill'>발표하기</button>
-        </form>
       </div>
+      <form method='post' action="{%url 'preresult:preresult' group.id%}" class="inner_form_button">
+        {% csrf_token %}
+        <button class='primary_button_fill'>발표하기</button>
+      </form>
   </section>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="{% static "js/second_vote_select.js" %}"></script>

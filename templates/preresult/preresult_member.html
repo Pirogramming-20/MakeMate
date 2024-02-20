@@ -5,7 +5,7 @@
         <div class="preresult_member_header_container">
             <div class="preresult_member_description">
                 <a href="{% url 'common:main_page' %}" class='home_btn'>back</a>
-                <p class="preresult_member_title">피로그래밍 20기</p>
+                <p class="preresult_member_title">{{group.title}}</p>
                 {% if group.third_end_date|date:"Y-m-d H:i:s" < current_time %}
                 <span>3차 투표가 종료되었습니다. 운영진이 결과를 발표할 때까지 기다려주세요.</span>
                 {% elif group.second_end_date|date:"Y-m-d H:i:s" < current_time %}

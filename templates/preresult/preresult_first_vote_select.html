@@ -30,7 +30,7 @@
           </div>
         {% endfor %}
       </div>
-      <form method='post' action="{%url 'preresult:preresult' group.id%}">
+      <form method='post' action="{%url 'preresult:preresult' group.id%}" class="inner_form_button">
           {% csrf_token %}
           <button class='primary_button_fill'>발표하기</button>
       </form>
