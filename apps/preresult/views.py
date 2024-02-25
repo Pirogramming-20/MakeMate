@@ -86,7 +86,7 @@ def preresult(request, group_id):
 @login_required(login_url="common:login")
 def member_preresult(request, group_id):
     group = Group.objects.get(id=group_id)
-    idea_list = Idea.objects.filter(group=group).order_by("-score")
+    idea_list = Idea.objects.filter(group=group, second_selected=True).order_by("-votes")
     user_state = MemberState.objects.filter(user=request.user,
                                             group=group).first()
     state = redirect_by_auth(request.user, group_id)
@@ -150,7 +150,7 @@ def member_preresult(request, group_id):
 def preresult_modify(request, group_id):
     group = Group.objects.get(id=group_id)
     idea_list = Idea.objects.filter(
-        group=group).order_by("-score")[:TeamNumber.THIRD_TEAM.value]
+        group=group, second_selected=True).order_by("-votes")
     members = MemberState.objects.filter(group=group,
                                          group_ability__isnull=False)
     state = redirect_by_auth(request.user, group_id)
