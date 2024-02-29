@@ -61,6 +61,8 @@ https://github.com/Pirogramming-20/MakeMate
     - APScheduler 활용 팀빌딩 함수 실행 관리
 - 김하영
     - UI/UX 디자인
+    - 그룹 디테일 페이지
+    - 아이디어 생성/수정/삭제
     - 투표 생성 및 수정
 - 송하종
     - 임시결과 제공 및 수정
