@@ -19,7 +19,7 @@ https://www.piromakemate.shop/
 
 ### UserFlow
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/42fe91b0-34ef-4315-8add-e61520a57b9d/Untitled.png)
+<img src="./img/userflow.png">
 
 ## 시연 영상
 
@@ -78,15 +78,15 @@ https://github.com/Pirogramming-20/MakeMate
     - 로그아웃 및 모임 개설 버튼이 나타납니다.
     - 내가 속한 모임의 리스트가 나타납니다.
 
-![로그인 전](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/25bbaded-a420-43a7-90ef-3888f8bfc459/Untitled.png)
+<img src="./img/로그인 전.png">
 
 로그인 전
 
-![로그인 후](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/994ccd1d-f962-4dc9-8b4f-8ae42191160e/Untitled.png)
+<img src="./img/로그인 후.png">
 
 로그인 후
 
-![로그인 후 내가 속한 모임 리스트](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/86375d5f-bf7b-47d0-aff9-74df13a67b8c/Untitled.png)
+<img src="./img/내가 속한 모임 리스트.png">
 
 로그인 후 내가 속한 모임 리스트
 
@@ -95,15 +95,15 @@ https://github.com/Pirogramming-20/MakeMate
 - 장고 자체 로그인 및 회원가입 기능을 사용하여 구현하였습니다.
 - form 에러 발생 시 field 아래에 에러가 나타나도록 구현했습니다.
 
-![회원가입](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/c63f0ada-e3a3-4e70-b005-124bf856f0e7/Untitled.png)
+<img src="./img/회원가입.png">
 
 회원가입
 
-![로그인](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/2a980cc8-a4d2-44b2-8ca8-3ca3d8327301/Untitled.png)
+<img src="./img/로그인.png">
 
 로그인
 
-![에러 발생 시 경고 문구](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/110169b2-8e7a-489b-9a11-8597b840a052/Untitled.png)
+<img src="./img/에러 발생 시 경고 문구.png">
 
 에러 발생 시 경고 문구
 
@@ -120,7 +120,7 @@ https://github.com/Pirogramming-20/MakeMate
 - 모임 개설 이후에는 참여자에게 공유할 링크와 비밀번호를 확인하는 창으로 이동합니다.
 - 모임을 개설한 사람은 자동으로 운영자로 등록됩니다.
 
-![모임 개설.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/b36e6fb8-eb09-418d-81ab-724d39ed3272/%EB%AA%A8%EC%9E%84_%EA%B0%9C%EC%84%A4.gif)
+<img src="./img/모임 개설.gif">
 
 ### 모임 가입 (참여자)
 
@@ -128,7 +128,7 @@ https://github.com/Pirogramming-20/MakeMate
 - 비밀번호와 초기 정보(실력)를 입력하면 모임에 가입됩니다.
     - 각 실력에 대한 설명은 “모임 개설” 2단계에서 설정한 값으로 나타납니다.
 
-![모임 가입.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/e35e0e14-1bd2-45a8-9e66-b0a1ff33e0dd/%EB%AA%A8%EC%9E%84_%EA%B0%80%EC%9E%85.gif)
+<img src="./img/모임 가입.gif">
 
 ### 아이디어 생성/수정/삭제 (참여자)
 
@@ -139,7 +139,7 @@ https://github.com/Pirogramming-20/MakeMate
     - 다른 사람의 아이디어는 디테일 페이지에서 확인할 수 있습니다.
     - 나의 아이디어가 있으면 “아이디어 수정” 버튼이 나타납니다.
 
-![아이디어 추가.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/1151f59c-d647-47ce-a847-c04da2f1eccb/%EC%95%84%EC%9D%B4%EB%94%94%EC%96%B4_%EC%B6%94%EA%B0%80.gif)
+<img src="./img/아이디어 추가.gif">
 
 - 2, 3차 투표
     - 나의 아이디어가 선정된 경우에는 아이디어를 수정할 수 있습니다.
@@ -155,19 +155,19 @@ https://github.com/Pirogramming-20/MakeMate
     - 3차 투표: 3지망 투표, 2차 투표에서 선발된 아이디어만 투표 가능
 - 투표 이후에는 투표 내용을 수정할 수 있습니다.
 
-![1차 투표하기](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/27579d13-9f89-46e7-8095-464599c7c4bf/%ED%88%AC%ED%91%9C%ED%95%98%EA%B8%B0.gif)
+<img src="./img/투표하기.gif">
 
 1차 투표하기
 
-![1차 투표 수정](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/045b4ad1-a782-418e-a669-2942366665e6/%ED%88%AC%ED%91%9C_%EC%88%98%EC%A0%95.gif)
+<img src="./img/투표 수정.gif">
 
 1차 투표 수정
 
-![2차 투표](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/facdcf03-17d3-4f54-838e-1a738e9516f5/2%EC%B0%A8_%ED%88%AC%ED%91%9C.gif)
+<img src="./img/2차 투표.gif">
 
 2차 투표
 
-![3차 투표](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/2f25d4c3-1620-4b43-bd08-4372d10263bc/3%EC%B0%A8_%ED%88%AC%ED%91%9C.gif)
+<img src="./img/3차 투표.gif">
 
 3차 투표
 
@@ -176,11 +176,11 @@ https://github.com/Pirogramming-20/MakeMate
 - 모임에 가입한 회원의 정보를 수정하거나 아이디어를 삭제할 수 있습니다.
 - 운영자/비운영자(참여자) 여부를 수정할 수 있습니다.
 
-![운영진/비운영진 정보 변경](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/2545be92-8da0-444b-8c88-dd173028e77a/%EC%9A%B4%EC%98%81%EC%9E%90_%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+<img src="./img/운영자 페이지.gif">
 
 운영진/비운영진 정보 변경
 
-![실력 정보 수정](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/9a294894-742b-468a-813f-493d940da949/%EC%9A%B4%EC%98%81%EC%9E%90_%ED%8E%98%EC%9D%B4%EC%A7%80_%EC%88%98%EC%A0%95.gif)
+<img src="./img/운영자 페이지 수정.gif">
 
 실력 정보 수정
 
@@ -191,19 +191,19 @@ https://github.com/Pirogramming-20/MakeMate
     - 아이디어는 투표순으로 나열됩니다.
     - 발표하기 버튼을 누르면 2차 투표가 시작됩니다.
 
-![운영자 임시결과.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/14434c7a-a37b-4205-a17a-2a9da629753c/%EC%9A%B4%EC%98%81%EC%9E%90_%EC%9E%84%EC%8B%9C%EA%B2%B0%EA%B3%BC.gif)
+<img src="./img/운영자 임시결과.gif">
 
 - 2차 투표 (아이디어 뽑기)
     - 상위 5개 팀을 미리 선택해둔 상태에서 운영자가 결과를 수정할 수 있도록 합니다.
     - 발표하기 버튼을 누르면 3차 투표가 시작됩니다.
 
-![2차 임시결과.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/b7cc492c-9a8b-46fb-b219-b0b8eecefbc1/2%EC%B0%A8_%EC%9E%84%EC%8B%9C%EA%B2%B0%EA%B3%BC.gif)
+<img src="./img/2차 임시결과.gif">
 
 - 3차 투표 (팀원 변경하기)
     - 팀원의 실력, 지망에 따라 알고리즘에 의해 결정된 결과를 운영진에게 제공합니다.
     - 팀원 정보를 수정할 수 있습니다.
 
-![3차 임시결과.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/49b7475c-411b-40c0-b93d-d37b14b5d9c1/3%EC%B0%A8_%EC%9E%84%EC%8B%9C%EA%B2%B0%EA%B3%BC.gif)
+<img src="./img/3차 임시결과.gif">
 
 ### 임시 결과 페이지 (참여자)
 
@@ -213,7 +213,7 @@ https://github.com/Pirogramming-20/MakeMate
 
 - 최종 팀빌딩 결과를 보여줍니다.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/838b6998-106b-4b86-a9b6-50e69a5df3e2/Untitled.png)
+<img src="./img/최종 팀빌딩 결과.png">
 
 ## 구현 디테일
 
@@ -227,7 +227,7 @@ https://github.com/Pirogramming-20/MakeMate
 - 팀 빌딩 함수는 3차 투표가 마무리되는 시점에 1회만 시행됩니다. (APScheduler 사용)
     - 이러한 방식을 통해 서버 부하를 줄입니다.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/e7addfaa-4f8a-4061-9612-8cbc944b2a76/aa755bf8-6fe3-49ec-b8cc-71bb5dc13203/Untitled.png)
+<img src="./img/알고리즘 설명.png">
 
 ### 권한 인가
 
