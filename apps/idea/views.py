@@ -1,7 +1,7 @@
 import mimetypes
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import FileResponse, HttpResponseRedirect
+from django.http import FileResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
@@ -12,6 +12,28 @@ from .forms import IdeaForm
 
 
 # Create your views here.
+@login_required(login_url="common:login")
+def save_draft(request):
+    if request.method == "POST":
+        draft_title = request.POST.get('draft_title', '')
+        draft_intro = request.POST.get('draft_intro', '')
+        draft_content = request.POST.get('draft_intro', '')
+
+        # 세션에 최근 내용 저장 (업데이트)
+        request.session['draft_title'] = draft_title
+        request.session['draft_intro'] = draft_intro
+        request.session['draft_content'] = draft_content
+        ctx = {
+            'status': 'success'
+        }
+        return JsonResponse(ctx)
+    
+    # POST 요청이 아닌 경우 에러 처리
+    ctx = {
+        'status': 'fail'
+    }
+    return JsonResponse(ctx)
+
 @login_required(login_url="common:login")
 def idea_create(request, group_id):
     current_time = timezone.now()
@@ -30,12 +52,24 @@ def idea_create(request, group_id):
                 idea.group = group
                 idea.author = request.user
                 idea.save()
+                # 세션에 저장된 내용 삭제
+                request.session.pop('draft_title', None)
+                request.session.pop('draft_intro', None)
+                request.session.pop('draft_content', None)
                 return redirect("group:group_detail", group_id=group.id)
         else:
             form = IdeaForm()
+        
+        draft_title = request.session.get('draft_title', '')
+        draft_intro = request.session.get('draft_intro', '')
+        draft_content = request.session.get('draft_content', '')
+
         ctx = {
             "form": form,
             "group": group,
+            "draft_title": draft_title,
+            "draft_intro": draft_intro,
+            "draft_content": draft_content
         }
         return render(request, "group/group_idea_create.html", ctx)
     elif state == State.ADMIN:
