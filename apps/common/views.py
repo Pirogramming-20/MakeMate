@@ -5,6 +5,7 @@ from .models import User
 from .forms import UserForm
 from apps.group.models import Group, MemberState, AdminState, Vote
 
+#sdjaldjslkadjkasdjal
 
 # Create your views here.
 def main_page(request):
