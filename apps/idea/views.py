@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.cache import never_cache
 from apps.group.models import Group, MemberState, Idea
 from apps.group.views import State, redirect_by_auth
 from .forms import IdeaForm
@@ -14,15 +15,20 @@ from .forms import IdeaForm
 # Create your views here.
 @login_required(login_url="common:login")
 def save_draft(request):
+    print(request.session)
     if request.method == "POST":
         draft_title = request.POST.get('draft_title', '')
         draft_intro = request.POST.get('draft_intro', '')
-        draft_content = request.POST.get('draft_intro', '')
+        draft_content = request.POST.get('draft_content', '')
+        print(draft_title)
+        print(draft_intro)
+        print(draft_content)
 
         # 세션에 최근 내용 저장 (업데이트)
         request.session['draft_title'] = draft_title
         request.session['draft_intro'] = draft_intro
         request.session['draft_content'] = draft_content
+
         ctx = {
             'status': 'success'
         }
@@ -34,8 +40,10 @@ def save_draft(request):
     }
     return JsonResponse(ctx)
 
+@never_cache
 @login_required(login_url="common:login")
 def idea_create(request, group_id):
+    print(request.session)
     current_time = timezone.now()
     group = get_object_or_404(Group, id=group_id)
     state = redirect_by_auth(request.user, group_id)
@@ -53,9 +61,9 @@ def idea_create(request, group_id):
                 idea.author = request.user
                 idea.save()
                 # 세션에 저장된 내용 삭제
-                request.session.pop('draft_title', None)
-                request.session.pop('draft_intro', None)
-                request.session.pop('draft_content', None)
+                del request.session['draft_title']
+                del request.session['draft_intro']
+                del request.session['draft_content']
                 return redirect("group:group_detail", group_id=group.id)
         else:
             form = IdeaForm()
@@ -63,6 +71,10 @@ def idea_create(request, group_id):
         draft_title = request.session.get('draft_title', '')
         draft_intro = request.session.get('draft_intro', '')
         draft_content = request.session.get('draft_content', '')
+
+        print(draft_title)
+        print(draft_intro)
+        print(draft_title)
 
         ctx = {
             "form": form,

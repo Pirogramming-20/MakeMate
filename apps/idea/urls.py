@@ -19,5 +19,5 @@ urlpatterns = [
         idea_download,
         name="idea_download",
     ),
-    path("<int:group_id>/draft/", save_draft, name="save_draft")
+    path("draft/", save_draft, name="save_draft")
 ]

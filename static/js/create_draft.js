@@ -1,7 +1,8 @@
 //groupId 정의 부분
-const currentUrl=window.location.href;
-const parts = currentUrl.split('/preresult/');
-const groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+// const currentUrl=window.location.href;
+// const parts = currentUrl.split('/idea/');
+// const groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+// console.log(groupId)
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -9,13 +10,18 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+// 240737 연우: 만약 group을 여러개를 들어갔다면?
 const saveDraft = async () => {
-    const titleInput = document.getElementById("title").value;
-    const introInput = document.getElementById("intro").value;
-    const contentInput = document.getElementById("content").value;
+    const titleInput = document.getElementById("id_title").value;
+    const introInput = document.getElementById("id_intro").value;
+    const contentInput = document.getElementById("id_content").value;
 
     const csrf_token = getCookie('csrftoken');
-    const url = `/idea/${group_id}/draft/`;
+    const url = `/idea/draft/`;
+
+    console.log("title: " + titleInput);
+    console.log("intro: " + introInput);
+    console.log("content: " + contentInput);
 
     const res= await fetch(url, {
         method: 'POST',
@@ -29,6 +35,8 @@ const saveDraft = async () => {
             'draft_content': contentInput
         }),
     });
+    console.log(res)
+    console.log(res.status)
     
     // 디버깅용
     if (res.status === "fail") {

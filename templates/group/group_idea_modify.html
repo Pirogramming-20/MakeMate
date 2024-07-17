@@ -21,13 +21,24 @@
     <div class="wrap_error">{{ error }}</div>
       {% endfor %}
     {% endif %}
-    <div id="vote_modify_form_container">제목 <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" /></div>
+    <div id="vote_modify_form_container">
+      <span>제목</span>
+      <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" /></div>
+    {% if form.title.errors %}
+      {% for error in form.title.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
 
     <div id="vote_modify_form_container">
       한 줄 소개 <input type="text" name="intro" value="{{idea.intro}}" maxlength="50" required="" id="id_intro" />
       <div class="wrap_error">50자 미만으로 작성해주세요.</div>
     </div>
-
+    {% if form.intro.errors %}
+      {% for error in form.intro.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
     <div id="vote_modify_form_container">
       <div class="wrap_download">
         <span class="download_content">첨부파일</span>
@@ -46,8 +57,15 @@
     
 
     <div id="vote_modify_form_container">
-      내용 <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{idea.content}}</textarea>
+      <span>내용 <i class="form_highlight_content">*</i></span>
+      <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{idea.content}}</textarea>
+      <div class="wrap_error">1000자 이내로 작성해주세요.</div> 
     </div>
+    {% if form.content.errors %}
+      {% for error in form.content.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
   </div>
 
   <div class="vote_create_btns">
