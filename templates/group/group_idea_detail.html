@@ -53,6 +53,25 @@
     <div class="wrap_form">  
         <div>{{ idea.content|linebreaks }}</div>      
     </div>
-</section>
 
+    <div class="detail_comment">
+      <div class="detail_comment_modal">
+          <div>
+              <input class="comment_input" type="text" placeholder="댓글을 입력하세요"/>
+              <button class="btn" onclick="ajax_comment({{idea.id}})">전송</button>
+          </div>
+          <ul>
+              {% for comment in comments %}
+              <span class="com_nick comment_nick-{{comment.id}}">{{comment.author}}</span>
+              <li class="comment_li-{{comment.id}}">
+                  <span class="com_content comment_content-{{comment.id}}">{{comment.content}}</span>
+                  {% if request.user.username == comment.author.username %}
+                  <i class="fa-solid fa-trash"></i>
+                  {% endif %}
+              </li>
+              {% endfor %}
+          </ul>
+      </div>
+    </div>
+</section>
 {% endblock %}
