@@ -18,7 +18,6 @@ def save_draft(request):
         draft_title = request.POST.get('draft_title', '')
         draft_intro = request.POST.get('draft_intro', '')
         draft_content = request.POST.get('draft_content', '')
-        print("draft: " + draft_title)
 
         # 세션에 최근 내용 저장 (업데이트)
         request.session['draft_title'] = draft_title
@@ -54,6 +53,7 @@ def idea_create(request, group_id):
                 idea.group = group
                 idea.author = request.user
                 idea.save()
+
                 # 세션에 저장된 내용 삭제
                 del request.session['draft_title']
                 del request.session['draft_intro']
@@ -65,10 +65,8 @@ def idea_create(request, group_id):
         draft_title = request.session.get('draft_title', '')
         draft_intro = request.session.get('draft_intro', '')
         draft_content = request.session.get('draft_content', '')
-        
-        request.session.save()
 
-        print("render: " +draft_title)
+        request.session.save()
 
         ctx = {
             "form": form,
@@ -106,6 +104,12 @@ def idea_modify(request, group_id, idea_id):
 
             if form.is_valid():
                 form.save()
+
+                # 세션에 저장된 내용 삭제
+                del request.session['draft_title']
+                del request.session['draft_intro']
+                del request.session['draft_content']
+
                 idea = get_object_or_404(Idea,
                                          id=idea_id,
                                          group=group,
@@ -118,11 +122,22 @@ def idea_modify(request, group_id, idea_id):
             form = IdeaForm(instance=idea)
 
         file_url = idea.file.url if idea.file else None
+
+        # 페이지 렌더 시 임시저장된 내용 불러오기
+        draft_title = request.session.get('draft_title', '')
+        draft_intro = request.session.get('draft_intro', '')
+        draft_content = request.session.get('draft_content', '')
+
+        request.session.save()
+
         ctx = {
             "form": form,
             "group": group,
             "idea": idea,
             "file_url": file_url,
+            "draft_title": draft_title,
+            "draft_intro": draft_intro,
+            "draft_content": draft_content
         }
         return render(request, "group/group_idea_modify.html", ctx)
     elif state == State.ADMIN and idea is None:
