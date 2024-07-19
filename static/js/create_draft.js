@@ -9,10 +9,6 @@ const saveDraft = async () => {
     const csrf_token = getCSRF();
     const url = `/idea/draft/`;
 
-    console.log("title: " + titleInput);
-    console.log("intro: " + introInput);
-    console.log("content: " + contentInput);
-
     const res= await fetch(url, {
         method: 'POST',
         headers: {
@@ -25,13 +21,6 @@ const saveDraft = async () => {
             'draft_content': contentInput
         }),
     });
-    console.log(res)
-    console.log(res.status)
-    
-    // 디버깅용
-    if (res.status === "fail") {
-        console.log("자동 저장에 실패했습니다.")
-    }
 }
 
 // 해당 페이지를 벗어나면 임시 저장
