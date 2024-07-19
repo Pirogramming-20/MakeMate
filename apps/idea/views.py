@@ -7,7 +7,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
-from apps.group.models import Group, MemberState, Idea, Comment
+from apps.group.models import Group, MemberState, Idea
+from apps.idea.models import Comment
 from apps.group.views import State, redirect_by_auth
 from .forms import IdeaForm
 from django.http import JsonResponse
