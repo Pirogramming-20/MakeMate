@@ -1,4 +1,8 @@
-import { getGroupId } from "./util";
+const getGroupId = (currentUrl, seperate) => {
+  const parts = currentUrl.split(seperate);
+  groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+  return groupId
+}
 
 //groupId 정의 부분
 const currentUrl = window.location.href;

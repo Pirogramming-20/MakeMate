@@ -1,4 +1,14 @@
-import { getCSRF, getGroupId } from "./util";
+const getGroupId = (currentUrl, seperate) => {
+    const parts = currentUrl.split(seperate);
+    groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+    return groupId
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 let state = 0;
 let prev_data = new FormData();
@@ -12,7 +22,7 @@ async function changeStage(local_state, prev_data) {
     const url = '/setting/base_set/';
     const form_element = document.querySelector('form');
     const form_data = new FormData(form_element);
-    const csrf_token = getCSRF();
+    const csrf_token = getCookie('csrftoken');
 
     form_data.set('state', state);
     const form_data_query = new URLSearchParams(form_data).toString();
