@@ -1,7 +1,7 @@
 const ajax_comment = (id) => {
     const detail_comment = document.querySelector('.comment_input');
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/comment/', true);
+    xhr.open('POST', '/idea/comment/', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onreadystatechange = function() {

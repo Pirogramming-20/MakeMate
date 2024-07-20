@@ -160,7 +160,7 @@ def comment(request):
 
     pos = Idea.objects.get(id=idea_id)
     comment = Comment.objects.create(
-        post = pos,
+        idea = pos,
         author = request.user,
         content = comment_content
     )
