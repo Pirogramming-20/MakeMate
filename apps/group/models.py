@@ -167,3 +167,6 @@ class Vote(models.Model):
 
     def __str__(self):
         return f"Vote by {self.user.username} for {self.group.title}"
+    
+
+    

@@ -19,5 +19,7 @@ urlpatterns = [
         idea_download,
         name="idea_download",
     ),
+    path('comment/', comment, name='comment'),
+    path('comment_delete/', comment_delete, name='comment_delete'),
     path("draft/", save_draft, name="save_draft")
 ]
