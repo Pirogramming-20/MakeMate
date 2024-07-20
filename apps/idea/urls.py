@@ -21,4 +21,5 @@ urlpatterns = [
     ),
     path('comment/', comment, name='comment'),
     path('comment_delete/', comment_delete, name='comment_delete'),
+    path("draft/", save_draft, name="save_draft")
 ]

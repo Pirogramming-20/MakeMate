@@ -1,13 +1,6 @@
+import { calculateTimeDifference } from "./util";
+
 const currentTime = new Date();
-
-function calculateTimeDifference(endTime) {
-  const timeDifference = endTime - currentTime;
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-
-  return { days, hours, minutes };
-}
 
 const group_endTimes = document.querySelectorAll('.group_endtime');
 group_endTimes.forEach(endTimeElement => {

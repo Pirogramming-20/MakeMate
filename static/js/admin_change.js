@@ -1,7 +1,8 @@
+import { getGroupId } from "./util";
+
 //groupId 정의 부분
-const currentUrl=window.location.href;
-const parts = currentUrl.split('/group_admin/');
-groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+const currentUrl = window.location.href;
+const groupId = getGroupId(currentUrl, '/group_admin/');
 
 document.addEventListener('click', (event)=> {
   const clickedBadge=event.target;

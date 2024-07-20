@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <section>
   <div class="wrap_title">
     <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
@@ -21,13 +23,34 @@
     <div class="wrap_error">{{ error }}</div>
       {% endfor %}
     {% endif %}
-    <div id="vote_modify_form_container">제목 <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" /></div>
+    <div id="vote_modify_form_container">
+      <span>제목</span>
+      {% if draft_title %}
+      <input type="text" name="title" value="{{draft_title}}" maxlength="31" required="" id="id_title" />
+      {% else %}
+      <input type="text" name="title" value="{{idea.title}}" maxlength="31" required="" id="id_title" />
+      {% endif %}
+    </div>
+    {% if form.title.errors %}
+      {% for error in form.title.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
 
     <div id="vote_modify_form_container">
-      한 줄 소개 <input type="text" name="intro" value="{{idea.intro}}" maxlength="50" required="" id="id_intro" />
+      <span>한 줄 소개</span>
+      {% if draft_intro %}
+      <input type="text" name="intro" value="{{draft_intro}}" maxlength="50" required="" id="id_intro" />
+      {% else %}
+      <input type="text" name="intro" value="{{idea.intro}}" maxlength="50" required="" id="id_intro" />
+      {% endif %}
       <div class="wrap_error">50자 미만으로 작성해주세요.</div>
     </div>
-
+    {% if form.intro.errors %}
+      {% for error in form.intro.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
     <div id="vote_modify_form_container">
       <div class="wrap_download">
         <span class="download_content">첨부파일</span>
@@ -46,8 +69,19 @@
     
 
     <div id="vote_modify_form_container">
-      내용 <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{idea.content}}</textarea>
+      <span>내용 <i class="form_highlight_content">*</i></span>
+      {% if draft_content %}
+        <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{draft_content}}</textarea>
+        {% else %}
+          <textarea name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content">{{idea.content}}</textarea>
+        {% endif %}
+      <div class="wrap_error">1000자 이내로 작성해주세요.</div> 
     </div>
+    {% if form.content.errors %}
+      {% for error in form.content.errors %}
+      <div class="wrap_error">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
   </div>
 
   <div class="vote_create_btns">
@@ -56,7 +90,24 @@
 </form>
 
 </section>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const draftTitle = "{{ draft_title }}";
+      const draftIntro = "{{ draft_intro }}";
+      const draftContent = "{{ draft_content }}";
 
+      if (draftTitle) {
+          document.getElementById("id_title").value = draftTitle;
+      }
+      if (draftIntro) {
+          document.getElementById("id_intro").value = draftIntro;
+      }
+      if (draftContent) {
+          document.getElementById("id_content").value = draftContent;
+      }
+  });
+</script>
+<script src={% static 'js/create_draft.js' %}></script>
 
 
 {% endblock %}

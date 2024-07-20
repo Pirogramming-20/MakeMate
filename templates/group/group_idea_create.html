@@ -1,6 +1,6 @@
-{% extends 'base.html' %} {% block head %}
-<title>idea_create</title>
-{% endblock %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <section>
     <div class="wrap_title">
       <a href="{% url 'group:group_detail' group_id=group.id %}" class="home_btn">Home</a>
@@ -22,7 +22,7 @@
           {% endif %}
             <div id="vote_modify_form_container">
               <span>제목 <i class="form_highlight_content">*</i></span>
-              {{ form.title }}
+              <input type="text" name="title" id="id_title" value="{{ draft_title }}" maxlength="31" required="" id="id_title">
             </div>
             {% if form.title.errors %}
               {% for error in form.title.errors %}
@@ -31,7 +31,7 @@
             {% endif %}
             <div id="vote_modify_form_container">
               <span>한 줄 소개 <i class="form_highlight_content">*</i></span>
-              {{ form.intro }}
+              <input type="text" name="intro" id="id_intro" value="{{ draft_intro }}" maxlngth="50" rqeuired="">
               <div class="wrap_error">50자 미만으로 작성해주세요.</div>         
             </div>
             {% if form.intro.errors %}
@@ -49,8 +49,9 @@
               {% endfor %}
             {% endif %}
             <div id="vote_modify_form_container">
-              <span>내용</span>
-              {{ form.content }}        
+              <span>내용 <i class="form_highlight_content">*</i></span>
+              <textarea name="content" cols="40" rows="10" maxlength="1000" id="id_content">{{ draft_content }}</textarea>
+              <div class="wrap_error">1000자 이내로 작성해주세요.</div> 
             </div>
             {% if form.content.errors %}
               {% for error in form.content.errors %}
@@ -65,4 +66,23 @@
       </div>
     </form>
 </section>
+<!--장고 템플릿 문법을 사용하기 위해 script 직접 삽입-->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const draftTitle = "{{ draft_title }}";
+      const draftIntro = "{{ draft_intro }}";
+      const draftContent = "{{ draft_content }}";
+
+      if (draftTitle) {
+          document.getElementById("id_title").value = draftTitle;
+      }
+      if (draftIntro) {
+          document.getElementById("id_intro").value = draftIntro;
+      }
+      if (draftContent) {
+          document.getElementById("id_content").value = draftContent;
+      }
+  });
+</script>
+<script src={% static 'js/create_draft.js' %}></script>
 {% endblock %}

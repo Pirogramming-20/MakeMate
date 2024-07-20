@@ -1,7 +1,8 @@
+import { getGroupId } from "./util";
+
 //groupId 정의 부분
 const currentUrl=window.location.href;
-const parts = currentUrl.split('/preresult/');
-groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+const groupId = getGroupId(currentUrl, '/preresult/')
 
 
 document.addEventListener('click',(event)=> {
