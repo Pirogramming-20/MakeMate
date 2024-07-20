@@ -1,52 +1,151 @@
-*{
-    margin: 0;
-    padding: 0;
-}
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
-a{
-    text-decoration-line: none;
-    all: unset;
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
-
-ul, li{
-    list-style: none;
+/* HTML5 display-role reset for older browsers */
+blockquote,
+q {
+  quotes: none;
 }
-
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 button {
-    background: inherit;
-    font: inherit;
-    color: inherit;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
-    overflow: visible;
-    cursor: pointer;
+  background: inherit;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
 }
-
+a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+}
+ol,
+ul,
+li {
+  list-style: none;
+}
 input {
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
+  -webkit-appearance: none; /* Safari and Chrome */
+  -moz-appearance: none; /* Firefox */
+  appearance: none;
 }
 
-/* IE10 이상에서 input box 에 추가된 지우기 버튼 제거 */
-input::-ms-clear { display: none; }
-
-/* input type number 에서 화살표 제거 */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-/* Select box 스타일 초기화 */ 
-/* select {
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
-} */
-
-/* IE 에서 Select box 화살표 제거 */ 
-select::-ms-expand { display: none; }
+input:focus {
+  outline: none;
+}
