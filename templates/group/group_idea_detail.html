@@ -58,22 +58,39 @@
       <div class="detail_comment_modal">
           <div>
               <input class="comment_input" type="text" placeholder="댓글을 입력하세요"/>
-              <button class="btn" onclick="ajax_comment({{idea.id}})">전송</button>
+              <button class="btn" onclick="ajax_comment({{idea.id}})">댓글 작성</button>
           </div>
-          {% if idea.author == request.user %} 
           <ul>
               {% for comment in comments %}
-              <span class="com_nick comment_nick-{{comment.id}}">**</span>
-              <span class="com_nick comment_nick">{{comment.created_at}}</span>
-              <li class="comment_li-{{comment.id}}">
-                  <span class="com_content comment_content-{{comment.id}}">{{comment.content}}</span>
-                  {% if request.user.username == comment.author.username %}
-                  <i class="fa-solid fa-trash"></i>
-                  {% endif %}
-              </li>
+                {% if idea.author == request.user %} 
+                  <div class="wrap_card">
+                    <div class="comment_info">
+                      <span class="com_nick comment_nick-{{comment.id}}">***</span>
+                      <span class="com_nick comment_nick">{{comment.created_at}}</span>
+                    </div>
+                    <li class="comment_li-{{comment.id}}">
+                        <span class="com_content comment_content-{{comment.id}}">{{comment.content}}</span>
+                        {% if request.user.username == comment.author.username %}
+                        <i class="fa-solid fa-trash"></i>
+                        {% endif %}
+                    </li>
+                  </div>
+                {% elif comment.author == request.user %}
+                  <div class="wrap_card">
+                    <div class="comment_info">
+                      <span class="com_nick comment_nick-{{comment.id}}">{{comment.author.username}}</span>
+                      <span class="com_nick comment_nick">{{comment.created_at}}</span>
+                    </div>
+                    <li class="comment_li-{{comment.id}}">
+                        <span class="com_content comment_content-{{comment.id}}">{{comment.content}}</span>
+                        {% if request.user.username == comment.author.username %}
+                        <i class="fa-solid fa-trash"></i>
+                        {% endif %}
+                    </li>
+                  </div>
+                {% endif %} 
               {% endfor %}
           </ul>
-          {% endif %}
       </div>
     </div>
 </section>
