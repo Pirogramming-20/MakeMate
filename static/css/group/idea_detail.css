@@ -76,6 +76,12 @@ body {
   width: 400px;
 }
 
+.detail_comment_modal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .detail_comment_modal > ul > div{
   margin-top: 10px;
   margin-bottom: 10px;
@@ -93,8 +99,9 @@ body {
 }
 
 .comment_input{
-  height: 76px;
+  width: 100%;
   border-radius: 5px;
+  font-family: "Nanum Gothic", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .detail_comment_modal > div{
