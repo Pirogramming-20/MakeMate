@@ -64,6 +64,7 @@
           <ul>
               {% for comment in comments %}
               <span class="com_nick comment_nick-{{comment.id}}">**</span>
+              <span class="com_nick comment_nick">{{comment.created_at}}</span>
               <li class="comment_li-{{comment.id}}">
                   <span class="com_content comment_content-{{comment.id}}">{{comment.content}}</span>
                   {% if request.user.username == comment.author.username %}
