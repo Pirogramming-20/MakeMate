@@ -66,3 +66,48 @@ body {
   justify-content: center;
   gap: var(--padding1);
 }
+
+
+
+
+
+
+.detail_comment{
+  width: 400px;
+}
+
+.detail_comment_modal > ul > div{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.wrap_card > li > span{
+  font-size: 15px;
+}
+
+.comment_info{
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.comment_input{
+  height: 76px;
+  border-radius: 5px;
+}
+
+.detail_comment_modal > div{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.detail_comment_modal > div > .btn{
+  width: 70px;
+  border: 1px solid var(--color_sub_bright);
+  background-color: var(--color_sub_bright);
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+}
