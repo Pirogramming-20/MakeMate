@@ -19,11 +19,15 @@ const ajax_comment = (id) => {
 const create_comment = (id, user, content) => {
     const comment_ul = document.querySelector('.detail_comment_modal ul');
     let template = `
-        <span class="com_nick comment_nick-${id}">${user}</span>
-        <li class='comment_li-${id}'>
-            <span class="com_content comment_content-${id}">${content}</span>
-            <i class="fa-solid fa-trash" onclick="ajax_delete(${id})"></i>
-        </li>
+        <div class="wrap_card">
+            <div class="comment_info">
+                <span class="com_nick comment_nick-{{comment.id}}">***</span>
+            </div>
+            <li class='comment_li-${id}'>
+                <span class="com_content comment_content-${id}">${content}</span>
+                <i class="fa-solid fa-trash" onclick="ajax_delete(${id})"></i>
+            </li>
+        </div>
     `;
     comment_ul.innerHTML += template;
 };
