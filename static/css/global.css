@@ -171,11 +171,6 @@ section {
   cursor: pointer;
 }
 
-@media screen and (min-width: 850px){
-    .home_btn,.back_btn {
-        display: none;
-    }
-}
 
 .home_btn::before,.back_btn::before{
     content: '';
@@ -215,6 +210,7 @@ section {
     display: flex;
     flex-direction: column;
     gap: var(--padding4);
+    word-break: break-all;
 }
 
 @media screen and (min-width: 850px){
