@@ -1,6 +1,6 @@
 const getGroupId = (currentUrl, seperate) => {
     const parts = currentUrl.split(seperate);
-    groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+    const groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
     return groupId
 }
 
