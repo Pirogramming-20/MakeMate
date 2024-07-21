@@ -43,7 +43,9 @@
           <form action="{% url 'idea:idea_delete' group_id=group.id idea_id=idea.id %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="action" value="delete">
-            <button type="submit" class='cta_del_button'>삭제</button>
+            {% if group.first_end_date|date:"Y-m-d H:i:s" < current_time %}
+              <button type="submit" class='cta_del_button'>삭제</button>
+            {% endif %}
           </form>
           
           <a href="{% url 'idea:idea_modify' group_id=group.id idea_id=idea.id %}" class="primary_button_fill">내용 수정</a>

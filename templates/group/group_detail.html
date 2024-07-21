@@ -55,13 +55,15 @@
     <h2>나의 아이디어</h2>
     <div class="group_detail_my_idea">
       {% for idea in author_ideas %}
-      <div class="wrap_card">
-        <div class="group_detail_idea_desc">
-          <h3><a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
-          <p>{{ idea.intro }}</p>
-          <span>{{idea.author}}</span>
+      <a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+        <div class="wrap_card">
+          <div class="group_detail_idea_desc">
+            <h3>{{ idea.title }}</h3>
+            <p>{{ idea.intro }}</p>
+            <span>{{idea.author}}</span>
+          </div>
         </div>
-      </div>
+      </a>
       {% endfor %}
     </div>
     {% endif %} 

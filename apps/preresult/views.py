@@ -219,9 +219,10 @@ def calculate_first_idea_scores(group_id):
             | Q(idea_vote10=idea)).count())
 
         idea.votes = votes_count
-        print(f"{idea.votes}")
-
+        idea.save()
+        user_state_list = MemberState.objects.filter(group_id=group_id)
         # 투표 초기화
+    for idea in ideas:
         idea.idea_vote1_set.clear()
         idea.idea_vote2_set.clear()
         idea.idea_vote3_set.clear()
@@ -232,10 +233,6 @@ def calculate_first_idea_scores(group_id):
         idea.idea_vote8_set.clear()
         idea.idea_vote9_set.clear()
         idea.idea_vote10_set.clear()
-
-        idea.save()
-
-    user_state_list = MemberState.objects.filter(group_id=group_id)
 
 
 def calculate_second_idea_scores(group_id):
@@ -250,15 +247,14 @@ def calculate_second_idea_scores(group_id):
             | Q(idea_vote5=idea)).count())
 
         idea.votes = votes_count
-
+        idea.save()
+    for idea in ideas:
         # 투표 초기화
         idea.idea_vote1_set.clear()
         idea.idea_vote2_set.clear()
         idea.idea_vote3_set.clear()
         idea.idea_vote4_set.clear()
-        idea.idea_vote5_set.clear()
-
-        idea.save()
+        idea.idea_vote5_set.clear() 
 
 
 def calculate_third_idea_scores(group_id):
