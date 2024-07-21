@@ -58,9 +58,13 @@ def idea_create(request, group_id):
                 idea.save()
 
                 # 세션에 저장된 내용 삭제
-                del request.session['draft_title']
-                del request.session['draft_intro']
-                del request.session['draft_content']
+                if 'draft_title' in request.session:
+                    del request.session['draft_title']
+                if 'draft_info' in request.session:
+                    del request.session['draft_intro']
+                if 'draft_content' in request.session:
+                    del request.session['draft_content']
+                    
                 return redirect("group:group_detail", group_id=group.id)
         else:
             form = IdeaForm()
