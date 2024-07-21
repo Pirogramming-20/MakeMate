@@ -58,7 +58,7 @@ def vote_create(request, group_id):
                     user_state.idea_vote8 = idea_list[7]
                     user_state.idea_vote9 = idea_list[8]
                     user_state.idea_vote10 = idea_list[9]
-
+                    
                     user_state.save()
 
                     return redirect("group:group_detail", group_id=group.id)
