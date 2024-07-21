@@ -109,9 +109,12 @@ def idea_modify(request, group_id, idea_id):
                 form.save()
 
                 # 세션에 저장된 내용 삭제
-                del request.session['draft_title']
-                del request.session['draft_intro']
-                del request.session['draft_content']
+                if 'draft_title' in request.session:
+                    del request.session['draft_title']
+                if 'draft_info' in request.session:
+                    del request.session['draft_intro']
+                if 'draft_content' in request.session:
+                    del request.session['draft_content']
 
                 idea = get_object_or_404(Idea,
                                          id=idea_id,
