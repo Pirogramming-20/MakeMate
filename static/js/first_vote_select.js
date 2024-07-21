@@ -7,7 +7,7 @@ const getGroupId = (currentUrl, seperate) => {
 //groupId 정의 부분
 const currentUrl=window.location.href;
 const groupId = getGroupId(currentUrl, '/preresult/')
-
+console.log(groupId)
 
 document.addEventListener('click',(event)=> {
   const clickedBadge=event.target;
