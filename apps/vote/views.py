@@ -37,7 +37,9 @@ def vote_create(request, group_id):
         if current_time <= group.first_end_date:
             if request.method == "POST":
                 selected = request.POST.getlist("picked")
+                print(selected)
                 selected = list(map(int, selected))  # 선택된 아이디어의 pk를 리스트에 담음.
+                print(selected)
 
                 user_state = get_object_or_404(MemberState,
                                                group=group,
@@ -58,6 +60,18 @@ def vote_create(request, group_id):
                     user_state.idea_vote8 = idea_list[7]
                     user_state.idea_vote9 = idea_list[8]
                     user_state.idea_vote10 = idea_list[9]
+
+                    print(user_state.idea_vote1)
+                    print(user_state.idea_vote2)
+                    print(user_state.idea_vote3)
+                    print(user_state.idea_vote4)
+                    print(user_state.idea_vote5)
+                    print(user_state.idea_vote6)
+                    print(user_state.idea_vote7)
+                    print(user_state.idea_vote8)
+                    print(user_state.idea_vote9)
+                    print(user_state.idea_vote10)
+                    
 
                     user_state.save()
 

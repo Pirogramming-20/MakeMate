@@ -1,13 +1,12 @@
 const getGroupId = (currentUrl, seperate) => {
   const parts = currentUrl.split(seperate);
-  groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
+  const groupId = parts.length > 1 ? parts[1].split('/')[0] : null;
   return groupId
 }
 
 //groupId 정의 부분
 const currentUrl=window.location.href;
 const groupId = getGroupId(currentUrl, '/preresult/')
-console.log(groupId)
 
 document.addEventListener('click',(event)=> {
   const clickedBadge=event.target;
