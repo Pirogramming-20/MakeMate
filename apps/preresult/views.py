@@ -219,6 +219,7 @@ def calculate_first_idea_scores(group_id):
             | Q(idea_vote10=idea)).count())
 
         idea.votes = votes_count
+        print(f"{idea.votes}")
 
         # 투표 초기화
         idea.idea_vote1_set.clear()

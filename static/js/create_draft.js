@@ -12,7 +12,6 @@ const saveDraft = async () => {
 
     const csrf_token = getCookie('csrftoken');
     const url = `/idea/draft/`;
-    console.log(csrf_token);
 
     const res= await fetch(url, {
         method: 'POST',
