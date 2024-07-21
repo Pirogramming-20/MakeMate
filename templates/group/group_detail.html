@@ -12,7 +12,12 @@
         </div>
         
         {% if group.first_end_date|date:"Y-m-d H:i:s" > current_time %}
-        <span class="subtitle_content">원하는 아이디어 10개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.</span>
+        <span class="subtitle_content">원하는 아이디어 10개에 투표해주세요. 자신의 아이디어를 추가할 수도 있습니다.<br><br>
+          !주의사항!<br><br>
+          1. 한 아이디어 발표가 끝난 직후, 피드백을 댓글로 달아주세요<br>
+          2. 한 아이디어마다 코멘트 하나씩은 필수입니다!<br>
+          3. 댓글은 익명으로 작성되지만 운영진은 작성자를 확인 할 수 있습니다. 성의 없는 피드백은 삼가주세요!
+        </span>
         <div>1차 투표 마감까지 남은 시간</div>
         <div class='group_endtime' data-group-time='{{group.first_end_date.isoformat}}'></div>
         {% elif group.second_end_date|date:"Y-m-d H:i:s" > current_time %}
@@ -55,13 +60,15 @@
     <h2>나의 아이디어</h2>
     <div class="group_detail_my_idea">
       {% for idea in author_ideas %}
-      <div class="wrap_card">
-        <div class="group_detail_idea_desc">
-          <h3><a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">{{ idea.title }}</a></h3>
-          <p>{{ idea.intro }}</p>
-          <span>{{idea.author}}</span>
+      <a href="{% url 'idea:idea_detail' group_id=group.id idea_id=idea.id %}">
+        <div class="wrap_card">
+          <div class="group_detail_idea_desc">
+            <h3>{{ idea.title }}</h3>
+            <p>{{ idea.intro }}</p>
+            <span>{{idea.author}}</span>
+          </div>
         </div>
-      </div>
+      </a>
       {% endfor %}
     </div>
     {% endif %} 
