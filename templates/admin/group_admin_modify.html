@@ -62,12 +62,13 @@
           <span class="subtitle_content_left">{{ my_idea.intro }}</span>
         </div>
         {% if my_idea.file %}
-            <p><strong>첨부파일:</strong></p>
-            <form action="{% url 'idea:idea_download' group_id=group.id idea_id=my_idea.id %}">
+          <div class="wrap_download">
+            <span class="download_content">발표자료 다운로드</span>
+            <form action="{% url 'idea:idea_download' group_id=group.id idea_id=my_idea.id %}" class="secondary_badge">
                 {% csrf_token %}
                 <button>다운로드</button>
             </form>
-            <!-- <a href="{{ idea.file.url }}" download>다운로드</a> -->
+          </div>
         {% endif %}
         <div>{{my_idea.content}}</div>
       </div>
