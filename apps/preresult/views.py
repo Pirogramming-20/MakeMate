@@ -221,7 +221,8 @@ def calculate_first_idea_scores(group_id):
         idea.votes = votes_count
         idea.save()
         user_state_list = MemberState.objects.filter(group_id=group_id)
-        # 투표 초기화
+    
+    # 투표 초기화
     for idea in ideas:
         idea.idea_vote1_set.clear()
         idea.idea_vote2_set.clear()
